@@ -22,27 +22,12 @@ body{
 }
 header{
   text-align:center;
-  padding:48px 16px 24px;
+  padding:40px 16px;
 }
-h1{
-  margin:0;
-  font-size:clamp(28px,5vw,42px);
-}
-#countdown{
-  font-size:28px;
-  margin-top:16px;
-  letter-spacing:2px;
-}
-.desc{
-  max-width:900px;
-  margin:24px auto 0;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.7;
-}
-.rules{
-  margin-top:12px;
-}
+h1{margin:0;font-size:36px}
+#countdown{font-size:26px;margin-top:12px}
+.desc{max-width:900px;margin:20px auto;color:var(--muted);font-size:14px}
+
 main{
   display:flex;
   gap:16px;
@@ -53,15 +38,40 @@ section{
   border-radius:16px;
   padding:20px;
   flex:1;
-  min-width:0;
 }
-h2{
-  margin-top:0;
-  font-size:20px;
+h2{margin-top:0}
+
+input[type=text]{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin-bottom:12px;
 }
+
+.album{margin-bottom:10px}
+.album summary{
+  cursor:pointer;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+/* ★ 安定レイアウト */
+.song{
+  display:grid;
+  grid-template-columns: 24px 1fr;
+  gap:10px;
+  padding:6px 4px;
+  align-items:start;
+}
+.song span{
+  line-height:1.5;
+  word-break:break-word;
+}
+
 button{
+  margin-top:12px;
   background:var(--accent);
-  color:#000;
   border:none;
   border-radius:999px;
   padding:8px 14px;
@@ -72,27 +82,10 @@ button.secondary{
   background:#334155;
   color:#fff;
 }
-select,input{
-  width:100%;
-  padding:8px;
-  border-radius:8px;
-  border:none;
-  margin:6px 0;
-}
-.album{
-  margin-bottom:10px;
-}
-.album summary{
-  cursor:pointer;
-  font-weight:700;
-}
-.song{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:4px 0;
-}
+
 small{color:var(--muted)}
+ul{padding-left:18px}
+
 @media(max-width:900px){
   main{flex-direction:column}
 }
@@ -104,15 +97,15 @@ small{color:var(--muted)}
 <header>
   <h1>ROAD TO TOYROCK INVASION</h1>
   <div id="countdown"></div>
-
   <div class="desc">
     このページはロックバンドtoybeeの2026/3/22(日)＠恵比寿リキッドルーム ワンマンライブの成功を祈念して、toybeeファンが作成したものです。<br>
     ※toybee公式とは関係ありませんのでご留意ください。
-    <div class="rules">
-      ・1日1人5票まで<br>
-      ・過去の履歴も含めてマイセトリを最大20曲まで作成可能<br>
-      ・ランキングは全員の累積投票数で決まります
-    </div>
+    <br><br>
+    ・1日1人5票まで<br>
+    ・マイセトリ最大20曲<br>
+    ・ランキングは全員の累積
+    <br><br>
+    <small>※ 現在はテストモード（local保存）</small>
   </div>
 </header>
 
@@ -121,25 +114,25 @@ small{color:var(--muted)}
 <!-- 投票 -->
 <section>
 <h2>① 投票（最大5曲）</h2>
-<input id="nickname" placeholder="ニックネーム">
+<input id="nickname" type="text" placeholder="ニックネーム">
 
 <div id="songList"></div>
 
-<button onclick="vote()">投票する</button>
+<button onclick="vote()">テスト投票</button>
+<button class="secondary" onclick="resetTest()">テストデータ全消去</button>
+
 <div id="voteMsg"></div>
 </section>
 
 <!-- ランキング -->
 <section>
-<h2>② ランキング</h2>
+<h2>② ランキング（テスト）</h2>
 <ul id="rank"></ul>
 </section>
 
 <!-- マイセトリ -->
 <section>
-<h2>③ マイセトリ (<span id="cnt">0</span>/20)</h2>
-<button class="secondary" onclick="exportCSV()">CSV出力</button>
-<button class="secondary" onclick="shareX()">Xで共有</button>
+<h2>③ マイセトリ</h2>
 <ul id="myset"></ul>
 </section>
 
@@ -148,7 +141,7 @@ small{color:var(--muted)}
 <script>
 /* ===== 設定 ===== */
 const DEADLINE=new Date("2026-03-22T18:00:00+09:00");
-const MAX_VOTE=5, MAX_SET=20;
+const MAX_VOTE=5;
 
 /* ===== 曲データ ===== */
 const ALBUMS=[
@@ -162,20 +155,18 @@ const ALBUMS=[
 /* ===== カウントダウン ===== */
 function tick(){
   const d=DEADLINE-new Date();
-  if(d<=0){
-    countdown.textContent="開演しました";
-    return;
-  }
+  if(d<=0){countdown.textContent="開演しました";return;}
   const s=Math.floor(d/1000);
-  const dd=String(Math.floor(s/86400)).padStart(2,"0");
-  const hh=String(Math.floor(s%86400/3600)).padStart(2,"0");
-  const mm=String(Math.floor(s%3600/60)).padStart(2,"0");
-  const ss=String(s%60).padStart(2,"0");
-  countdown.textContent=`ライブ開演まであと ${dd}:${hh}:${mm}:${ss}`;
+  countdown.textContent=
+    "ライブ開演まであと "+
+    String(Math.floor(s/86400)).padStart(2,"0")+":"+
+    String(Math.floor(s%86400/3600)).padStart(2,"0")+":"+
+    String(Math.floor(s%3600/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
 }
 setInterval(tick,1000);tick();
 
-/* ===== 曲リスト描画 ===== */
+/* ===== 曲描画 ===== */
 const songList=document.getElementById("songList");
 ALBUMS.forEach(a=>{
   const d=document.createElement("details");
@@ -184,13 +175,14 @@ ALBUMS.forEach(a=>{
   a.songs.forEach(s=>{
     d.innerHTML+=`
       <label class="song">
-        <input type="checkbox" value="${s}" onchange="limitCheck()">${s}
+        <input type="checkbox" value="${s}" onchange="limitCheck()">
+        <span>${s}</span>
       </label>`;
   });
   songList.appendChild(d);
 });
 
-/* ===== 投票制限 ===== */
+/* ===== 制限 ===== */
 function limitCheck(){
   const c=[...document.querySelectorAll("input[type=checkbox]:checked")];
   if(c.length>MAX_VOTE){
@@ -199,17 +191,49 @@ function limitCheck(){
   }
 }
 
-/* ===== ダミー処理（後でGAS接続） ===== */
+/* ===== テスト投票 ===== */
 function vote(){
-  voteMsg.textContent="投票を受け付けました";
+  const nick=nickname.value.trim();
+  if(!nick){alert("ニックネーム必須");return;}
+
+  const selected=[...document.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value);
+  if(!selected.length){alert("曲を選んでください");return;}
+
+  const data=JSON.parse(localStorage.getItem("testVotes")||"{}");
+  data[nick]=(data[nick]||[]).concat(selected);
+  localStorage.setItem("testVotes",JSON.stringify(data));
+
+  voteMsg.textContent="テスト投票しました";
+  render();
 }
-function exportCSV(){
-  alert("CSV出力");
+
+/* ===== 表示 ===== */
+function render(){
+  const data=JSON.parse(localStorage.getItem("testVotes")||"{}");
+  const counts={};
+  const my=[];
+
+  Object.entries(data).forEach(([n,arr])=>{
+    arr.forEach(s=>{
+      counts[s]=(counts[s]||0)+1;
+      my.push(s);
+    });
+  });
+
+  rank.innerHTML=Object.entries(counts)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([s,c])=>`<li>${s}：${c}</li>`).join("");
+
+  myset.innerHTML=[...new Set(my)].map(s=>`<li>${s}</li>`).join("");
 }
-function shareX(){
-  const url=location.href;
-  const text="#toybeeリキッド";
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+render();
+
+/* ===== リセット ===== */
+function resetTest(){
+  if(confirm("テストデータを全削除しますか？")){
+    localStorage.removeItem("testVotes");
+    render();
+  }
 }
 </script>
 

@@ -2,16 +2,40 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>TOYROCK マイセトリ予想</title>
+<title>TOYROCK マイセトリ予想 & 投票</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body { font-family: system-ui, sans-serif; margin:20px; }
-h1,h2 { margin-top:1.5em }
-button { margin-left:6px }
-ul { padding-left:1em }
-li { margin:6px 0 }
-select,input { padding:4px }
-small { color:#666 }
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  margin:20px;
+  background:#0f172a;
+  color:#e5e7eb;
+}
+h1,h2{ margin-top:1.5em }
+hr{ border:0; border-top:1px solid #334155 }
+button{
+  margin:4px;
+  padding:6px 10px;
+  border-radius:6px;
+  border:none;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+input,select{
+  padding:6px;
+  border-radius:6px;
+  border:1px solid #475569;
+  background:#020617;
+  color:#e5e7eb;
+}
+ul{ padding-left:1em }
+li{ margin:6px 0 }
+small{ color:#94a3b8 }
 </style>
 </head>
 
@@ -24,18 +48,18 @@ small { color:#666 }
 
 <h2>① 投票</h2>
 <input id="nickname" placeholder="ニックネーム">
-
+<br><br>
 <select id="songSelect"></select>
-<button onclick="vote()">投票</button>
+<br>
+<button onclick="vote()">投票する</button>
 <div id="voteMsg"></div>
 
 <hr>
 
 <h2>② マイセトリ予想 (<span id="cnt">0</span>/20)</h2>
 <ul id="myset"></ul>
-
-<button onclick="downloadCSV()">📄 CSV出力</button>
-<button onclick="shareX()">🐦 Xで共有</button>
+<button onclick="exportCSV()">CSV出力</button>
+<button onclick="shareX()">Xで共有</button>
 
 <hr>
 
@@ -43,71 +67,138 @@ small { color:#666 }
 <ul id="rank"></ul>
 
 <script>
-/* ===== 設定 ===== */
+/* ========= 設定 ========= */
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
 const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
-const MAX = 20;
+const MAX_SETLIST = 20;
 
-const SONGS = [
-  "曲A","曲B","曲C","曲D","曲E",
-  "曲F","曲G","曲H","曲I","曲J"
+/* ========= 曲データ（確定版） ========= */
+const ALBUMS = [
+  {
+    name:"THE EARLY TOYBEE",
+    color:"#FFD700",
+    songs:[
+      "全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music",
+      "電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに",
+      "いなせ","あほんだらいふ"
+    ]
+  },
+  {
+    name:"REVIVAL",
+    color:"#8B5CF6",
+    songs:[
+      "惑星ダブリス","Super Imagination","ワンタイムラヴァー",
+      "風知らぬひと","フロムアンダーランド",
+      "Teenage Black","シーラカンスと文学"
+    ]
+  },
+  {
+    name:"LOOKBACK TO THE FUTURE",
+    color:"#06B6D4",
+    songs:[
+      "LOOKBACK","Golden Age","ステルオンナ",
+      "道化師のラブソング","ライド・アンド・ライブ",
+      "S.Y.S -Save Your Souls-","TO THE FUTURE"
+    ]
+  },
+  {
+    name:"TOYROCK INVASION",
+    color:"#EF4444",
+    songs:[
+      "TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース",
+      "CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"
+    ]
+  },
+  {
+    name:"Singles",
+    color:"#F59E0B",
+    songs:["ひとつだけ","ハナマル"]
+  }
 ];
 
-/* ===== 共通 ===== */
+const SONGS = ALBUMS.flatMap(a=>a.songs);
+
+/* ========= 共通 ========= */
 const qs=id=>document.getElementById(id);
 const today=new Date().toISOString().slice(0,10);
 const load=k=>JSON.parse(localStorage.getItem(k)||"null");
 const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
-/* ===== 曲リスト ===== */
-SONGS.forEach(s=>{
-  const o=document.createElement("option");
-  o.value=o.textContent=s;
-  qs("songSelect").appendChild(o);
-});
-
-/* ===== カウントダウン ===== */
+/* ========= カウントダウン ========= */
 function tick(){
   const d=DEADLINE-new Date();
-  if(d<=0){ qs("countdown").textContent="⏰ 投票終了"; return; }
-  qs("countdown").textContent=`⏳ 残り ${Math.floor(d/36e5)}h`;
+  if(d<=0){ qs("countdown").textContent="⏰ 投票終了"; lockUI(); return; }
+  const h=Math.floor(d/36e5),
+        m=Math.floor(d%36e5/6e4),
+        s=Math.floor(d%6e4/1e3);
+  qs("countdown").textContent=`⏳ 残り ${h}h ${m}m ${s}s`;
 }
 setInterval(tick,1000); tick();
 
-/* ===== 投票 ===== */
+/* ========= 投票曲選択 ========= */
+qs("songSelect").innerHTML =
+  ALBUMS.map(a=>
+    `<optgroup label="${a.name}">
+      ${a.songs.map(s=>`<option value="${s}">${s}</option>`).join("")}
+     </optgroup>`
+  ).join("");
+
+/* ========= ニックネーム保持 ========= */
+const savedNick=localStorage.getItem("nickname_"+today);
+if(savedNick) qs("nickname").value=savedNick;
+
+/* ========= API ========= */
+async function apiPost(body){
+  const r=await fetch(GAS_URL,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify(body)
+  });
+  return r.json();
+}
+
+/* ========= 投票 ========= */
 async function vote(){
+  if(new Date()>DEADLINE) return;
   const nick=qs("nickname").value.trim();
-  const song=qs("songSelect").value;
-  if(!nick||!song){alert("未入力");return;}
+  if(!nick){ alert("ニックネーム必須"); return; }
 
-  const voted=load("votes")||{};
-  if(voted[today]){ qs("voteMsg").textContent="本日投票済み";return;}
-
-  let myset=load("myset")||[];
-
-  if(!myset.includes(song)){
-    if(myset.length<MAX){
-      myset.push(song);
-    }else{
-      const remove=prompt("20曲あります。入れ替える曲名を入力");
-      const idx=myset.indexOf(remove);
-      if(idx===-1){ alert("見つかりません"); return; }
-      myset[idx]=song;
-    }
-    save("myset",myset);
+  if(localStorage.getItem("nickname_"+today)){
+    qs("voteMsg").textContent="本日はこの名前で登録済み";
+    return;
   }
 
-  voted[today]=song;
-  save("votes",voted);
-  qs("voteMsg").textContent="投票完了";
+  const song=qs("songSelect").value;
+
+  try{
+    await apiPost({action:"vote",nickname:nick,song});
+    localStorage.setItem("nickname_"+today,nick);
+    const v=load("votes")||{};
+    v[today]=song;
+    save("votes",v);
+    qs("voteMsg").textContent="投票完了";
+    loadMySet();
+    loadRank();
+  }catch{
+    qs("voteMsg").textContent="投票エラー";
+  }
+}
+
+/* ========= マイセトリ ========= */
+function loadMySet(){
+  const votes=load("votes")||{};
+  let list=load("myset")||[];
+  Object.values(votes).forEach(s=>{
+    if(!list.includes(s)&&list.length<MAX_SETLIST) list.push(s);
+  });
+  save("myset",list);
   renderMySet();
 }
 
-/* ===== マイセトリ ===== */
 function move(i,d){
   const l=load("myset")||[];
   const j=i+d;
-  if(j<0||j>=l.length)return;
+  if(j<0||j>=l.length) return;
   [l[i],l[j]]=[l[j],l[i]];
   save("myset",l);
   renderMySet();
@@ -118,30 +209,56 @@ function renderMySet(){
   qs("cnt").textContent=l.length;
   qs("myset").innerHTML=l.map((s,i)=>`
     <li>${i+1}. ${s}
-    <button onclick="move(${i},-1)">↑</button>
-    <button onclick="move(${i},1)">↓</button>
-    </li>`).join("");
+      <button onclick="move(${i},-1)">↑</button>
+      <button onclick="move(${i},1)">↓</button>
+    </li>
+  `).join("");
 }
-renderMySet();
 
-/* ===== CSV ===== */
-function downloadCSV(){
+/* ========= CSV ========= */
+function exportCSV(){
   const l=load("myset")||[];
-  let csv="順位,曲名\n"+l.map((s,i)=>`${i+1},${s}`).join("\n");
-  const b=new Blob([csv],{type:"text/csv"});
+  const csv=l.map((s,i)=>`${i+1},${s}`).join("\n");
+  const blob=new Blob(["順位,曲名\n"+csv],{type:"text/csv"});
   const a=document.createElement("a");
-  a.href=URL.createObjectURL(b);
+  a.href=URL.createObjectURL(blob);
   a.download="my_setlist.csv";
   a.click();
 }
 
-/* ===== X共有 ===== */
+/* ========= X共有 ========= */
 function shareX(){
   const l=load("myset")||[];
-  const text="#TOYROCK\nマイセトリ予想\n"+l.map((s,i)=>`${i+1}. ${s}`).join("\n");
-  const url="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
-  window.open(url,"_blank");
+  const text=
+    "#toybeeリキッド\nマイセトリ予想\n"+
+    l.map((s,i)=>`${i+1}. ${s}`).join("\n")+
+    "\n\n"+location.href;
+  window.open(
+    "https://twitter.com/intent/tweet?text="+encodeURIComponent(text),
+    "_blank"
+  );
 }
+
+/* ========= ランキング ========= */
+async function loadRank(){
+  try{
+    const r=await fetch(GAS_URL+"?action=rank");
+    const d=await r.json();
+    qs("rank").innerHTML=d.map(x=>`<li>${x.song}：${x.count}</li>`).join("");
+  }catch{
+    qs("rank").innerHTML="<li>取得エラー</li>";
+  }
+}
+
+/* ========= 締切後ロック ========= */
+function lockUI(){
+  document.querySelectorAll("button,input,select")
+    .forEach(e=>e.disabled=true);
+}
+
+/* ========= 初期化 ========= */
+loadMySet();
+loadRank();
 </script>
 
 </body>

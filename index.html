@@ -2,264 +2,209 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>TOYROCK マイセトリ予想 & 投票</title>
+<title>ROAD TO TOYROCK INVASION</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  margin:20px;
-  background:#0f172a;
-  color:#e5e7eb;
+:root{
+  --bg1:#0a0a1a;
+  --bg2:#1a0a2e;
+  --gold:#FFD700;
+  --card:rgba(255,255,255,.08);
 }
-h1,h2{ margin-top:1.5em }
-hr{ border:0; border-top:1px solid #334155 }
-button{
-  margin:4px;
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:#fff;
+}
+header{
+  text-align:center;
+  padding:30px 10px;
+}
+h1{margin:0;font-size:1.8rem;}
+.countdown{
+  font-size:1.1rem;
+  color:var(--gold);
+  margin-top:8px;
+}
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:20px 0;
+}
+.tab{
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--card);
+  cursor:pointer;
+}
+.tab.active{
+  background:var(--gold);
+  color:#000;
+}
+section{display:none;padding:0 10px 40px;}
+section.active{display:block;}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:14px;
+  margin:12px auto;
+  max-width:900px;
+}
+.album h3{
+  margin:8px 0;
+}
+.song{
   padding:6px 10px;
+  border-radius:8px;
+  margin:4px 0;
+  background:rgba(255,255,255,.1);
+  cursor:pointer;
+}
+.song:hover{background:rgba(255,255,255,.2);}
+.song.selected{background:var(--gold);color:#000;}
+#setlist li{
+  list-style:none;
+  padding:6px;
+  margin:4px 0;
+  background:rgba(255,255,255,.12);
   border-radius:6px;
+  cursor:grab;
+}
+button{
+  background:var(--gold);
   border:none;
-  background:#2563eb;
-  color:white;
+  border-radius:999px;
+  padding:8px 14px;
   cursor:pointer;
 }
 button:disabled{
-  opacity:.4;
+  opacity:.5;
   cursor:not-allowed;
 }
-input,select{
-  padding:6px;
-  border-radius:6px;
-  border:1px solid #475569;
-  background:#020617;
-  color:#e5e7eb;
+footer{
+  text-align:center;
+  font-size:.8rem;
+  opacity:.7;
+  padding-bottom:20px;
 }
-ul{ padding-left:1em }
-li{ margin:6px 0 }
-small{ color:#94a3b8 }
 </style>
 </head>
-
 <body>
 
-<h1>🎸 TOYROCK マイセトリ予想</h1>
-<div id="countdown"></div>
+<header>
+  <h1>ROAD TO TOYROCK INVASION</h1>
+  <div class="countdown" id="countdown"></div>
+</header>
 
-<hr>
+<div class="tabs">
+  <div class="tab active" data-tab="vote">投票</div>
+  <div class="tab" data-tab="my">マイセトリ</div>
+  <div class="tab" data-tab="rank">ランキング</div>
+</div>
 
-<h2>① 投票</h2>
-<input id="nickname" placeholder="ニックネーム">
-<br><br>
-<select id="songSelect"></select>
-<br>
-<button onclick="vote()">投票する</button>
-<div id="voteMsg"></div>
+<section id="vote" class="active"></section>
 
-<hr>
+<section id="my">
+  <div class="card">
+    <p>ユーザー名：
+      <input id="username">
+    </p>
+    <p>選択曲数：<span id="count">0</span>/20</p>
+    <ul id="setlist"></ul>
+    <button id="csv">CSV出力</button>
+    <button id="share">Xで共有</button>
+  </div>
+</section>
 
-<h2>② マイセトリ予想 (<span id="cnt">0</span>/20)</h2>
-<ul id="myset"></ul>
-<button onclick="exportCSV()">CSV出力</button>
-<button onclick="shareX()">Xで共有</button>
+<section id="rank">
+  <div class="card" id="ranking"></div>
+</section>
 
-<hr>
-
-<h2>③ ランキング</h2>
-<ul id="rank"></ul>
+<footer>© toybee fan project</footer>
 
 <script>
-/* ========= 設定 ========= */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
-const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
-const MAX_SETLIST = 20;
-
-/* ========= 曲データ（確定版） ========= */
-const ALBUMS = [
-  {
-    name:"THE EARLY TOYBEE",
-    color:"#FFD700",
-    songs:[
-      "全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music",
-      "電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに",
-      "いなせ","あほんだらいふ"
-    ]
-  },
-  {
-    name:"REVIVAL",
-    color:"#8B5CF6",
-    songs:[
-      "惑星ダブリス","Super Imagination","ワンタイムラヴァー",
-      "風知らぬひと","フロムアンダーランド",
-      "Teenage Black","シーラカンスと文学"
-    ]
-  },
-  {
-    name:"LOOKBACK TO THE FUTURE",
-    color:"#06B6D4",
-    songs:[
-      "LOOKBACK","Golden Age","ステルオンナ",
-      "道化師のラブソング","ライド・アンド・ライブ",
-      "S.Y.S -Save Your Souls-","TO THE FUTURE"
-    ]
-  },
-  {
-    name:"TOYROCK INVASION",
-    color:"#EF4444",
-    songs:[
-      "TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース",
-      "CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"
-    ]
-  },
-  {
-    name:"Singles",
-    color:"#F59E0B",
-    songs:["ひとつだけ","ハナマル"]
-  }
+const DEADLINE=new Date("2025-03-22T18:00:00+09:00");
+const ALBUMS=[
+{name:"THE EARLY TOYBEE",color:"#FFD700",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
+{name:"REVIVAL",color:"#8B5CF6",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
+{name:"LOOKBACK TO THE FUTURE",color:"#06B6D4",songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
+{name:"TOYROCK INVASION",color:"#EF4444",songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
+{name:"Singles",color:"#F59E0B",songs:["ひとつだけ","ハナマル"]}
 ];
 
-const SONGS = ALBUMS.flatMap(a=>a.songs);
+const voteSec=document.getElementById("vote");
+const setlist=document.getElementById("setlist");
+const countSpan=document.getElementById("count");
+const rankingDiv=document.getElementById("ranking");
 
-/* ========= 共通 ========= */
-const qs=id=>document.getElementById(id);
-const today=new Date().toISOString().slice(0,10);
-const load=k=>JSON.parse(localStorage.getItem(k)||"null");
-const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let my=new Set(JSON.parse(localStorage.getItem("my")||"[]"));
+let votes=JSON.parse(localStorage.getItem("votes")||"{}");
 
-/* ========= カウントダウン ========= */
-function tick(){
+function renderVote(){
+  voteSec.innerHTML="";
+  ALBUMS.forEach(a=>{
+    const c=document.createElement("div");
+    c.className="card album";
+    c.innerHTML=`<h3 style="color:${a.color}">${a.name}</h3>`;
+    a.songs.forEach(s=>{
+      const d=document.createElement("div");
+      d.className="song"+(my.has(s)?" selected":"");
+      d.textContent=s;
+      d.onclick=()=>toggle(s);
+      c.appendChild(d);
+    });
+    voteSec.appendChild(c);
+  });
+}
+function toggle(song){
+  if(Date.now()>DEADLINE)return;
+  if(my.has(song))my.delete(song);
+  else{
+    if(my.size>=20)return alert("20曲までです");
+    my.add(song);
+  }
+  localStorage.setItem("my",JSON.stringify([...my]));
+  renderAll();
+}
+function renderMy(){
+  setlist.innerHTML="";
+  [...my].forEach(s=>{
+    const li=document.createElement("li");
+    li.textContent=s;
+    setlist.appendChild(li);
+  });
+  countSpan.textContent=my.size;
+}
+function renderRank(){
+  rankingDiv.innerHTML="";
+  const arr=Object.entries(votes).sort((a,b)=>b[1]-a[1]);
+  arr.forEach(([s,c])=>{
+    const p=document.createElement("p");
+    p.textContent=`${s}：${c}`;
+    rankingDiv.appendChild(p);
+  });
+}
+function renderAll(){
+  renderVote();renderMy();renderRank();
+}
+renderAll();
+
+document.querySelectorAll(".tab").forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("section").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    document.getElementById(t.dataset.tab).classList.add("active");
+  };
+});
+
+setInterval(()=>{
   const d=DEADLINE-new Date();
-  if(d<=0){ qs("countdown").textContent="⏰ 投票終了"; lockUI(); return; }
-  const h=Math.floor(d/36e5),
-        m=Math.floor(d%36e5/6e4),
-        s=Math.floor(d%6e4/1e3);
-  qs("countdown").textContent=`⏳ 残り ${h}h ${m}m ${s}s`;
-}
-setInterval(tick,1000); tick();
-
-/* ========= 投票曲選択 ========= */
-qs("songSelect").innerHTML =
-  ALBUMS.map(a=>
-    `<optgroup label="${a.name}">
-      ${a.songs.map(s=>`<option value="${s}">${s}</option>`).join("")}
-     </optgroup>`
-  ).join("");
-
-/* ========= ニックネーム保持 ========= */
-const savedNick=localStorage.getItem("nickname_"+today);
-if(savedNick) qs("nickname").value=savedNick;
-
-/* ========= API ========= */
-async function apiPost(body){
-  const r=await fetch(GAS_URL,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify(body)
-  });
-  return r.json();
-}
-
-/* ========= 投票 ========= */
-async function vote(){
-  if(new Date()>DEADLINE) return;
-  const nick=qs("nickname").value.trim();
-  if(!nick){ alert("ニックネーム必須"); return; }
-
-  if(localStorage.getItem("nickname_"+today)){
-    qs("voteMsg").textContent="本日はこの名前で登録済み";
-    return;
-  }
-
-  const song=qs("songSelect").value;
-
-  try{
-    await apiPost({action:"vote",nickname:nick,song});
-    localStorage.setItem("nickname_"+today,nick);
-    const v=load("votes")||{};
-    v[today]=song;
-    save("votes",v);
-    qs("voteMsg").textContent="投票完了";
-    loadMySet();
-    loadRank();
-  }catch{
-    qs("voteMsg").textContent="投票エラー";
-  }
-}
-
-/* ========= マイセトリ ========= */
-function loadMySet(){
-  const votes=load("votes")||{};
-  let list=load("myset")||[];
-  Object.values(votes).forEach(s=>{
-    if(!list.includes(s)&&list.length<MAX_SETLIST) list.push(s);
-  });
-  save("myset",list);
-  renderMySet();
-}
-
-function move(i,d){
-  const l=load("myset")||[];
-  const j=i+d;
-  if(j<0||j>=l.length) return;
-  [l[i],l[j]]=[l[j],l[i]];
-  save("myset",l);
-  renderMySet();
-}
-
-function renderMySet(){
-  const l=load("myset")||[];
-  qs("cnt").textContent=l.length;
-  qs("myset").innerHTML=l.map((s,i)=>`
-    <li>${i+1}. ${s}
-      <button onclick="move(${i},-1)">↑</button>
-      <button onclick="move(${i},1)">↓</button>
-    </li>
-  `).join("");
-}
-
-/* ========= CSV ========= */
-function exportCSV(){
-  const l=load("myset")||[];
-  const csv=l.map((s,i)=>`${i+1},${s}`).join("\n");
-  const blob=new Blob(["順位,曲名\n"+csv],{type:"text/csv"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="my_setlist.csv";
-  a.click();
-}
-
-/* ========= X共有 ========= */
-function shareX(){
-  const l=load("myset")||[];
-  const text=
-    "#toybeeリキッド\nマイセトリ予想\n"+
-    l.map((s,i)=>`${i+1}. ${s}`).join("\n")+
-    "\n\n"+location.href;
-  window.open(
-    "https://twitter.com/intent/tweet?text="+encodeURIComponent(text),
-    "_blank"
-  );
-}
-
-/* ========= ランキング ========= */
-async function loadRank(){
-  try{
-    const r=await fetch(GAS_URL+"?action=rank");
-    const d=await r.json();
-    qs("rank").innerHTML=d.map(x=>`<li>${x.song}：${x.count}</li>`).join("");
-  }catch{
-    qs("rank").innerHTML="<li>取得エラー</li>";
-  }
-}
-
-/* ========= 締切後ロック ========= */
-function lockUI(){
-  document.querySelectorAll("button,input,select")
-    .forEach(e=>e.disabled=true);
-}
-
-/* ========= 初期化 ========= */
-loadMySet();
-loadRank();
+  document.getElementById("countdown").textContent=
+    d>0?`締切まで ${Math.floor(d/3600000)}時間`:"締め切りました";
+},1000);
 </script>
-
 </body>
 </html>

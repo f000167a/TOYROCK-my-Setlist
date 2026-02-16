@@ -52,25 +52,33 @@ section.active{display:block;}
   margin:12px auto;
   max-width:900px;
 }
-.album h3{
-  margin:8px 0;
+.album-title{
+  margin:8px 0 12px;
+  font-weight:bold;
+}
+.vertical-list{
+  list-style:none;
+  padding:0;
+  margin:0;
 }
 .song{
-  padding:6px 10px;
-  border-radius:8px;
-  margin:4px 0;
-  background:rgba(255,255,255,.1);
+  padding:10px 14px;
+  border-radius:10px;
+  margin:6px 0;
+  background:rgba(255,255,255,.12);
   cursor:pointer;
 }
-.song:hover{background:rgba(255,255,255,.2);}
-.song.selected{background:var(--gold);color:#000;}
+.song:hover{background:rgba(255,255,255,.22);}
+.song.selected{
+  background:var(--gold);
+  color:#000;
+}
 #setlist li{
   list-style:none;
-  padding:6px;
-  margin:4px 0;
-  background:rgba(255,255,255,.12);
-  border-radius:6px;
-  cursor:grab;
+  padding:8px;
+  margin:6px 0;
+  background:rgba(255,255,255,.15);
+  border-radius:8px;
 }
 button{
   background:var(--gold);
@@ -78,10 +86,6 @@ button{
   border-radius:999px;
   padding:8px 14px;
   cursor:pointer;
-}
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
 }
 footer{
   text-align:center;
@@ -108,13 +112,8 @@ footer{
 
 <section id="my">
   <div class="card">
-    <p>ユーザー名：
-      <input id="username">
-    </p>
     <p>選択曲数：<span id="count">0</span>/20</p>
     <ul id="setlist"></ul>
-    <button id="csv">CSV出力</button>
-    <button id="share">Xで共有</button>
   </div>
 </section>
 
@@ -125,7 +124,11 @@ footer{
 <footer>© toybee fan project</footer>
 
 <script>
-const DEADLINE=new Date("2025-03-22T18:00:00+09:00");
+/* ===== 設定 ===== */
+const DEADLINE=new Date("2026-03-22T18:00:00+09:00"); // ← テスト用に未来
+const IS_PRODUCTION=false;
+
+/* ===== データ ===== */
 const ALBUMS=[
 {name:"THE EARLY TOYBEE",color:"#FFD700",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
 {name:"REVIVAL",color:"#8B5CF6",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
@@ -137,37 +140,54 @@ const ALBUMS=[
 const voteSec=document.getElementById("vote");
 const setlist=document.getElementById("setlist");
 const countSpan=document.getElementById("count");
-const rankingDiv=document.getElementById("ranking");
 
 let my=new Set(JSON.parse(localStorage.getItem("my")||"[]"));
-let votes=JSON.parse(localStorage.getItem("votes")||"{}");
 
 function renderVote(){
   voteSec.innerHTML="";
   ALBUMS.forEach(a=>{
-    const c=document.createElement("div");
-    c.className="card album";
-    c.innerHTML=`<h3 style="color:${a.color}">${a.name}</h3>`;
+    const card=document.createElement("div");
+    card.className="card";
+
+    const title=document.createElement("div");
+    title.className="album-title";
+    title.style.color=a.color;
+    title.textContent=a.name;
+    card.appendChild(title);
+
+    const ul=document.createElement("ul");
+    ul.className="vertical-list";
+
     a.songs.forEach(s=>{
-      const d=document.createElement("div");
-      d.className="song"+(my.has(s)?" selected":"");
-      d.textContent=s;
-      d.onclick=()=>toggle(s);
-      c.appendChild(d);
+      const li=document.createElement("li");
+      li.className="song"+(my.has(s)?" selected":"");
+      li.textContent=s;
+      li.onclick=()=>toggle(s);
+      ul.appendChild(li);
     });
-    voteSec.appendChild(c);
+
+    card.appendChild(ul);
+    voteSec.appendChild(card);
   });
 }
+
 function toggle(song){
-  if(Date.now()>DEADLINE)return;
-  if(my.has(song))my.delete(song);
+  if(IS_PRODUCTION && Date.now()>DEADLINE){
+    alert("締め切りました");
+    return;
+  }
+  if(my.has(song)) my.delete(song);
   else{
-    if(my.size>=20)return alert("20曲までです");
+    if(my.size>=20){
+      alert("20曲までです");
+      return;
+    }
     my.add(song);
   }
   localStorage.setItem("my",JSON.stringify([...my]));
   renderAll();
 }
+
 function renderMy(){
   setlist.innerHTML="";
   [...my].forEach(s=>{
@@ -177,20 +197,15 @@ function renderMy(){
   });
   countSpan.textContent=my.size;
 }
-function renderRank(){
-  rankingDiv.innerHTML="";
-  const arr=Object.entries(votes).sort((a,b)=>b[1]-a[1]);
-  arr.forEach(([s,c])=>{
-    const p=document.createElement("p");
-    p.textContent=`${s}：${c}`;
-    rankingDiv.appendChild(p);
-  });
-}
+
 function renderAll(){
-  renderVote();renderMy();renderRank();
+  renderVote();
+  renderMy();
 }
+
 renderAll();
 
+/* タブ */
 document.querySelectorAll(".tab").forEach(t=>{
   t.onclick=()=>{
     document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
@@ -200,6 +215,7 @@ document.querySelectorAll(".tab").forEach(t=>{
   };
 });
 
+/* カウントダウン */
 setInterval(()=>{
   const d=DEADLINE-new Date();
   document.getElementById("countdown").textContent=

@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>TOYROCK マイセトリ予想 & 投票</title>
+<title>TOYROCK マイセトリ予想</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body { font-family: system-ui, sans-serif; margin:20px; }
@@ -10,9 +10,8 @@ h1,h2 { margin-top:1.5em }
 button { margin-left:6px }
 ul { padding-left:1em }
 li { margin:6px 0 }
-small { color:#666 }
-.disabled { opacity:.5; pointer-events:none }
 select,input { padding:4px }
+small { color:#666 }
 </style>
 </head>
 
@@ -26,11 +25,8 @@ select,input { padding:4px }
 <h2>① 投票</h2>
 <input id="nickname" placeholder="ニックネーム">
 
-<select id="songSelect">
-  <option value="">曲を選択</option>
-</select>
-
-<button onclick="vote()">投票する</button>
+<select id="songSelect"></select>
+<button onclick="vote()">投票</button>
 <div id="voteMsg"></div>
 
 <hr>
@@ -38,139 +34,114 @@ select,input { padding:4px }
 <h2>② マイセトリ予想 (<span id="cnt">0</span>/20)</h2>
 <ul id="myset"></ul>
 
+<button onclick="downloadCSV()">📄 CSV出力</button>
+<button onclick="shareX()">🐦 Xで共有</button>
+
 <hr>
 
 <h2>③ ランキング</h2>
 <ul id="rank"></ul>
 
 <script>
-/* ========= 設定 ========= */
+/* ===== 設定 ===== */
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
 const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
-const MAX_SETLIST = 20;
+const MAX = 20;
 
 const SONGS = [
   "曲A","曲B","曲C","曲D","曲E",
   "曲F","曲G","曲H","曲I","曲J"
 ];
 
-/* ========= 共通 ========= */
-const qs = id => document.getElementById(id);
-const today = new Date().toISOString().slice(0,10);
+/* ===== 共通 ===== */
+const qs=id=>document.getElementById(id);
+const today=new Date().toISOString().slice(0,10);
+const load=k=>JSON.parse(localStorage.getItem(k)||"null");
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
-/* ========= 曲リスト生成 ========= */
+/* ===== 曲リスト ===== */
 SONGS.forEach(s=>{
   const o=document.createElement("option");
   o.value=o.textContent=s;
   qs("songSelect").appendChild(o);
 });
 
-/* ========= カウントダウン ========= */
+/* ===== カウントダウン ===== */
 function tick(){
-  const diff = DEADLINE - new Date();
-  if(diff<=0){
-    qs("countdown").textContent="⏰ 投票終了";
-    document.querySelector("button").classList.add("disabled");
-    return;
-  }
-  const h=Math.floor(diff/36e5),
-        m=Math.floor(diff%36e5/6e4),
-        s=Math.floor(diff%6e4/1e3);
-  qs("countdown").textContent=`⏳ 残り ${h}h ${m}m ${s}s`;
+  const d=DEADLINE-new Date();
+  if(d<=0){ qs("countdown").textContent="⏰ 投票終了"; return; }
+  qs("countdown").textContent=`⏳ 残り ${Math.floor(d/36e5)}h`;
 }
 setInterval(tick,1000); tick();
 
-/* ========= localStorage ========= */
-const load = k => JSON.parse(localStorage.getItem(k)||"null");
-const save = (k,v)=>localStorage.setItem(k,JSON.stringify(v));
-
-/* ========= 投票 ========= */
-async function apiPost(body){
-  const r = await fetch(GAS_URL,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify(body)
-  });
-  return r.json();
-}
-
+/* ===== 投票 ===== */
 async function vote(){
-  if(new Date()>DEADLINE) return;
+  const nick=qs("nickname").value.trim();
+  const song=qs("songSelect").value;
+  if(!nick||!song){alert("未入力");return;}
 
-  const nick = qs("nickname").value.trim();
-  const song = qs("songSelect").value;
+  const voted=load("votes")||{};
+  if(voted[today]){ qs("voteMsg").textContent="本日投票済み";return;}
 
-  if(!nick || !song){
-    alert("ニックネームと曲名を選択してください");
-    return;
-  }
+  let myset=load("myset")||[];
 
-  const voted = load("votes")||{};
-  if(voted[today]){
-    qs("voteMsg").textContent="本日は投票済み";
-    return;
-  }
-
-  try{
-    await apiPost({ action:"vote", nickname:nick, song });
-    voted[today]=song;
-    save("votes",voted);
-    qs("voteMsg").textContent="投票完了";
-    loadMySet();
-    loadRank();
-  }catch{
-    qs("voteMsg").textContent="投票エラー";
-  }
-}
-
-/* ========= マイセトリ ========= */
-function loadMySet(){
-  const votes = load("votes")||{};
-  let list = load("myset")||[];
-
-  Object.values(votes).forEach(s=>{
-    if(!list.includes(s) && list.length<MAX_SETLIST){
-      list.push(s);
+  if(!myset.includes(song)){
+    if(myset.length<MAX){
+      myset.push(song);
+    }else{
+      const remove=prompt("20曲あります。入れ替える曲名を入力");
+      const idx=myset.indexOf(remove);
+      if(idx===-1){ alert("見つかりません"); return; }
+      myset[idx]=song;
     }
-  });
+    save("myset",myset);
+  }
 
-  save("myset", list);
+  voted[today]=song;
+  save("votes",voted);
+  qs("voteMsg").textContent="投票完了";
   renderMySet();
 }
 
+/* ===== マイセトリ ===== */
 function move(i,d){
-  const list = load("myset")||[];
+  const l=load("myset")||[];
   const j=i+d;
-  if(j<0||j>=list.length) return;
-  [list[i],list[j]]=[list[j],list[i]];
-  save("myset",list);
+  if(j<0||j>=l.length)return;
+  [l[i],l[j]]=[l[j],l[i]];
+  save("myset",l);
   renderMySet();
 }
 
 function renderMySet(){
-  const list = load("myset")||[];
-  qs("cnt").textContent=list.length;
-  qs("myset").innerHTML=list.map((s,i)=>`
-    <li>${s}
-      <button onclick="move(${i},-1)">↑</button>
-      <button onclick="move(${i},1)">↓</button>
+  const l=load("myset")||[];
+  qs("cnt").textContent=l.length;
+  qs("myset").innerHTML=l.map((s,i)=>`
+    <li>${i+1}. ${s}
+    <button onclick="move(${i},-1)">↑</button>
+    <button onclick="move(${i},1)">↓</button>
     </li>`).join("");
 }
+renderMySet();
 
-/* ========= ランキング ========= */
-async function loadRank(){
-  try{
-    const r = await fetch(GAS_URL+"?action=rank");
-    const data = await r.json();
-    qs("rank").innerHTML=data.map(d=>`<li>${d.song}：${d.count}</li>`).join("");
-  }catch{
-    qs("rank").innerHTML="<li>ランキング取得エラー</li>";
-  }
+/* ===== CSV ===== */
+function downloadCSV(){
+  const l=load("myset")||[];
+  let csv="順位,曲名\n"+l.map((s,i)=>`${i+1},${s}`).join("\n");
+  const b=new Blob([csv],{type:"text/csv"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b);
+  a.download="my_setlist.csv";
+  a.click();
 }
 
-/* ========= 初期化 ========= */
-loadMySet();
-loadRank();
+/* ===== X共有 ===== */
+function shareX(){
+  const l=load("myset")||[];
+  const text="#TOYROCK\nマイセトリ予想\n"+l.map((s,i)=>`${i+1}. ${s}`).join("\n");
+  const url="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+  window.open(url,"_blank");
+}
 </script>
 
 </body>

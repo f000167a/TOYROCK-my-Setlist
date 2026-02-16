@@ -1,10 +1,389 @@
+%%writefile index.html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>index確認</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROAD TO TOYROCK INVASION</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
+@keyframes fd{0%{transform:translateY(-30px) rotate(0);opacity:0}10%{opacity:.3}90%{opacity:.3}100%{transform:translateY(100vh) rotate(360deg);opacity:0}}
+@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cb{0%{transform:scale(0);opacity:1}100%{transform:scale(2);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
-  <h1>index.html は作られました</h1>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useCallback,useRef}=React;
+
+const GAS_URL="https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
+
+const ALBUMS=[
+  {name:"THE EARLY TOYBEE",color:"#FFD700",
+   songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
+  {name:"REVIVAL",color:"#8B5CF6",
+   songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
+  {name:"LOOKBACK TO THE FUTURE",color:"#06B6D4",
+   songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
+  {name:"TOYROCK INVASION",color:"#EF4444",
+   songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
+  {name:"Singles",color:"#F59E0B",
+   songs:["ひとつだけ","ハナマル"]}
+];
+const ALL_SONGS=ALBUMS.flatMap(a=>a.songs.map(s=>({title:s,album:a.name,color:a.color})));
+const TARGET=new Date("2026-03-22T18:00:00+09:00");
+
+async function apiGet(params){
+  const url=GAS_URL+"?"+new URLSearchParams(params);
+  const r=await fetch(url);return r.json();
+}
+async function apiPost(body){
+  const r=await fetch(GAS_URL,{method:"POST",body:JSON.stringify(body)});return r.json();
+}
+
+function CUnit({value,label}){
+  return(
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+      <div style={{background:"linear-gradient(135deg,#1a1a2e,#16213e)",border:"2px solid #FFD700",borderRadius:12,padding:"12px 14px",minWidth:64,textAlign:"center",boxShadow:"0 0 20px rgba(255,215,0,0.2),inset 0 0 20px rgba(255,215,0,0.05)"}}>
+        <span style={{fontSize:32,fontWeight:800,color:"#FFD700",fontFamily:"monospace",letterSpacing:2,textShadow:"0 0 10px rgba(255,215,0,0.5)"}}>
+          {String(value).padStart(2,"0")}
+        </span>
+      </div>
+      <span style={{fontSize:10,color:"#94a3b8",marginTop:6,textTransform:"uppercase",letterSpacing:2}}>{label}</span>
+    </div>
+  );
+}
+
+function Spinner(){return <div style={{width:20,height:20,border:"2px solid #FFD70044",borderTop:"2px solid #FFD700",borderRadius:"50%",animation:"spin 0.8s linear infinite",display:"inline-block"}}/>}
+
+function Toast({msg}){
+  if(!msg)return null;
+  return(<div style={{position:"fixed",bottom:24,left:"50%",transform:"translateX(-50%)",background:"#FFD700",color:"#000",padding:"10px 24px",borderRadius:99,fontSize:13,fontWeight:600,zIndex:9999,boxShadow:"0 4px 20px rgba(255,215,0,0.4)",animation:"si 0.3s ease"}}>{msg}</div>);
+}
+
+function NicknameScreen({onSet}){
+  const[name,setName]=useState("");
+  const saved=localStorage.getItem("toybee_nick");
+  if(saved){setTimeout(()=>onSet(saved),0);return <div style={{minHeight:"100vh",background:"#0a0a1a"}}/>;}
+  return(
+    <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0a0a1a,#0f172a,#1a0a2e)",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"Helvetica Neue,Segoe UI,sans-serif"}}>
+      <div style={{textAlign:"center",padding:32,maxWidth:360}}>
+        <div style={{fontSize:48,marginBottom:16}}>🐝</div>
+        <h1 style={{fontSize:24,fontWeight:900,background:"linear-gradient(135deg,#FFD700,#F59E0B,#EF4444)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:8}}>TOYROCK INVASION</h1>
+        <p style={{color:"#94a3b8",fontSize:13,marginBottom:24}}>2026.3.22 恵比寿LIQUIDROOM<br/>セトリ投票に参加しよう！</p>
+        <input value={name} onChange={e=>setName(e.target.value)} placeholder="ニックネームを入力" maxLength={20}
+          style={{width:"100%",padding:"12px 16px",borderRadius:10,border:"2px solid #FFD70044",background:"rgba(255,255,255,0.05)",color:"#e2e8f0",fontSize:15,outline:"none",marginBottom:12,textAlign:"center"}}
+          onKeyDown={e=>{if(e.key==="Enter"&&name.trim()){localStorage.setItem("toybee_nick",name.trim());onSet(name.trim())}}}
+        />
+        <button onClick={()=>{const n=name.trim()||"名無しクルー";localStorage.setItem("toybee_nick",n);onSet(n)}}
+          style={{width:"100%",padding:"12px 0",borderRadius:10,border:"none",background:"linear-gradient(135deg,#FFD700,#F59E0B)",color:"#000",fontSize:15,fontWeight:700,cursor:"pointer",boxShadow:"0 4px 20px rgba(255,215,0,0.3)"}}>
+          🐝 参加する
+        </button>
+        <p style={{color:"#475569",fontSize:11,marginTop:8}}>※空欄なら「名無しクルー」で参加</p>
+      </div>
+    </div>
+  );
+}
+
+function VotePage({nick,todayVotes,setTodayVotes,dailyCount,setDailyCount,toast}){
+  const[loading,setLoading]=useState(null);
+  const[filter,setFilter]=useState("all");
+  const filtered=filter==="all"?ALL_SONGS:ALL_SONGS.filter(s=>s.album===filter);
+  const remain=5-dailyCount;
+
+  const handleVote=async(song)=>{
+    if(loading)return;
+    const isVoted=todayVotes.includes(song);
+    setLoading(song);
+    try{
+      if(isVoted){
+        const r=await apiPost({action:"unvote",nickname:nick,song:song});
+        if(r.ok){setTodayVotes(p=>p.filter(s=>s!==song));setDailyCount(r.count);toast("🗑 取り消しました");}
+        else toast("⚠ "+(r.error||"エラー"));
+      }else{
+        if(remain<=0){toast("⚠ 今日の投票上限（5票）に達しました");setLoading(null);return;}
+        const r=await apiPost({action:"vote",nickname:nick,song:song});
+        if(r.ok){setTodayVotes(p=>[...p,song]);setDailyCount(r.count);toast("🐝 投票しました！");}
+        else if(r.error==="already_voted")toast("⚠ この曲は今日投票済みです");
+        else if(r.error==="daily_limit")toast("⚠ 今日の投票上限です");
+        else toast("⚠ "+(r.error||"エラー"));
+      }
+    }catch(e){toast("⚠ 通信エラー");}
+    setLoading(null);
+  };
+
+  return(
+    <div style={{animation:"si 0.3s ease"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <h3 style={{color:"#e2e8f0",fontSize:16,fontWeight:700}}>🎸 聴きたい曲に投票</h3>
+        <span style={{fontSize:12,color:remain>0?"#FFD700":"#EF4444",fontWeight:700,background:remain>0?"rgba(255,215,0,0.1)":"rgba(239,68,68,0.1)",padding:"4px 12px",borderRadius:99}}>残り {remain}/5票</span>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:12}}>
+        <button onClick={()=>setFilter("all")} style={{padding:"4px 12px",borderRadius:99,border:"none",fontSize:11,cursor:"pointer",background:filter==="all"?"#FFD700":"rgba(255,255,255,0.06)",color:filter==="all"?"#000":"#94a3b8",fontWeight:600}}>ALL</button>
+        {ALBUMS.map(a=>(<button key={a.name} onClick={()=>setFilter(a.name)} style={{padding:"4px 12px",borderRadius:99,border:"none",fontSize:11,cursor:"pointer",background:filter===a.name?a.color:"rgba(255,255,255,0.06)",color:filter===a.name?"#000":"#94a3b8",fontWeight:600}}>{a.name==="Singles"?"Singles":a.name.split(" ")[0]}</button>))}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {filtered.map(s=>{
+          const voted=todayVotes.includes(s.title);
+          const busy=loading===s.title;
+          return(
+            <div key={s.title} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",borderRadius:10,background:voted?"rgba(255,215,0,0.08)":"rgba(255,255,255,0.02)",border:voted?"1px solid rgba(255,215,0,0.3)":"1px solid rgba(255,255,255,0.05)"}}>
+              <div style={{flex:1}}>
+                <span style={{fontSize:13,color:"#e2e8f0",fontWeight:500}}>{s.title}</span>
+                <span style={{fontSize:10,color:s.color,marginLeft:8,background:s.color+"15",padding:"2px 8px",borderRadius:99}}>{s.album}</span>
+              </div>
+              <button onClick={()=>handleVote(s.title)} disabled={busy||(!voted&&remain<=0)}
+                style={{background:voted?"linear-gradient(135deg,#FFD700,#F59E0B)":remain<=0?"rgba(255,255,255,0.03)":"rgba(255,255,255,0.06)",border:"none",borderRadius:8,padding:"6px 14px",cursor:busy||(!voted&&remain<=0)?"default":"pointer",color:voted?"#000":remain<=0?"#475569":"#e2e8f0",fontSize:12,fontWeight:600,whiteSpace:"nowrap",opacity:busy?0.5:1,minWidth:70,textAlign:"center"}}>
+                {busy?<Spinner/>:voted?"✓ 推し":"🐝 投票"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RankingPage(){
+  const[data,setData]=useState(null);
+  const[loading,setLoading]=useState(true);
+  const fetch2=async()=>{setLoading(true);try{const r=await apiGet({action:"getRanking"});setData(r);}catch(e){}setLoading(false)};
+  useEffect(()=>{fetch2();},[]);
+  if(loading)return <div style={{textAlign:"center",padding:40}}><Spinner/><p style={{color:"#64748b",fontSize:12,marginTop:8}}>読み込み中...</p></div>;
+  if(!data||!data.ranking)return <p style={{color:"#64748b",textAlign:"center",padding:40}}>データなし</p>;
+  const mx=data.ranking.length>0?data.ranking[0].votes:1;
+  return(
+    <div style={{animation:"si 0.3s ease"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+        <h3 style={{color:"#e2e8f0",fontSize:16,fontWeight:700}}>🏆 ランキング</h3>
+        <button onClick={fetch2} style={{background:"rgba(255,255,255,0.06)",border:"none",borderRadius:8,padding:"6px 12px",cursor:"pointer",color:"#94a3b8",fontSize:11,fontWeight:600}}>↻ 更新</button>
+      </div>
+      <div style={{display:"flex",gap:16,marginBottom:16,fontSize:12,color:"#64748b"}}>
+        <span>👥 参加者: {data.uniqueVoters}人</span><span>🗳 総投票: {data.totalVotes}票</span>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {data.ranking.map((r,i)=>{
+          const song=ALL_SONGS.find(s=>s.title===r.song)||{color:"#94a3b8"};
+          const pct=mx>0?(r.votes/mx)*100:0;
+          return(
+            <div key={r.song} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",borderRadius:10,background:i<3?"rgba(255,215,0,0.05)":"rgba(255,255,255,0.02)",border:i<3?"1px solid rgba(255,215,0,0.15)":"1px solid rgba(255,255,255,0.05)"}}>
+              <span style={{fontSize:16,fontWeight:800,color:i===0?"#FFD700":i===1?"#C0C0C0":i===2?"#CD7F32":"#64748b",minWidth:28}}>{i+1}</span>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                  <span style={{fontSize:13,color:"#e2e8f0",fontWeight:500}}>{r.song}</span>
+                  <span style={{fontSize:12,color:"#FFD700",fontWeight:700}}>{r.votes}票</span>
+                </div>
+                <div style={{height:6,borderRadius:99,background:"rgba(255,255,255,0.06)",overflow:"hidden"}}>
+                  <div style={{height:"100%",width:pct+"%",borderRadius:99,background:"linear-gradient(90deg,"+song.color+","+song.color+"88)",transition:"width 0.5s"}}/>
+                </div>
+                <div style={{fontSize:10,color:"#475569",marginTop:2}}>{r.voterCount}人が投票</div>
+              </div>
+            </div>
+          );
+        })}
+        {data.ranking.length===0&&<p style={{color:"#475569",textAlign:"center",padding:24,fontSize:13}}>まだ投票がありません。最初の一票を！</p>}
+      </div>
+    </div>
+  );
+}
+
+function MySetlistPage({nick,todayVotes,toast}){
+  const[list,setList]=useState([]);
+  const[open,setOpen]=useState(false);
+  const[filter,setFilter]=useState("all");
+  const[saving,setSaving]=useState(false);
+
+  useEffect(()=>{apiGet({action:"getSetlist",nickname:nick}).then(r=>{if(r.setlist&&r.setlist.length)setList(r.setlist)}).catch(()=>{});},[nick]);
+
+  const add=t=>{if(list.length<15&&!list.includes(t))setList([...list,t])};
+  const rm=i=>setList(list.filter((_,x)=>x!==i));
+  const mv=(f,t)=>{const a=[...list];const[x]=a.splice(f,1);a.splice(t,0,x);setList(a)};
+  const save=async()=>{setSaving(true);try{await apiPost({action:"saveSetlist",nickname:nick,setlist:list});toast("💾 セトリ保存しました！");}catch(e){toast("⚠ 保存エラー");}setSaving(false)};
+  const filtered=filter==="all"?ALL_SONGS:ALL_SONGS.filter(s=>s.album===filter);
+
+  return(
+    <div style={{animation:"si 0.3s ease"}}>
+      <div style={{marginBottom:20}}>
+        <h3 style={{color:"#e2e8f0",fontSize:16,fontWeight:700,marginBottom:8}}>🗳 今日の投票</h3>
+        {todayVotes.length===0?(<p style={{color:"#475569",fontSize:13}}>まだ投票していません</p>):(
+          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+            {todayVotes.map(t=>{const s=ALL_SONGS.find(x=>x.title===t);return <span key={t} style={{padding:"4px 12px",borderRadius:99,fontSize:12,color:s?s.color:"#e2e8f0",background:(s?s.color:"#FFD700")+"15",border:"1px solid "+(s?s.color:"#FFD700")+"33"}}>{t}</span>})}
+          </div>
+        )}
+      </div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <h3 style={{color:"#e2e8f0",fontSize:16,fontWeight:700}}>🎤 マイセトリ予想 ({list.length}/15)</h3>
+        <div style={{display:"flex",gap:6}}>
+          <button onClick={save} disabled={saving} style={{background:"rgba(6,182,212,0.15)",color:"#06B6D4",border:"1px solid #06B6D444",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontSize:12,fontWeight:600}}>{saving?<Spinner/>:"💾 保存"}</button>
+          <button onClick={()=>setOpen(!open)} style={{background:open?"rgba(239,68,68,0.2)":"rgba(255,215,0,0.15)",color:open?"#EF4444":"#FFD700",border:"1px solid "+(open?"#EF444444":"#FFD70044"),borderRadius:8,padding:"6px 12px",cursor:"pointer",fontSize:12,fontWeight:600}}>{open?"✕ 閉じる":"+ 曲を追加"}</button>
+        </div>
+      </div>
+      {open&&(
+        <div style={{background:"rgba(0,0,0,0.3)",borderRadius:12,padding:12,marginBottom:12,maxHeight:250,overflowY:"auto",border:"1px solid rgba(255,255,255,0.05)"}}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
+            <button onClick={()=>setFilter("all")} style={{padding:"3px 10px",borderRadius:99,border:"none",fontSize:11,cursor:"pointer",background:filter==="all"?"#FFD700":"rgba(255,255,255,0.08)",color:filter==="all"?"#000":"#94a3b8",fontWeight:600}}>ALL</button>
+            {ALBUMS.map(a=>(<button key={a.name} onClick={()=>setFilter(a.name)} style={{padding:"3px 10px",borderRadius:99,border:"none",fontSize:11,cursor:"pointer",background:filter===a.name?a.color:"rgba(255,255,255,0.08)",color:filter===a.name?"#000":"#94a3b8",fontWeight:600}}>{a.name==="Singles"?"Singles":a.name.split(" ")[0]}</button>))}
+          </div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+            {filtered.map(s=>{const done=list.includes(s.title);return(<button key={s.title} disabled={done||list.length>=15} onClick={()=>add(s.title)} style={{padding:"4px 10px",borderRadius:6,border:"1px solid "+(done?"transparent":s.color+"44"),fontSize:12,cursor:done?"default":"pointer",background:done?"rgba(255,255,255,0.03)":s.color+"10",color:done?"#475569":"#e2e8f0",textDecoration:done?"line-through":"none",opacity:done?0.5:1}}>{s.title}</button>)})}
+          </div>
+        </div>
+      )}
+      {list.length===0?(
+        <div style={{textAlign:"center",padding:30,color:"#475569",fontSize:13,border:"2px dashed rgba(255,255,255,0.08)",borderRadius:12}}>「+ 曲を追加」から予想セトリを組もう！</div>
+      ):(
+        <div style={{display:"flex",flexDirection:"column",gap:4}}>
+          {list.map((title,i)=>{const enc=i>=list.length-2&&list.length>5;return(
+            <div key={title} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px",borderRadius:8,background:enc?"rgba(255,215,0,0.06)":"rgba(255,255,255,0.02)",border:enc?"1px solid rgba(255,215,0,0.15)":"1px solid rgba(255,255,255,0.04)"}}>
+              <span style={{color:enc?"#FFD700":"#64748b",fontSize:12,minWidth:24,fontWeight:700}}>{enc?"En.":(i+1)+"."}</span>
+              <span style={{flex:1,fontSize:13,color:"#e2e8f0"}}>{title}</span>
+              <div style={{display:"flex",gap:4}}>
+                {i>0&&<button onClick={()=>mv(i,i-1)} style={{background:"none",border:"none",cursor:"pointer",color:"#64748b",fontSize:14,padding:2}}>↑</button>}
+                {i<list.length-1&&<button onClick={()=>mv(i,i+1)} style={{background:"none",border:"none",cursor:"pointer",color:"#64748b",fontSize:14,padding:2}}>↓</button>}
+                <button onClick={()=>rm(i)} style={{background:"none",border:"none",cursor:"pointer",color:"#EF4444",fontSize:14,padding:2}}>✕</button>
+              </div>
+            </div>
+          )})}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Timeline(){
+  const ms=[
+    {d:"2021.09",l:"初ライブ",v:"Sound Stream sakura",c:"~50"},
+    {d:"2022.07",l:"初ワンマン",v:"下北沢SHELTER",c:"~200"},
+    {d:"2023.04",l:"1st Album",v:"THE EARLY TOYBEE",c:""},
+    {d:"2023.10",l:"ワンマン",v:"下北沢CLUB Que",c:"~300"},
+    {d:"2024.02",l:"ワンマン",v:"新宿LOFT",c:"~500"},
+    {d:"2025.01",l:"SOLD OUT!",v:"渋谷CLUB QUATTRO",c:"~600"},
+    {d:"2026.01",l:"EP Release",v:"TOYROCK INVASION",c:""},
+    {d:"2026.03",l:"🐝 NEXT!",v:"恵比寿LIQUIDROOM",c:"~1000",h:true},
+  ];
+  return(
+    <div style={{position:"relative",paddingLeft:20}}>
+      <div style={{position:"absolute",left:8,top:8,bottom:8,width:2,background:"linear-gradient(to bottom,#FFD700,#EF4444)"}}/>
+      {ms.map((m,i)=>(
+        <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:12,position:"relative"}}>
+          <div style={{position:"absolute",left:-16,top:6,width:m.h?14:10,height:m.h?14:10,borderRadius:"50%",background:m.h?"#FFD700":"hsl("+(i*40)+",70%,55%)",boxShadow:m.h?"0 0 12px rgba(255,215,0,0.6)":"none",border:"2px solid #0f172a"}}/>
+          <div>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:11,color:"#64748b",fontFamily:"monospace"}}>{m.d}</span>
+              {m.c&&<span style={{fontSize:10,color:m.h?"#FFD700":"#94a3b8",background:m.h?"rgba(255,215,0,0.1)":"rgba(255,255,255,0.04)",padding:"1px 6px",borderRadius:4}}>{m.c}人</span>}
+            </div>
+            <span style={{fontSize:13,color:m.h?"#FFD700":"#e2e8f0",fontWeight:m.h?700:500}}>{m.l}</span>
+            <span style={{fontSize:11,color:"#64748b",marginLeft:6}}>{m.v}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App(){
+  const[nick,setNick]=useState(null);
+  const[tab,setTab]=useState("vote");
+  const[now,setNow]=useState(new Date());
+  const[toastMsg,setToastMsg]=useState("");
+  const[todayVotes,setTodayVotes]=useState([]);
+  const[dailyCount,setDailyCount]=useState(0);
+  const[ready,setReady]=useState(false);
+  const timerRef=useRef(null);
+
+  const toast=(msg)=>{setToastMsg(msg);clearTimeout(timerRef.current);timerRef.current=setTimeout(()=>setToastMsg(""),2500)};
+  useEffect(()=>{const t=setInterval(()=>setNow(new Date()),1000);return()=>clearInterval(t)},[]);
+
+  useEffect(()=>{
+    if(!nick)return;
+    (async()=>{
+      try{
+        const r=await apiGet({action:"getDailyCount",nickname:nick});
+        setDailyCount(r.count||0);
+      }catch(e){}
+      const stored=JSON.parse(localStorage.getItem("toybee_votes_"+nick)||"{}");
+      const today=new Date().toLocaleDateString("ja-JP",{timeZone:"Asia/Tokyo"});
+      if(stored.date===today){setTodayVotes(stored.songs||[]);}
+      setReady(true);
+    })();
+  },[nick]);
+
+  useEffect(()=>{
+    if(!nick)return;
+    const today=new Date().toLocaleDateString("ja-JP",{timeZone:"Asia/Tokyo"});
+    localStorage.setItem("toybee_votes_"+nick,JSON.stringify({date:today,songs:todayVotes}));
+  },[todayVotes,nick]);
+
+  if(!nick)return <NicknameScreen onSet={setNick}/>;
+  if(!ready)return(
+    <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0a0a1a,#0f172a,#1a0a2e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div style={{textAlign:"center"}}><div style={{fontSize:40,marginBottom:12}}>🐝</div><Spinner/><p style={{color:"#64748b",fontSize:12,marginTop:12}}>読み込み中...</p></div>
+    </div>
+  );
+
+  const diff=TARGET-now;
+  const days=Math.max(0,Math.floor(diff/86400000));
+  const hrs=Math.max(0,Math.floor((diff%86400000)/3600000));
+  const min=Math.max(0,Math.floor((diff%3600000)/60000));
+  const sec=Math.max(0,Math.floor((diff%60000)/1000));
+  const tabs=[{id:"vote",l:"🎸 投票"},{id:"ranking",l:"🏆 ランキング"},{id:"setlist",l:"📋 マイセトリ"}];
+
+  return(
+    <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#1a0a2e 100%)",color:"#e2e8f0",fontFamily:"Helvetica Neue,Segoe UI,sans-serif",overflow:"hidden",position:"relative"}}>
+      {[...Array(8)].map((_,i)=>(<div key={i} style={{position:"absolute",left:(5+i*12)+"%",top:-30,fontSize:20,animation:"fd 6s "+(i*2.5)+"s infinite linear",opacity:0.3,pointerEvents:"none"}}>🐝</div>))}
+      <Toast msg={toastMsg}/>
+
+      <div style={{textAlign:"center",padding:"20px 16px 0"}}>
+        <div style={{fontSize:12,color:"#64748b",letterSpacing:4,textTransform:"uppercase"}}>ROAD TO</div>
+        <h1 style={{fontSize:24,fontWeight:900,background:"linear-gradient(135deg,#FFD700,#F59E0B,#EF4444)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"2px 0",letterSpacing:2}}>TOYROCK INVASION</h1>
+        <div style={{fontSize:12,color:"#94a3b8"}}>2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
+        <div style={{fontSize:10,color:"#475569",marginTop:2}}>🐝 {nick}さん、ようこそ！
+          <button onClick={()=>{localStorage.removeItem("toybee_nick");setNick(null)}} style={{background:"none",border:"none",color:"#475569",cursor:"pointer",fontSize:10,textDecoration:"underline",marginLeft:4}}>変更</button>
+        </div>
+      </div>
+
+      <div style={{padding:"16px 16px 12px"}}>
+        <div style={{display:"flex",justifyContent:"center",gap:8}}>
+          <CUnit value={days} label="DAYS"/>
+          <div style={{color:"#FFD700",fontSize:24,fontWeight:700,paddingTop:10,opacity:sec%2===0?1:0.3,transition:"opacity 0.3s"}}>:</div>
+          <CUnit value={hrs} label="HRS"/>
+          <div style={{color:"#FFD700",fontSize:24,fontWeight:700,paddingTop:10,opacity:sec%2===0?1:0.3,transition:"opacity 0.3s"}}>:</div>
+          <CUnit value={min} label="MIN"/>
+          <div style={{color:"#FFD700",fontSize:24,fontWeight:700,paddingTop:10,opacity:sec%2===0?1:0.3,transition:"opacity 0.3s"}}>:</div>
+          <CUnit value={sec} label="SEC"/>
+        </div>
+      </div>
+
+      <div style={{display:"flex",justifyContent:"center",gap:6,padding:"0 16px 16px"}}>
+        {tabs.map(t=>(<button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"8px 20px",borderRadius:99,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",background:tab===t.id?"linear-gradient(135deg,#FFD700,#F59E0B)":"rgba(255,255,255,0.05)",color:tab===t.id?"#000":"#94a3b8",boxShadow:tab===t.id?"0 4px 15px rgba(255,215,0,0.3)":"none"}}>{t.l}</button>))}
+      </div>
+
+      <div style={{padding:"0 16px 24px",maxWidth:540,margin:"0 auto"}}>
+        <div style={{background:"rgba(255,255,255,0.02)",borderRadius:16,padding:16,border:"1px solid rgba(255,255,255,0.05)",marginBottom:16}}>
+          {tab==="vote"&&<VotePage nick={nick} todayVotes={todayVotes} setTodayVotes={setTodayVotes} dailyCount={dailyCount} setDailyCount={setDailyCount} toast={toast}/>}
+          {tab==="ranking"&&<RankingPage/>}
+          {tab==="setlist"&&<MySetlistPage nick={nick} todayVotes={todayVotes} toast={toast}/>}
+        </div>
+        <details style={{background:"rgba(255,255,255,0.02)",borderRadius:16,padding:16,border:"1px solid rgba(255,255,255,0.05)"}}>
+          <summary style={{color:"#FFD700",fontSize:14,fontWeight:700,cursor:"pointer",listStyle:"none"}}>🚀 toybeeの軌跡 ── LIQUIDROOMへの道 ▾</summary>
+          <div style={{marginTop:12}}><Timeline/></div>
+        </details>
+      </div>
+      <div style={{textAlign:"center",padding:"8px 16px 20px",fontSize:10,color:"#334155"}}>Made with 🐝 for TOYROCK INVASION @ LIQUIDROOM 2026.3.22</div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
 </body>
 </html>

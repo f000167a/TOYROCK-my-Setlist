@@ -82,9 +82,61 @@ button.secondary{
   background:#334155;
   color:#fff;
 }
-
+button.small{
+  margin-top:0;
+  padding:6px 10px;
+  border-radius:10px;
+  font-weight:700;
+}
+button.ghost{
+  background:#334155;
+  color:#fff;
+}
 small{color:var(--muted)}
 ul{padding-left:18px}
+ol{padding-left:20px;margin:0}
+
+.myrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0;
+}
+.mytitle{
+  flex:1;
+  line-height:1.5;
+  word-break:break-word;
+}
+.myctrl{
+  display:flex;
+  gap:6px;
+}
+.note{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:8px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+  border-radius:12px;
+}
+th,td{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(148,163,184,0.25);
+  text-align:left;
+  vertical-align:top;
+}
+th{
+  color:var(--muted);
+  font-size:12px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+tr:last-child td{border-bottom:none}
+.rankcol{width:72px;white-space:nowrap}
 
 @media(max-width:900px){
   main{flex-direction:column}
@@ -113,74 +165,101 @@ ul{padding-left:18px}
 
 <!-- 投票 -->
 <section>
-<h2>① 投票（最大5曲）</h2>
-<input id="nickname" type="text" placeholder="ニックネーム">
+  <h2>① 投票（最大5曲）</h2>
+  <input id="nickname" type="text" placeholder="ニックネーム" oninput="render()">
 
-<div id="songList"></div>
+  <div id="songList"></div>
 
-<button onclick="vote()">テスト投票</button>
-<button class="secondary" onclick="resetTest()">テストデータ全消去</button>
+  <button onclick="vote()">テスト投票</button>
+  <button class="secondary" onclick="resetTest()">テストデータ全消去</button>
 
-<div id="voteMsg"></div>
+  <div id="voteMsg" class="note"></div>
 </section>
 
-<!-- ランキング -->
+<!-- マイセトリ（2番目） -->
 <section>
-<h2>② ランキング（テスト）</h2>
-<ul id="rank"></ul>
+  <h2>② マイセトリ（最大20曲）</h2>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
+    <button class="small" onclick="postToX()">Xに投稿</button>
+    <button class="small ghost" onclick="clearMySet()">マイセトリを空にする</button>
+  </div>
+
+  <ol id="myset"></ol>
+  <div id="mysetMsg" class="note"></div>
 </section>
 
-<!-- マイセトリ -->
+<!-- ランキング（表・同率同順位・票数非公開） -->
 <section>
-<h2>③ マイセトリ</h2>
-<ul id="myset"></ul>
+  <h2>③ ランキング（テスト）</h2>
+  <table>
+    <thead>
+      <tr>
+        <th class="rankcol">順位</th>
+        <th>曲名</th>
+      </tr>
+    </thead>
+    <tbody id="rank"></tbody>
+  </table>
 </section>
 
 </main>
 
 <script>
 /* ===== 設定 ===== */
-const DEADLINE=new Date("2026-03-22T18:00:00+09:00");
-const MAX_VOTE=5;
+const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
+const MAX_VOTE = 5;
+const MAX_MYSET = 20;
+const PAGE_URL = "https://f000167a.github.io/TOYROCK-my-Setlist/";
 
 /* ===== 曲データ ===== */
 const ALBUMS=[
-{name:"THE EARLY TOYBEE",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
-{name:"REVIVAL",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
-{name:"LOOKBACK TO THE FUTURE",songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
-{name:"TOYROCK INVASION",songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
-{name:"Singles",songs:["ひとつだけ","ハナマル"]}
+  {name:"THE EARLY TOYBEE",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
+  {name:"REVIVAL",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
+  {name:"LOOKBACK TO THE FUTURE",songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
+  {name:"TOYROCK INVASION",songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
+  {name:"Singles",songs:["ひとつだけ","ハナマル"]}
 ];
 
 /* ===== カウントダウン ===== */
 function tick(){
-  const d=DEADLINE-new Date();
-  if(d<=0){countdown.textContent="開演しました";return;}
+  const d = DEADLINE - new Date();
+  if(d<=0){ countdown.textContent="開演しました"; return; }
   const s=Math.floor(d/1000);
-  countdown.textContent=
+  countdown.textContent =
     "ライブ開演まであと "+
     String(Math.floor(s/86400)).padStart(2,"0")+":"+
     String(Math.floor(s%86400/3600)).padStart(2,"0")+":"+
     String(Math.floor(s%3600/60)).padStart(2,"0")+":"+
     String(s%60).padStart(2,"0");
 }
-setInterval(tick,1000);tick();
+setInterval(tick,1000); tick();
 
 /* ===== 曲描画 ===== */
-const songList=document.getElementById("songList");
+const songList = document.getElementById("songList");
 ALBUMS.forEach(a=>{
   const d=document.createElement("details");
   d.className="album";
   d.innerHTML=`<summary>${a.name}</summary>`;
   a.songs.forEach(s=>{
-    d.innerHTML+=`
+    d.innerHTML += `
       <label class="song">
-        <input type="checkbox" value="${s}" onchange="limitCheck()">
-        <span>${s}</span>
+        <input type="checkbox" value="${escapeHtml(s)}" onchange="limitCheck()">
+        <span>${escapeHtml(s)}</span>
       </label>`;
   });
   songList.appendChild(d);
 });
+
+/* ===== HTMLエスケープ（安全対策） ===== */
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 
 /* ===== 制限 ===== */
 function limitCheck(){
@@ -191,40 +270,195 @@ function limitCheck(){
   }
 }
 
+/* ===== localStorage ヘルパ ===== */
+function loadVotes(){
+  return JSON.parse(localStorage.getItem("testVotes")||"{}");
+}
+function saveVotes(data){
+  localStorage.setItem("testVotes", JSON.stringify(data));
+}
+
+/* ===== マイセトリ取得（ニックネーム単位） ===== */
+function getNick(){
+  return nickname.value.trim();
+}
+function getMySet(nick){
+  const data = loadVotes();
+  const arr = Array.isArray(data[nick]) ? data[nick] : [];
+  // 重複除去しつつ順序維持
+  const seen = new Set();
+  const uniq = [];
+  for(const s of arr){
+    if(!seen.has(s)){
+      seen.add(s);
+      uniq.push(s);
+    }
+  }
+  return uniq.slice(0, MAX_MYSET);
+}
+function setMySet(nick, list){
+  const data = loadVotes();
+  data[nick] = list.slice(0, MAX_MYSET);
+  saveVotes(data);
+}
+
 /* ===== テスト投票 ===== */
 function vote(){
-  const nick=nickname.value.trim();
-  if(!nick){alert("ニックネーム必須");return;}
+  const nick = getNick();
+  if(!nick){ alert("ニックネーム必須"); return; }
 
-  const selected=[...document.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value);
-  if(!selected.length){alert("曲を選んでください");return;}
+  const selected = [...document.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value);
+  if(!selected.length){ alert("曲を選んでください"); return; }
 
-  const data=JSON.parse(localStorage.getItem("testVotes")||"{}");
-  data[nick]=(data[nick]||[]).concat(selected);
-  localStorage.setItem("testVotes",JSON.stringify(data));
+  // 既存マイセトリに追加（重複は後で除去）
+  const current = getMySet(nick);
+  const merged = current.concat(selected);
 
-  voteMsg.textContent="テスト投票しました";
+  // 重複除去しつつ順序維持
+  const seen = new Set();
+  const uniq = [];
+  for(const s of merged){
+    if(!seen.has(s)){
+      seen.add(s);
+      uniq.push(s);
+    }
+  }
+
+  setMySet(nick, uniq);
+
+  voteMsg.textContent = "テスト投票しました（マイセトリに反映）";
   render();
+}
+
+/* ===== マイセトリ：順序変更 ===== */
+function moveSong(fromIdx, toIdx){
+  const nick = getNick();
+  if(!nick){ alert("先にニックネームを入力してください"); return; }
+  const list = getMySet(nick);
+  if(toIdx < 0 || toIdx >= list.length) return;
+
+  const [item] = list.splice(fromIdx, 1);
+  list.splice(toIdx, 0, item);
+  setMySet(nick, list);
+  render();
+}
+
+/* ===== マイセトリ：クリア ===== */
+function clearMySet(){
+  const nick = getNick();
+  if(!nick){ alert("先にニックネームを入力してください"); return; }
+  if(confirm("このニックネームのマイセトリを空にしますか？")){
+    setMySet(nick, []);
+    render();
+  }
+}
+
+/* ===== X投稿 ===== */
+function buildXText(){
+  const nick = getNick();
+  const list = nick ? getMySet(nick) : [];
+  const top = list.slice(0, 5); // 指定テンプレが5曲なので、投稿は先頭5曲に寄せる
+
+  const lines = [
+    "私がマイセトリに入れたい曲はこちら！",
+    ...top.map(s=>`[${s}]`),
+    "#toybee #toybeeリキッド",
+    `[ページURL]=${PAGE_URL}`
+  ];
+  return lines.join("\n");
+}
+
+function postToX(){
+  const nick = getNick();
+  if(!nick){ alert("先にニックネームを入力してください"); return; }
+
+  const list = getMySet(nick);
+  if(list.length === 0){
+    alert("マイセトリが空です。投票してマイセトリに追加してください。");
+    return;
+  }
+
+  const text = buildXText();
+  const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+/* ===== ランキング生成（全員累積・同率同順位・票数非公開） ===== */
+function computeRanking(){
+  const data = loadVotes();
+  const counts = {};
+
+  Object.values(data).forEach(arr=>{
+    (arr||[]).forEach(s=>{
+      counts[s] = (counts[s]||0) + 1;
+    });
+  });
+
+  // [song, count] を count desc, song asc で安定化
+  const entries = Object.entries(counts).sort((a,b)=>{
+    if(b[1] !== a[1]) return b[1] - a[1];
+    return String(a[0]).localeCompare(String(b[0]), "ja");
+  });
+
+  // 同率同順位（1,1,3...）
+  const ranked = [];
+  let prevCount = null;
+  let rank = 0;
+  let index = 0;
+
+  for(const [song, c] of entries){
+    index += 1;
+    if(prevCount === null || c !== prevCount){
+      rank = index;
+      prevCount = c;
+    }
+    ranked.push({ rank, song, count:c });
+  }
+  return ranked;
 }
 
 /* ===== 表示 ===== */
 function render(){
-  const data=JSON.parse(localStorage.getItem("testVotes")||"{}");
-  const counts={};
-  const my=[];
+  // --- ランキング ---
+  const ranked = computeRanking();
+  rank.innerHTML = ranked.map(r=>`
+    <tr>
+      <td class="rankcol">${r.rank}位</td>
+      <td>${escapeHtml(r.song)}</td>
+    </tr>
+  `).join("");
 
-  Object.entries(data).forEach(([n,arr])=>{
-    arr.forEach(s=>{
-      counts[s]=(counts[s]||0)+1;
-      my.push(s);
-    });
-  });
+  // --- マイセトリ ---
+  const nick = getNick();
+  const mysetEl = document.getElementById("myset");
+  const mymsg = document.getElementById("mysetMsg");
 
-  rank.innerHTML=Object.entries(counts)
-    .sort((a,b)=>b[1]-a[1])
-    .map(([s,c])=>`<li>${s}：${c}</li>`).join("");
+  if(!nick){
+    mysetEl.innerHTML = "";
+    mymsg.textContent = "ニックネームを入力すると、あなたのマイセトリを表示・並べ替えできます。";
+    return;
+  }
 
-  myset.innerHTML=[...new Set(my)].map(s=>`<li>${s}</li>`).join("");
+  const list = getMySet(nick);
+  if(list.length === 0){
+    mysetEl.innerHTML = "";
+    mymsg.textContent = "マイセトリは空です。投票で追加できます。";
+    return;
+  }
+
+  mymsg.textContent = "↑↓で曲順を変更できます（保存されます）。X投稿は先頭5曲を投稿します。";
+
+  mysetEl.innerHTML = list.map((s, i)=>`
+    <li>
+      <div class="myrow">
+        <div class="mytitle">${escapeHtml(s)}</div>
+        <div class="myctrl">
+          <button class="small ghost" onclick="moveSong(${i}, ${i-1})" ${i===0 ? "disabled" : ""}>↑</button>
+          <button class="small ghost" onclick="moveSong(${i}, ${i+1})" ${i===list.length-1 ? "disabled" : ""}>↓</button>
+        </div>
+      </div>
+    </li>
+  `).join("");
 }
 render();
 
@@ -232,6 +466,7 @@ render();
 function resetTest(){
   if(confirm("テストデータを全削除しますか？")){
     localStorage.removeItem("testVotes");
+    voteMsg.textContent = "";
     render();
   }
 }

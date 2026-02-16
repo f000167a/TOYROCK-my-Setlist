@@ -7,11 +7,12 @@
 <style>
 body { font-family: system-ui, sans-serif; margin:20px; }
 h1,h2 { margin-top:1.5em }
-button { margin:2px }
+button { margin-left:6px }
 ul { padding-left:1em }
-li { margin:4px 0 }
+li { margin:6px 0 }
 small { color:#666 }
 .disabled { opacity:.5; pointer-events:none }
+select,input { padding:4px }
 </style>
 </head>
 
@@ -24,6 +25,11 @@ small { color:#666 }
 
 <h2>① 投票</h2>
 <input id="nickname" placeholder="ニックネーム">
+
+<select id="songSelect">
+  <option value="">曲を選択</option>
+</select>
+
 <button onclick="vote()">投票する</button>
 <div id="voteMsg"></div>
 
@@ -42,6 +48,7 @@ small { color:#666 }
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
 const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
 const MAX_SETLIST = 20;
+
 const SONGS = [
   "曲A","曲B","曲C","曲D","曲E",
   "曲F","曲G","曲H","曲I","曲J"
@@ -51,10 +58,21 @@ const SONGS = [
 const qs = id => document.getElementById(id);
 const today = new Date().toISOString().slice(0,10);
 
+/* ========= 曲リスト生成 ========= */
+SONGS.forEach(s=>{
+  const o=document.createElement("option");
+  o.value=o.textContent=s;
+  qs("songSelect").appendChild(o);
+});
+
 /* ========= カウントダウン ========= */
 function tick(){
   const diff = DEADLINE - new Date();
-  if(diff<=0){ qs("countdown").textContent="⏰ 投票終了"; return; }
+  if(diff<=0){
+    qs("countdown").textContent="⏰ 投票終了";
+    document.querySelector("button").classList.add("disabled");
+    return;
+  }
   const h=Math.floor(diff/36e5),
         m=Math.floor(diff%36e5/6e4),
         s=Math.floor(diff%6e4/1e3);
@@ -77,23 +95,30 @@ async function apiPost(body){
 }
 
 async function vote(){
+  if(new Date()>DEADLINE) return;
+
   const nick = qs("nickname").value.trim();
-  if(!nick){ alert("ニックネーム必須"); return; }
+  const song = qs("songSelect").value;
+
+  if(!nick || !song){
+    alert("ニックネームと曲名を選択してください");
+    return;
+  }
 
   const voted = load("votes")||{};
-  if(voted[today]){ qs("voteMsg").textContent="本日は投票済み"; return; }
-
-  const song = prompt("投票する曲名を入力");
-  if(!song) return;
+  if(voted[today]){
+    qs("voteMsg").textContent="本日は投票済み";
+    return;
+  }
 
   try{
     await apiPost({ action:"vote", nickname:nick, song });
-    voted[today] = song;
-    save("votes", voted);
+    voted[today]=song;
+    save("votes",voted);
     qs("voteMsg").textContent="投票完了";
     loadMySet();
     loadRank();
-  }catch(e){
+  }catch{
     qs("voteMsg").textContent="投票エラー";
   }
 }

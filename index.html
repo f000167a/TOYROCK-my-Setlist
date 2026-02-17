@@ -173,8 +173,10 @@ tr:last-child td{border-bottom:none}
 
   <div id="songList"></div>
 
-  <button onclick="vote()">テスト投票</button>
-  <button class="secondary" onclick="resetTest()">テストデータ全消去</button>
+<button onclick="vote()">テスト投票</button>
+<button class="small ghost" style="margin-left:8px;" onclick="postTodayVotesToX()">本日の投票をXに投稿</button>
+<button class="secondary" style="margin-left:8px;" onclick="resetTest()">テストデータ全消去</button>
+
 
   <div id="voteMsg" class="note"></div>
 </section>
@@ -183,10 +185,10 @@ tr:last-child td{border-bottom:none}
 <section>
   <h2>② マイセトリ（最大20曲）</h2>
 
-  <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
-    <button class="small" onclick="postTodayVotesToX()">本日の投票をXに投稿</button>
-    <button class="small ghost" onclick="clearMySet()">マイセトリを空にする</button>
-  </div>
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
+  <button class="small ghost" onclick="clearMySet()">マイセトリを空にする</button>
+</div>
+
 
   <ol id="myset"></ol>
   <div id="mysetMsg" class="note"></div>

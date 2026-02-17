@@ -131,8 +131,8 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div style="max-width:520px;margin:0 auto 16px;padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:14px;color:#cbd5e1;line-height:2;text-align:left">
       🎸 聴きたい曲を選んでセトリ予想を作ろう（最大20曲）<br>
       📋 並べ替えて自分だけのマイセトリに<br>
-      🐝 6曲以上でアンコール枠が自動表示<br>
-      𝕏 完成したらXでシェア！
+      🐝 10曲以上でアンコール枠が自動表示<br>
+      𝕏 完成したらXでシェア！ #toybeeセトリ予想、を付けてね♪
     </div>
     <details class="desc-wrap">
       <summary>⚙️ くわしい使い方 ▾</summary>
@@ -143,7 +143,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
         <div class="desc-tip">💡 セトリはこのブラウザに保存されます。シェアしたい場合はマイセトリタブからXにシェアするか、URLをコピーしてください。</div>
         <strong style="color:#f1f5f9">📋 マイセトリの使い方</strong><br>
         ・「▲」「▼」ボタンで自由に並び替え可能<br>
-        ・6曲以上登録すると、最後の2曲は自動的にアンコール枠「<strong style="color:#FFD700">En.</strong>」として表示されます<br>
+        ・10曲以上登録すると、最後の2曲は自動的にアンコール枠「<strong style="color:#FFD700">En.</strong>」として表示されます<br>
         ・「✕」ボタンで個別に削除できます
       </div>
     </details>
@@ -281,7 +281,7 @@ function renderSetlist(){
   h+='<div class="sec-header" style="margin-top:20px"><span class="sec-title">\ud83c\udfa4 \u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3 ('+mySetlist.length+'/'+MAX_MYSET+')</span><button class="btn-sm btn-clear" onclick="clearMySet()">\u7a7a\u306b\u3059\u308b</button></div>';
   if(!mySetlist.length){h+='<div class="empty">\u9078\u66f2\u30bf\u30d6\u3067\u66f2\u3092\u9078\u3076\u3068\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u3055\u308c\u307e\u3059</div>'}
   else{mySetlist.forEach(function(t,i){
-    var enc=i>=mySetlist.length-2&&mySetlist.length>5;
+    var enc=i>=mySetlist.length-2&&mySetlist.length>9;
     h+='<div class="my-row '+(enc?"encore":"")+'">';
     h+='<div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+")\">&#x25b2;</button>";
     h+='<button class="my-arrow" '+(i===mySetlist.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+")\">&#x25bc;</button></div>";

@@ -184,7 +184,7 @@ tr:last-child td{border-bottom:none}
   <h2>② マイセトリ（最大20曲）</h2>
 
   <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
-    <button class="small" onclick="postToX()">Xに投稿</button>
+    <button class="small" onclick="postTodayVotesToX()">本日の投票をXに投稿</button>
     <button class="small ghost" onclick="clearMySet()">マイセトリを空にする</button>
   </div>
 
@@ -211,7 +211,8 @@ tr:last-child td{border-bottom:none}
 <script>
 /* ===== 設定 ===== */
 const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
-const MAX_VOTE = 5;
+const MAX_VOTE = 5;      // 1回のチェック上限
+const MAX_DAILY = 5;     // 1日合計の上限（←今回ここを厳密化）
 const MAX_MYSET = 20;
 
 /* X投稿 末尾URL（指定） */
@@ -266,7 +267,7 @@ function escapeHtml(str){
     .replaceAll("'","&#039;");
 }
 
-/* ===== 制限 ===== */
+/* ===== 制限（1回のチェック数） ===== */
 function limitCheck(){
   const c=[...document.querySelectorAll("input[type=checkbox]:checked")];
   if(c.length>MAX_VOTE){
@@ -283,7 +284,26 @@ function saveVotes(data){
   localStorage.setItem("testVotes", JSON.stringify(data));
 }
 
-/* ===== マイセトリ取得（ニックネーム単位） ===== */
+/* ===== 日付キー（JST固定） ===== */
+function todayKeyJST(){
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9*60*60*1000);
+  const y = jst.getUTCFullYear();
+  const m = String(jst.getUTCMonth()+1).padStart(2,"0");
+  const d = String(jst.getUTCDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+function dailyStorageKey(){
+  return `dailyVotes_${todayKeyJST()}`;
+}
+function loadDailyVotes(){
+  return JSON.parse(localStorage.getItem(dailyStorageKey())||"{}");
+}
+function saveDailyVotes(data){
+  localStorage.setItem(dailyStorageKey(), JSON.stringify(data));
+}
+
+/* ===== マイセトリ（ニックネーム単位） ===== */
 function getNick(){
   return nickname.value.trim();
 }
@@ -307,6 +327,26 @@ function setMySet(nick, list){
   saveVotes(data);
 }
 
+/* ===== 本日の投票ログ（ニックネーム単位） ===== */
+function getTodayVotesRaw(nick){
+  const d = loadDailyVotes();
+  return Array.isArray(d[nick]) ? d[nick] : [];
+}
+function addDailyVotes(nick, selected){
+  const d = loadDailyVotes();
+  const cur = Array.isArray(d[nick]) ? d[nick] : [];
+
+  // 1日合計MAX_DAILYまでに切る（念のため）
+  const merged = cur.concat(selected).slice(0, MAX_DAILY);
+
+  d[nick] = merged;
+  saveDailyVotes(d);
+}
+function getTodayVotesForTweet(nick){
+  // “その日に投票した内容”をそのまま、最大5曲
+  return getTodayVotesRaw(nick).slice(0, MAX_DAILY);
+}
+
 /* ===== テスト投票 ===== */
 function vote(){
   const nick = getNick();
@@ -315,11 +355,25 @@ function vote(){
   const selected = [...document.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value);
   if(!selected.length){ alert("曲を選んでください"); return; }
 
-  // 既存マイセトリに追加（重複は後で除去）
+  // --- 1日合計5票の厳密チェック ---
+  const todayAlready = getTodayVotesRaw(nick).length;
+  const remain = MAX_DAILY - todayAlready;
+  if(remain <= 0){
+    alert("本日の投票はすでに5票に達しています。");
+    return;
+  }
+  if(selected.length > remain){
+    alert(`本日の残り投票枠は ${remain} 曲です。選び直してください。`);
+    return;
+  }
+
+  // 1) 本日の投票ログへ追加（順序保持）
+  addDailyVotes(nick, selected);
+
+  // 2) マイセトリへも反映（従来どおり）
   const current = getMySet(nick);
   const merged = current.concat(selected);
 
-  // 重複除去しつつ順序維持
   const seen = new Set();
   const uniq = [];
   for(const s of merged){
@@ -328,10 +382,9 @@ function vote(){
       uniq.push(s);
     }
   }
-
   setMySet(nick, uniq);
 
-  voteMsg.textContent = "テスト投票しました（マイセトリに反映）";
+  voteMsg.textContent = `テスト投票しました（本日の投票：${todayKeyJST()} / ${getTodayVotesRaw(nick).length}票）`;
 
   // 投票後にチェック解除
   document.querySelectorAll("input[type=checkbox]:checked").forEach(el=>el.checked=false);
@@ -349,32 +402,31 @@ function clearMySet(){
   }
 }
 
-/* ===== X投稿 ===== */
-function buildXText(){
+/* ===== X投稿（本日の投票内容：最大5曲） ===== */
+function buildTodayVotesXText(){
   const nick = getNick();
-  const list = nick ? getMySet(nick) : [];
-  const top = list.slice(0, 5);
+  const voted = nick ? getTodayVotesForTweet(nick) : [];
 
   const lines = [
     "私がマイセトリに入れたい曲はこちら！",
-    ...top,
+    ...voted,
     "#toybee #toybeeリキッド",
     X_SHORT_URL
   ];
   return lines.join("\n");
 }
 
-function postToX(){
+function postTodayVotesToX(){
   const nick = getNick();
   if(!nick){ alert("先にニックネームを入力してください"); return; }
 
-  const list = getMySet(nick);
-  if(list.length === 0){
-    alert("マイセトリが空です。投票してマイセトリに追加してください。");
+  const voted = getTodayVotesForTweet(nick);
+  if(voted.length === 0){
+    alert("本日の投票内容がありません。まず投票してください。");
     return;
   }
 
-  const text = buildXText();
+  const text = buildTodayVotesXText();
   const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
   window.open(url, "_blank", "noopener,noreferrer");
 }
@@ -390,7 +442,6 @@ function computeRanking(){
     });
   });
 
-  // [song, count] を count desc, song asc で安定化
   const entries = Object.entries(counts).sort((a,b)=>{
     if(b[1] !== a[1]) return b[1] - a[1];
     return String(a[0]).localeCompare(String(b[0]), "ja");
@@ -413,7 +464,7 @@ function computeRanking(){
   return ranked;
 }
 
-/* ===== DnD（曲順入れ替え） ===== */
+/* ===== DnD（マイセトリ曲順入れ替え） ===== */
 let dragFromIdx = null;
 
 function onDragStart(e){
@@ -424,7 +475,7 @@ function onDragStart(e){
 }
 
 function onDragOver(e){
-  e.preventDefault(); // drop許可
+  e.preventDefault();
   e.currentTarget.classList.add("drop-target");
   e.dataTransfer.dropEffect = "move";
 }
@@ -488,7 +539,10 @@ function render(){
     return;
   }
 
-  mymsg.textContent = "≡ をドラッグ&ドロップで曲順を変更できます（保存されます）。X投稿は先頭5曲を投稿します。";
+  const todayCount = getTodayVotesRaw(nick).length;
+  mymsg.textContent =
+    `≡ をドラッグ&ドロップで曲順を変更できます（保存されます）。`+
+    `X投稿は「本日の投票内容（${todayKeyJST()} / ${todayCount}票）」をそのまま最大5曲載せます。`;
 
   mysetEl.innerHTML = list.map((s, i)=>`
     <li draggable="true" data-idx="${i}"
@@ -510,6 +564,7 @@ render();
 function resetTest(){
   if(confirm("テストデータを全削除しますか？")){
     localStorage.removeItem("testVotes");
+    localStorage.removeItem(dailyStorageKey()); // 今日の分も消す
     voteMsg.textContent = "";
     render();
   }

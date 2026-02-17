@@ -92,6 +92,7 @@ button.ghost{
   background:#334155;
   color:#fff;
 }
+
 small{color:var(--muted)}
 ul{padding-left:18px}
 ol{padding-left:20px;margin:0}
@@ -106,10 +107,6 @@ ol{padding-left:20px;margin:0}
   flex:1;
   line-height:1.5;
   word-break:break-word;
-}
-.myctrl{
-  display:flex;
-  gap:6px;
 }
 .note{
   color:var(--muted);
@@ -137,6 +134,12 @@ th{
 }
 tr:last-child td{border-bottom:none}
 .rankcol{width:72px;white-space:nowrap}
+
+/* DnD */
+.dragging{opacity:.5}
+.drop-target{outline:2px dashed rgba(250,204,21,.8); outline-offset:6px; border-radius:12px;}
+.handle{cursor:grab; user-select:none; padding:4px 8px; border-radius:10px; background:#334155; color:#fff; font-weight:700;}
+.handle:active{cursor:grabbing;}
 
 @media(max-width:900px){
   main{flex-direction:column}
@@ -210,7 +213,9 @@ tr:last-child td{border-bottom:none}
 const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
 const MAX_VOTE = 5;
 const MAX_MYSET = 20;
-const PAGE_URL = "https://f000167a.github.io/TOYROCK-my-Setlist/";
+
+/* X投稿 末尾URL（指定） */
+const X_SHORT_URL = "https://x.gd/qATK1";
 
 /* ===== 曲データ ===== */
 const ALBUMS=[
@@ -327,19 +332,10 @@ function vote(){
   setMySet(nick, uniq);
 
   voteMsg.textContent = "テスト投票しました（マイセトリに反映）";
-  render();
-}
 
-/* ===== マイセトリ：順序変更 ===== */
-function moveSong(fromIdx, toIdx){
-  const nick = getNick();
-  if(!nick){ alert("先にニックネームを入力してください"); return; }
-  const list = getMySet(nick);
-  if(toIdx < 0 || toIdx >= list.length) return;
+  // 投票後にチェック解除
+  document.querySelectorAll("input[type=checkbox]:checked").forEach(el=>el.checked=false);
 
-  const [item] = list.splice(fromIdx, 1);
-  list.splice(toIdx, 0, item);
-  setMySet(nick, list);
   render();
 }
 
@@ -357,13 +353,13 @@ function clearMySet(){
 function buildXText(){
   const nick = getNick();
   const list = nick ? getMySet(nick) : [];
-  const top = list.slice(0, 5); // 指定テンプレが5曲なので、投稿は先頭5曲に寄せる
+  const top = list.slice(0, 5);
 
   const lines = [
     "私がマイセトリに入れたい曲はこちら！",
-    ...top.map(s=>`[${s}]`),
+    ...top,
     "#toybee #toybeeリキッド",
-    `[ページURL]=${PAGE_URL}`
+    X_SHORT_URL
   ];
   return lines.join("\n");
 }
@@ -417,6 +413,52 @@ function computeRanking(){
   return ranked;
 }
 
+/* ===== DnD（曲順入れ替え） ===== */
+let dragFromIdx = null;
+
+function onDragStart(e){
+  const li = e.currentTarget;
+  dragFromIdx = Number(li.dataset.idx);
+  li.classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+}
+
+function onDragOver(e){
+  e.preventDefault(); // drop許可
+  e.currentTarget.classList.add("drop-target");
+  e.dataTransfer.dropEffect = "move";
+}
+
+function onDragLeave(e){
+  e.currentTarget.classList.remove("drop-target");
+}
+
+function onDrop(e){
+  e.preventDefault();
+  const toIdx = Number(e.currentTarget.dataset.idx);
+  e.currentTarget.classList.remove("drop-target");
+
+  const nick = getNick();
+  if(!nick) return;
+  const list = getMySet(nick);
+
+  if(dragFromIdx === null || toIdx === dragFromIdx) return;
+  if(dragFromIdx < 0 || dragFromIdx >= list.length) return;
+  if(toIdx < 0 || toIdx >= list.length) return;
+
+  const [item] = list.splice(dragFromIdx, 1);
+  list.splice(toIdx, 0, item);
+
+  setMySet(nick, list);
+  dragFromIdx = null;
+  render();
+}
+
+function onDragEnd(e){
+  e.currentTarget.classList.remove("dragging");
+  document.querySelectorAll(".drop-target").forEach(el=>el.classList.remove("drop-target"));
+}
+
 /* ===== 表示 ===== */
 function render(){
   // --- ランキング ---
@@ -446,16 +488,18 @@ function render(){
     return;
   }
 
-  mymsg.textContent = "↑↓で曲順を変更できます（保存されます）。X投稿は先頭5曲を投稿します。";
+  mymsg.textContent = "≡ をドラッグ&ドロップで曲順を変更できます（保存されます）。X投稿は先頭5曲を投稿します。";
 
   mysetEl.innerHTML = list.map((s, i)=>`
-    <li>
+    <li draggable="true" data-idx="${i}"
+        ondragstart="onDragStart(event)"
+        ondragover="onDragOver(event)"
+        ondragleave="onDragLeave(event)"
+        ondrop="onDrop(event)"
+        ondragend="onDragEnd(event)">
       <div class="myrow">
+        <span class="handle" title="ドラッグして並べ替え">≡</span>
         <div class="mytitle">${escapeHtml(s)}</div>
-        <div class="myctrl">
-          <button class="small ghost" onclick="moveSong(${i}, ${i-1})" ${i===0 ? "disabled" : ""}>↑</button>
-          <button class="small ghost" onclick="moveSong(${i}, ${i+1})" ${i===list.length-1 ? "disabled" : ""}>↓</button>
-        </div>
       </div>
     </li>
   `).join("");

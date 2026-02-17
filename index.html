@@ -13,7 +13,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .bee{position:fixed;font-size:20px;opacity:.25;pointer-events:none;animation:fd 8s linear infinite}
 @keyframes fd{0%{transform:translateY(-30px) rotate(0);opacity:0}10%{opacity:.25}90%{opacity:.25}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
 @keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .header{text-align:center;padding:28px 16px 0}
 .road{font-size:14px;color:#94a3b8;letter-spacing:4px;text-transform:uppercase}
 .title{font-size:28px;font-weight:900;background:linear-gradient(135deg,#FFD700,#F59E0B,#EF4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:4px 0;letter-spacing:2px}
@@ -32,7 +31,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .desc-wrap[open] summary{animation:none;border-color:rgba(255,215,0,.2);box-shadow:none}
 .desc-wrap summary::-webkit-details-marker{display:none}
 .desc-body{font-size:14px;color:#cbd5e1;line-height:2;padding:16px 20px 12px;text-align:left}
-.desc-note{font-size:12px;color:#94a3b8;margin-top:8px;text-align:center}
 .desc-tip{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);border-radius:8px;padding:10px 14px;margin:8px 0 12px}
 .tabs{display:flex;justify-content:center;gap:8px;padding:4px 16px 16px}
 .tab{padding:10px 24px;border-radius:99px;border:none;font-size:15px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.05);color:#94a3b8;transition:all .2s}
@@ -92,7 +90,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .btn-sm{padding:8px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer}
 .btn-x{background:rgba(29,161,242,.15);color:#1DA1F2;border:1px solid rgba(29,161,242,.3)}
 .btn-clear{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.25)}
-.btn-reset{background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.08)}
 .btn-share{background:linear-gradient(135deg,rgba(29,161,242,.2),rgba(29,161,242,.1));color:#1DA1F2;border:1px solid rgba(29,161,242,.3);padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;width:100%;text-align:center}
 details.tl-wrap{background:rgba(255,255,255,.02);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,.05)}
 details.tl-wrap summary{color:#FFD700;font-size:16px;font-weight:700;cursor:pointer;list-style:none}
@@ -109,12 +106,8 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
 .shared-overlay{background:rgba(255,215,0,.03);border:1px solid rgba(255,215,0,.15);border-radius:12px;padding:16px;margin-bottom:16px}
 .shared-song{padding:6px 10px;border-radius:8px;margin-bottom:3px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);display:flex;align-items:center;gap:8px}
 .shared-song.enc{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15)}
-@media(max-width:420px){
-  .cd-box{min-width:54px;padding:10px}
-  .cd-num{font-size:26px}
-  .tab{padding:8px 16px;font-size:13px}
-  .title{font-size:22px}
-}
+.loading{text-align:center;padding:20px;color:#64748b;font-size:14px}
+@media(max-width:420px){.cd-box{min-width:54px;padding:10px}.cd-num{font-size:26px}.tab{padding:8px 16px;font-size:13px}.title{font-size:22px}}
 </style>
 </head>
 <body>
@@ -132,22 +125,13 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
 </div>
 
 <div id="mainApp" style="display:none">
-  <div class="bee" style="left:5%;animation-delay:0s">🐝</div>
-  <div class="bee" style="left:17%;animation-delay:2s">🐝</div>
-  <div class="bee" style="left:29%;animation-delay:4s">🐝</div>
-  <div class="bee" style="left:41%;animation-delay:6s">🐝</div>
-  <div class="bee" style="left:53%;animation-delay:1s">🐝</div>
-  <div class="bee" style="left:65%;animation-delay:3s">🐝</div>
-  <div class="bee" style="left:77%;animation-delay:5s">🐝</div>
-  <div class="bee" style="left:89%;animation-delay:7s">🐝</div>
+  <div class="bee" style="left:5%;animation-delay:0s">🐝</div><div class="bee" style="left:17%;animation-delay:2s">🐝</div><div class="bee" style="left:29%;animation-delay:4s">🐝</div><div class="bee" style="left:41%;animation-delay:6s">🐝</div><div class="bee" style="left:53%;animation-delay:1s">🐝</div><div class="bee" style="left:65%;animation-delay:3s">🐝</div><div class="bee" style="left:77%;animation-delay:5s">🐝</div><div class="bee" style="left:89%;animation-delay:7s">🐝</div>
 
   <div class="header">
-    <div class="road">ROAD TO</div>
-    <div class="title">TOYROCK INVASION</div>
+    <div class="road">ROAD TO</div><div class="title">TOYROCK INVASION</div>
     <div class="subtitle">2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
     <div class="user-info">🐝 <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
   </div>
-
   <div class="cd-heading">🐝 開演まであと</div>
   <div class="cd-wrap">
     <div><div class="cd-box"><span class="cd-num" id="cdD">00</span></div><span class="cd-label">DAYS</span></div>
@@ -160,51 +144,39 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
   </div>
 
   <div class="content">
-
-    <!-- Description (collapsible) -->
     <details class="desc-wrap">
       <summary>⚠️ はじめに ── 投票ルール・使い方（初めての方は必ずお読みください）▾</summary>
       <div class="desc-body">
         このページは、ロックバンド toybee の<br>
         <strong style="color:#FFD700">2026年3月22日（日）恵比寿LIQUIDROOM ワンマンライブ</strong><br>
         の成功を願って、toybeeファンが制作した<strong style="color:#f1f5f9">非公式の応援企画ページ</strong>です。<br>
-        <div class="desc-note" style="margin-top:4px;margin-bottom:8px">※toybee公式とは一切関係ありません。</div>
+        ※toybee公式とは一切関係ありません。<br><br>
 
         <strong style="color:#f1f5f9">🎸 投票ルール</strong><br>
         ・投票は <strong style="color:#FFD700">1日5票まで</strong>（日付が変わるとリセットされます）<br>
         ・同じ曲への投票は <strong style="color:#FFD700">1日1回まで</strong><br>
         ・投票した曲は <strong style="color:#f1f5f9">自動的にマイセトリへ追加</strong>されます<br>
         ・投票を取り消すと、マイセトリからも削除されます<br>
-
-        <div class="desc-tip">
-          💡 同じニックネームで投票すると、これまでの投票履歴が引き継がれ、マイセトリを継続して育てることができます。
-        </div>
-
+        <div class="desc-tip">💡 同じニックネームで投票すると、これまでの投票履歴が引き継がれ、マイセトリを継続して育てることができます。</div>
         <strong style="color:#f1f5f9">📋 マイセトリの使い方</strong><br>
         ・最大 <strong style="color:#FFD700">20曲</strong>まで登録可能<br>
         ・「▲」「▼」ボタンで自由に並び替え可能<br>
         ・6曲以上登録すると、最後の2曲は自動的にアンコール枠「<strong style="color:#FFD700">En.</strong>」として表示されます<br>
         ・「✕」ボタンで個別に削除できます<br><br>
-
         <strong style="color:#f1f5f9">🏆 ランキングについて</strong><br>
         ・全参加者の投票を累積して集計しています<br>
         ・同票の曲は同じ順位で表示されます
       </div>
     </details>
-
-    <!-- Shared setlist view -->
     <div id="sharedView" style="display:none"></div>
-
     <div class="tabs">
       <button class="tab active" data-tab="vote" onclick="switchTab('vote')">🎸 投票</button>
       <button class="tab" data-tab="setlist" onclick="switchTab('setlist')">📋 マイセトリ</button>
       <button class="tab" data-tab="ranking" onclick="switchTab('ranking')">🏆 ランキング</button>
     </div>
-
     <div id="tabVote" class="card"></div>
     <div id="tabSetlist" class="card" style="display:none"></div>
     <div id="tabRanking" class="card" style="display:none"></div>
-
     <details class="tl-wrap">
       <summary>🚀 toybeeの軌跡 ── LIQUIDROOMへの道 ▾</summary>
       <div class="tl"><div class="tl-line"></div>
@@ -221,7 +193,6 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
   </div>
   <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with 🐝 for TOYROCK INVASION @ LIQUIDROOM 2026.3.22</div>
 </div>
-
 <div id="toast" class="toast" style="display:none"></div>
 
 <script>
@@ -231,8 +202,6 @@ const MAX_MYSET=20;
 const X_SHORT_URL="https://x.gd/qATK1";
 const GUEST_NICK="\u540d\u7121\u3057\u30af\u30eb\u30fc";
 const BASE_URL=location.href.split("#")[0].split("?")[0];
-
-/* ===== GAS URL (replace after deploy) ===== */
 const GAS_URL="https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
 
 const ALBUMS=[
@@ -245,256 +214,202 @@ const ALBUMS=[
 const ALL_SONGS=ALBUMS.flatMap(a=>a.songs.map(s=>({title:s,album:a.name,color:a.color})));
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-function todayJST(){const n=new Date(),j=new Date(n.getTime()+9*36e5);return j.toISOString().split("T")[0]}
-function loadVotes(){return JSON.parse(localStorage.getItem("testVotes")||"{}")}
-function saveVotes(d){localStorage.setItem("testVotes",JSON.stringify(d))}
-function loadDaily(){return JSON.parse(localStorage.getItem("daily_"+todayJST())||"{}")}
-function saveDaily(d){localStorage.setItem("daily_"+todayJST(),JSON.stringify(d))}
-
-/* ===== Device Token ===== */
-function getDeviceToken(){
-  let t=localStorage.getItem("toybee_device_token");
-  if(!t){t=Math.random().toString(36).substring(2,10)+Date.now().toString(36);localStorage.setItem("toybee_device_token",t)}
-  return t;
-}
-
-let currentNick="";
-let currentTab="vote";
-let currentFilter="all";
-let toastTimer=null;
+let currentNick="",currentTab="vote",currentFilter="all",toastTimer=null;
 let pendingSelections=new Set();
 
+/* === Cached server data === */
+let todayVotes=[];
+let mySetlist=[];
+let rankingData=[];
+
 function isGuest(){return currentNick===GUEST_NICK}
+function showToast(msg){const el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.style.display="none"},2500)}
 
-function showToast(msg){
-  const el=document.getElementById("toast");
-  el.textContent=msg;el.style.display="block";
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>{el.style.display="none"},2500);
-}
+/* === API helpers === */
+async function apiGet(params){const q=new URLSearchParams(params).toString();const r=await fetch(GAS_URL+"?"+q);return r.json()}
+async function apiPost(body){const r=await fetch(GAS_URL,{method:"POST",body:JSON.stringify(body)});return r.json()}
 
-/* ===== Setlist URL ===== */
-function encodeSetlist(list){return list.map(t=>String(ALL_SONGS.findIndex(s=>s.title===t)).padStart(2,"0")).filter(v=>v!=="-1").join("-")}
-function decodeSetlist(hash){if(!hash||!hash.startsWith("s="))return null;const songs=hash.substring(2).split("-").map(p=>{const i=parseInt(p,10);return(!isNaN(i)&&i>=0&&i<ALL_SONGS.length)?ALL_SONGS[i].title:null}).filter(Boolean);return songs.length?songs:null}
-function getShareURL(list){return BASE_URL+"#s="+encodeSetlist(list)}
+/* === Setlist URL === */
+function encodeSetlist(l){return l.map(t=>String(ALL_SONGS.findIndex(s=>s.title===t)).padStart(2,"0")).filter(v=>v!=="-1").join("-")}
+function decodeSetlist(h){if(!h||!h.startsWith("s="))return null;return h.substring(2).split("-").map(p=>{const i=parseInt(p,10);return(!isNaN(i)&&i>=0&&i<ALL_SONGS.length)?ALL_SONGS[i].title:null}).filter(Boolean)||null}
+function getShareURL(l){return BASE_URL+"#s="+encodeSetlist(l)}
 
-/* ===== Nickname: GAS check + register ===== */
+/* === Device Token === */
+function getDeviceToken(){let t=localStorage.getItem("toybee_device_token");if(!t){t=Math.random().toString(36).substring(2,10)+Date.now().toString(36);localStorage.setItem("toybee_device_token",t)}return t}
+
+/* === Nickname === */
 async function enterApp(){
   const v=document.getElementById("nickInput").value.trim()||GUEST_NICK;
   const errEl=document.getElementById("nickError");
   const btn=document.getElementById("nickBtn");
   errEl.textContent="";
-
   if(v!==GUEST_NICK){
-    /* Check nickname availability via GAS */
     btn.disabled=true;btn.textContent="\u78ba\u8a8d\u4e2d...";
     try{
       const token=getDeviceToken();
-      const res=await fetch(GAS_URL+"?action=checkNick&nick="+encodeURIComponent(v)+"&token="+encodeURIComponent(token));
-      const json=await res.json();
-      if(!json.ok){
-        errEl.textContent=json.error||"\u3053\u306e\u30cb\u30c3\u30af\u30cd\u30fc\u30e0\u306f\u4f7f\u7528\u3067\u304d\u307e\u305b\u3093\u3002";
-        btn.disabled=false;btn.textContent="\ud83d\udc1d \u53c2\u52a0\u3059\u308b";
-        return;
-      }
-      /* Register */
-      await fetch(GAS_URL,{method:"POST",body:JSON.stringify({action:"registerNick",nick:v,token:token})});
-    }catch(e){
-      /* GAS unavailable: allow anyway (test mode fallback) */
-      console.warn("GAS unavailable, proceeding in offline mode",e);
-    }
+      const check=await apiGet({action:"checkNick",nick:v,token:token});
+      if(!check.ok){errEl.textContent=check.error;btn.disabled=false;btn.textContent="\ud83d\udc1d \u53c2\u52a0\u3059\u308b";return}
+      await apiPost({action:"registerNick",nick:v,token:token});
+    }catch(e){console.warn("GAS error:",e);errEl.textContent="\u30b5\u30fc\u30d0\u30fc\u306b\u63a5\u7d9a\u3067\u304d\u307e\u305b\u3093\u3002\u3057\u3070\u3089\u304f\u3057\u3066\u304b\u3089\u3084\u308a\u76f4\u3057\u3066\u304f\u3060\u3055\u3044\u3002";btn.disabled=false;btn.textContent="\ud83d\udc1d \u53c2\u52a0\u3059\u308b";return}
     btn.disabled=false;btn.textContent="\ud83d\udc1d \u53c2\u52a0\u3059\u308b";
   }
-
   localStorage.setItem("toybee_nick",v);currentNick=v;
   document.getElementById("nickScreen").style.display="none";
   document.getElementById("mainApp").style.display="block";
   document.getElementById("dispNick").textContent=v;
-  renderAll();
+  await loadAllData();
 }
-
 function changeNick(){
-  localStorage.removeItem("toybee_nick");currentNick="";
+  localStorage.removeItem("toybee_nick");currentNick="";todayVotes=[];mySetlist=[];
   document.getElementById("nickScreen").style.display="flex";
   document.getElementById("mainApp").style.display="none";
   document.getElementById("nickInput").value="";
   document.getElementById("nickError").textContent="";
 }
 
-(function(){
-  const saved=localStorage.getItem("toybee_nick");
-  if(saved){currentNick=saved;document.getElementById("nickScreen").style.display="none";document.getElementById("mainApp").style.display="block";document.getElementById("dispNick").textContent=saved}
-  document.getElementById("nickInput").addEventListener("keydown",e=>{if(e.key==="Enter")enterApp()});
-})();
-
-/* ===== Shared setlist from URL ===== */
-(function(){
-  const shared=decodeSetlist(location.hash.substring(1));
-  if(shared){
-    setTimeout(()=>{
-      const el=document.getElementById("sharedView");
-      let h='<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">\ud83d\udc1d \u5171\u6709\u3055\u308c\u305f\u30de\u30a4\u30bb\u30c8\u30ea</span></div>';
-      shared.forEach((t,i)=>{const enc=i>=shared.length-2&&shared.length>5;h+='<div class="shared-song '+(enc?"enc":"")+'"><span style="color:'+(enc?"#FFD700":"#94a3b8")+';font-size:13px;min-width:30px;font-weight:700">'+(enc?"En.":(i+1)+".")+'</span><span style="font-size:14px;color:#f1f5f9">'+esc(t)+'</span></div>'});
-      h+='<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">\u9589\u3058\u308b</button></div></div>';
-      el.innerHTML=h;el.style.display="block";
-    },300);
-  }
-})();
-
-/* ===== Countdown ===== */
-function tick(){
-  const d=DEADLINE-new Date();if(d<=0){document.querySelector(".cd-heading").textContent="\ud83d\udc1d \u958b\u6f14\u3057\u307e\u3057\u305f\uff01";return}
-  const s=Math.floor(d/1000),sec=s%60;
-  document.getElementById("cdD").textContent=String(Math.floor(s/86400)).padStart(2,"0");
-  document.getElementById("cdH").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
-  document.getElementById("cdM").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
-  document.getElementById("cdS").textContent=String(sec).padStart(2,"0");
-  const op=sec%2===0?1:.3;
-  document.getElementById("col1").style.opacity=op;document.getElementById("col2").style.opacity=op;document.getElementById("col3").style.opacity=op;
-}
-setInterval(tick,1000);tick();
-
-function switchTab(id){
-  currentTab=id;pendingSelections.clear();
-  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===id));
-  document.getElementById("tabVote").style.display=id==="vote"?"block":"none";
-  document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";
-  document.getElementById("tabRanking").style.display=id==="ranking"?"block":"none";
+/* === Load data from server === */
+async function loadAllData(){
+  renderAll(); /* show loading state immediately */
+  try{
+    const[dv,sl,rk]=await Promise.all([
+      apiGet({action:"getDailyVotes",nick:currentNick}),
+      isGuest()?Promise.resolve({ok:true,setlist:[]}):apiGet({action:"getSetlist",nick:currentNick}),
+      apiGet({action:"getRanking"})
+    ]);
+    if(dv.ok)todayVotes=dv.songs||[];
+    if(sl.ok)mySetlist=sl.setlist||[];
+    if(rk.ok)rankingData=rk.ranking||[];
+  }catch(e){console.warn("Load error:",e);showToast("\u30c7\u30fc\u30bf\u53d6\u5f97\u306b\u5931\u6557\u3057\u307e\u3057\u305f")}
   renderAll();
 }
 
-function getMySet(){const d=loadVotes(),a=d[currentNick]||[];const seen=new Set(),u=[];for(const s of a){if(!seen.has(s)){seen.add(s);u.push(s)}}return u.slice(0,MAX_MYSET)}
-function setMySet(list){const d=loadVotes();d[currentNick]=list.slice(0,MAX_MYSET);saveVotes(d)}
-function getTodayVotes(){const d=loadDaily();return d[currentNick]||[]}
-function setTodayVotes(arr){const d=loadDaily();d[currentNick]=arr;saveDaily(d)}
+/* Auto-login */
+(async function(){
+  const saved=localStorage.getItem("toybee_nick");
+  if(saved){
+    currentNick=saved;
+    document.getElementById("nickScreen").style.display="none";
+    document.getElementById("mainApp").style.display="block";
+    document.getElementById("dispNick").textContent=saved;
+    await loadAllData();
+  }
+  document.getElementById("nickInput").addEventListener("keydown",e=>{if(e.key==="Enter")enterApp()});
+})();
 
-/* ===== VOTE ===== */
+/* === Shared setlist from URL === */
+(function(){const s=decodeSetlist(location.hash.substring(1));if(s){setTimeout(()=>{const el=document.getElementById("sharedView");let h='<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">\ud83d\udc1d \u5171\u6709\u3055\u308c\u305f\u30de\u30a4\u30bb\u30c8\u30ea</span></div>';s.forEach((t,i)=>{const enc=i>=s.length-2&&s.length>5;h+='<div class="shared-song '+(enc?"enc":"")+'"><span style="color:'+(enc?"#FFD700":"#94a3b8")+';font-size:13px;min-width:30px;font-weight:700">'+(enc?"En.":(i+1)+".")+'</span><span style="font-size:14px;color:#f1f5f9">'+esc(t)+'</span></div>'});h+='<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">\u9589\u3058\u308b</button></div></div>';el.innerHTML=h;el.style.display="block"},300)}})();
+
+/* === Countdown === */
+function tick(){const d=DEADLINE-new Date();if(d<=0){document.querySelector(".cd-heading").textContent="\ud83d\udc1d \u958b\u6f14\u3057\u307e\u3057\u305f\uff01";return}const s=Math.floor(d/1000),sec=s%60;document.getElementById("cdD").textContent=String(Math.floor(s/86400)).padStart(2,"0");document.getElementById("cdH").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");document.getElementById("cdM").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");document.getElementById("cdS").textContent=String(sec).padStart(2,"0");const op=sec%2===0?1:.3;document.getElementById("col1").style.opacity=op;document.getElementById("col2").style.opacity=op;document.getElementById("col3").style.opacity=op}
+setInterval(tick,1000);tick();
+
+function switchTab(id){currentTab=id;pendingSelections.clear();document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===id));document.getElementById("tabVote").style.display=id==="vote"?"block":"none";document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";document.getElementById("tabRanking").style.display=id==="ranking"?"block":"none";if(id==="ranking")refreshRanking();else renderAll()}
+
+async function refreshRanking(){document.getElementById("tabRanking").innerHTML='<div class="loading">\u8aad\u307f\u8fbc\u307f\u4e2d...</div>';try{const r=await apiGet({action:"getRanking"});if(r.ok)rankingData=r.ranking||[]}catch(e){}renderRanking()}
+
+/* === VOTE === */
 function togglePending(title){
   if(pendingSelections.has(title)){pendingSelections.delete(title)}
   else{
-    const today=getTodayVotes();
-    if(!isGuest()){
-      const remain=MAX_DAILY-today.length;
-      if(pendingSelections.size>=remain){showToast("\u26a0 \u9078\u3079\u308b\u306e\u306f\u3042\u3068"+remain+"\u66f2\u307e\u3067\u3067\u3059");return}
-    }else{
-      if(pendingSelections.size>=5){showToast("\u26a0 1\u56de\u306e\u6295\u7968\u306f5\u66f2\u307e\u3067\u3067\u3059");return}
-    }
+    if(!isGuest()){if(pendingSelections.size>=(MAX_DAILY-todayVotes.length)){showToast("\u26a0 \u9078\u3079\u308b\u306e\u306f\u3042\u3068"+(MAX_DAILY-todayVotes.length)+"\u66f2\u307e\u3067\u3067\u3059");return}}
+    else{if(pendingSelections.size>=5){showToast("\u26a0 1\u56de\u306e\u6295\u7968\u306f5\u66f2\u307e\u3067\u3067\u3059");return}}
     pendingSelections.add(title);
   }
   renderVote();
 }
 
-function submitVotes(){
-  if(pendingSelections.size===0){showToast("\u26a0 \u66f2\u3092\u9078\u3093\u3067\u304f\u3060\u3055\u3044");return}
-  const today=getTodayVotes();const selected=[...pendingSelections];
-  if(!isGuest()){
-    const remain=MAX_DAILY-today.length;
-    if(selected.length>remain){showToast("\u26a0 \u6b8b\u308a"+remain+"\u7968\u3057\u304b\u3042\u308a\u307e\u305b\u3093");return}
-    setTodayVotes(today.concat(selected));
-    const ms=getMySet();selected.forEach(s=>{if(!ms.includes(s))ms.push(s)});setMySet(ms);
-  }else{
-    setTodayVotes(today.concat(selected));
-    const d=loadVotes();const cur=d[GUEST_NICK]||[];d[GUEST_NICK]=cur.concat(selected);saveVotes(d);
-  }
-  pendingSelections.clear();
-  showToast("\ud83d\udc1d "+selected.length+"\u66f2\u6295\u7968\u3057\u307e\u3057\u305f\uff01");
+async function submitVotes(){
+  if(!pendingSelections.size)return;
+  const selected=[...pendingSelections];
+  const btn=document.querySelector(".submit-btn");
+  btn.disabled=true;btn.textContent="\u9001\u4fe1\u4e2d...";
+  try{
+    const r=await apiPost({action:"vote",nick:currentNick,songs:selected});
+    if(!r.ok){showToast("\u26a0 "+r.error);btn.disabled=false;btn.textContent="\ud83d\udc1d \u6295\u7968\u3059\u308b";return}
+    todayVotes=todayVotes.concat(selected);
+    if(!isGuest()){selected.forEach(s=>{if(!mySetlist.includes(s))mySetlist.push(s)})}
+    pendingSelections.clear();
+    showToast("\ud83d\udc1d "+selected.length+"\u66f2\u6295\u7968\u3057\u307e\u3057\u305f\uff01");
+  }catch(e){showToast("\u26a0 \u901a\u4fe1\u30a8\u30e9\u30fc\u304c\u767a\u751f\u3057\u307e\u3057\u305f")}
   renderAll();
 }
 
 function renderVote(){
-  const el=document.getElementById("tabVote");
-  const today=getTodayVotes();const guest=isGuest();
-  const remain=guest?5:MAX_DAILY-today.length;
-
+  const el=document.getElementById("tabVote");const guest=isGuest();
+  const remain=guest?5:MAX_DAILY-todayVotes.length;
   let h='<div class="sec-header"><span class="sec-title">\ud83c\udfb8 \u8074\u304d\u305f\u3044\u66f2\u306b\u6295\u7968</span>';
   if(guest)h+='<span class="badge badge-free">\u30b2\u30b9\u30c8\uff081\u56de5\u7968\uff09</span>';
   else h+='<span class="badge '+(remain>0?"badge-gold":"badge-red")+'">\u6b8b\u308a '+remain+'/5\u7968</span>';
   h+='</div>';
-
-  if(!guest&&remain<=0){
-    h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">\u4eca\u65e5\u306e\u6295\u7968\u4e0a\u9650\uff085\u7968\uff09\u306b\u9054\u3057\u307e\u3057\u305f\u3002\u660e\u65e5\u307e\u305f\u3069\u3046\u305e\uff01<br><span style="font-size:12px;color:#94a3b8">\u203b\u30de\u30a4\u30bb\u30c8\u30ea\u30bf\u30d6\u304b\u3089\u6295\u7968\u3092\u53d6\u308a\u6d88\u3057\u3066\u5225\u306e\u66f2\u306b\u6295\u7968\u3057\u76f4\u3059\u3053\u3068\u3082\u3067\u304d\u307e\u3059\u3002</span></div>';
-  }
-
-  if(today.length>0){
+  if(!guest&&remain<=0)h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">\u4eca\u65e5\u306e\u6295\u7968\u4e0a\u9650\uff085\u7968\uff09\u306b\u9054\u3057\u307e\u3057\u305f\u3002\u660e\u65e5\u307e\u305f\u3069\u3046\u305e\uff01<br><span style="font-size:12px;color:#64748b">\u203b\u30de\u30a4\u30bb\u30c8\u30ea\u30bf\u30d6\u304b\u3089\u6295\u7968\u3092\u53d6\u308a\u6d88\u3057\u3066\u5225\u306e\u66f2\u306b\u6295\u7968\u3057\u76f4\u3059\u3053\u3068\u3082\u3067\u304d\u307e\u3059\u3002</span></div>';
+  if(todayVotes.length>0){
     h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px">';
-    h+='<div style="font-size:13px;color:#94a3b8;font-weight:600;margin-bottom:6px">\u2705 \u6295\u7968\u6e08\u307f\uff08\u4eca\u65e5 '+today.length+'\u7968\uff09</div>';
+    h+='<div style="font-size:13px;color:#94a3b8;font-weight:600;margin-bottom:6px">\u2705 \u6295\u7968\u6e08\u307f\uff08\u4eca\u65e5 '+todayVotes.length+'\u7968\uff09</div>';
     h+='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">';
-    today.forEach(t=>{const s=ALL_SONGS.find(x=>x.title===t);h+='<span style="padding:4px 12px;border-radius:99px;font-size:13px;color:#cbd5e1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">'+esc(t)+'</span>'});
+    todayVotes.forEach(t=>{h+='<span style="padding:4px 12px;border-radius:99px;font-size:13px;color:#cbd5e1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">'+esc(t)+'</span>'});
     h+='</div><button class="btn-sm btn-x" onclick="postTodayToX()">\ud835\udd4f \u4eca\u65e5\u306e\u6295\u7968\u3092\u30dd\u30b9\u30c8</button></div>';
   }
-
   h+='<div class="filters"><button class="filter-btn" style="background:'+(currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)")+';color:'+(currentFilter==="all"?"#000":"#cbd5e1")+'" onclick="currentFilter=\'all\';renderVote()">ALL</button>';
   ALBUMS.forEach(a=>{const ac=currentFilter===a.name;h+='<button class="filter-btn" style="background:'+(ac?a.color:"rgba(255,255,255,.06)")+';color:'+(ac?"#000":"#cbd5e1")+'" onclick="currentFilter=\''+esc(a.name)+'\';renderVote()">'+esc(a.name)+'</button>'});
   h+='</div>';
-
   const filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(s=>s.album===currentFilter);
   filtered.forEach(s=>{
-    const alreadyVoted=!guest&&today.includes(s.title);
-    const isPending=pendingSelections.has(s.title);
-    if(alreadyVoted){
-      h+='<div class="song-item already"><div class="song-check">\u2713</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div><span style="font-size:12px;color:#64748b">\u6295\u7968\u6e08</span></div>';
-    }else{
-      const cls=isPending?"checked":"";const can=guest||remain>0||isPending;
-      h+='<div class="song-item '+cls+'" onclick="'+(can?"togglePending(\'"+esc(s.title)+"\')":"")+'"><div class="song-check">'+(isPending?"\u2713":"")+'</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div></div>';
-    }
+    const already=!guest&&todayVotes.includes(s.title);const ip=pendingSelections.has(s.title);
+    if(already){h+='<div class="song-item already"><div class="song-check">\u2713</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div><span style="font-size:12px;color:#64748b">\u6295\u7968\u6e08</span></div>'}
+    else{const can=guest||remain>0||ip;h+='<div class="song-item '+(ip?"checked":"")+'" onclick="'+(can?"togglePending(\'"+esc(s.title)+"\')":"")+'"><div class="song-check">'+(ip?"\u2713":"")+'</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div></div>'}
   });
-
   const sc=pendingSelections.size;
   h+='<div class="submit-bar"><button class="submit-btn" '+(sc===0?"disabled":"")+" onclick=\"submitVotes()\">\ud83d\udc1d "+(sc>0?sc+"\u66f2\u3092\u6295\u7968\u3059\u308b":"\u66f2\u3092\u9078\u3093\u3067\u304f\u3060\u3055\u3044")+'</button><div class="submit-count">'+(sc>0?[...pendingSelections].join("\u3001"):(guest||remain>0)?"\u30bf\u30c3\u30d7\u3057\u3066\u66f2\u3092\u9078\u3093\u3067\u304b\u3089\u6295\u7968\u30dc\u30bf\u30f3\u3092\u62bc\u3057\u3066\u304f\u3060\u3055\u3044":"")+"</div></div>";
-  h+='<div class="foot-btns" style="margin-top:8px"><button class="btn-sm btn-reset" onclick="resetAll()">\ud83d\uddd1 \u30c6\u30b9\u30c8\u30c7\u30fc\u30bf\u5168\u6d88\u53bb</button></div>';
   el.innerHTML=h;
 }
 
-/* ===== RANKING ===== */
+/* === RANKING === */
 function renderRanking(){
   const el=document.getElementById("tabRanking");
-  const data=loadVotes();const counts={};
-  Object.values(data).forEach(arr=>{(arr||[]).forEach(s=>{counts[s]=(counts[s]||0)+1})});
-  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"ja"));
-  const ranked=[];let prev=null,rank=0,idx=0;
-  for(const[song,c]of entries){idx++;if(prev===null||c!==prev){rank=idx;prev=c}ranked.push({rank,song,count:c})}
-  const mx=ranked.length>0?ranked[0].count:1;
-  let h='<div class="sec-header"><span class="sec-title">\ud83c\udfc6 \u30e9\u30f3\u30ad\u30f3\u30b0</span><button class="btn-sm btn-reset" style="margin:0" onclick="renderRanking()">\u21bb \u66f4\u65b0</button></div>';
-  if(ranked.length===0){h+='<div class="empty">\u307e\u3060\u6295\u7968\u304c\u3042\u308a\u307e\u305b\u3093\u3002\u6700\u521d\u306e\u4e00\u7968\u3092\u6295\u3058\u3088\u3046\uff01</div>'}
-  else{ranked.forEach((r,i)=>{const song=ALL_SONGS.find(s=>s.title===r.song)||{color:"#94a3b8"};const pct=mx>0?(r.count/mx)*100:0;const cls=i<3?"top3":"normal";const nc=i===0?"#FFD700":i===1?"#C0C0C0":i===2?"#CD7F32":"#94a3b8";h+='<div class="rank-row '+cls+'"><span class="rank-num" style="color:'+nc+'">'+r.rank+'</span><div style="flex:1"><span class="song-name">'+esc(r.song)+'</span><div class="rank-bar-bg"><div class="rank-bar" style="width:'+pct+'%;background:linear-gradient(90deg,'+song.color+','+song.color+'88)"></div></div></div></div>'})}
+  const mx=rankingData.length>0?rankingData[0].count:1;
+  let h='<div class="sec-header"><span class="sec-title">\ud83c\udfc6 \u30e9\u30f3\u30ad\u30f3\u30b0</span><button class="btn-sm" style="background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.08)" onclick="refreshRanking()">\u21bb \u66f4\u65b0</button></div>';
+  if(!rankingData.length){h+='<div class="empty">\u307e\u3060\u6295\u7968\u304c\u3042\u308a\u307e\u305b\u3093\u3002\u6700\u521d\u306e\u4e00\u7968\u3092\u6295\u3058\u3088\u3046\uff01</div>'}
+  else{rankingData.forEach((r,i)=>{const song=ALL_SONGS.find(s=>s.title===r.song)||{color:"#94a3b8"};const pct=mx>0?(r.count/mx)*100:0;const cls=i<3?"top3":"normal";const nc=i===0?"#FFD700":i===1?"#C0C0C0":i===2?"#CD7F32":"#94a3b8";h+='<div class="rank-row '+cls+'"><span class="rank-num" style="color:'+nc+'">'+r.rank+'</span><div style="flex:1"><span class="song-name">'+esc(r.song)+'</span><div class="rank-bar-bg"><div class="rank-bar" style="width:'+pct+'%;background:linear-gradient(90deg,'+song.color+','+song.color+'88)"></div></div></div></div>'})}
   el.innerHTML=h;
 }
 
-/* ===== SETLIST ===== */
-function unvoteToday(title){
-  if(!confirm("\u300c"+title+"\u300d\u306e\u6295\u7968\u3092\u53d6\u308a\u6d88\u3057\u307e\u3059\u304b\uff1f\n\uff08\u30de\u30a4\u30bb\u30c8\u30ea\u304b\u3089\u3082\u524a\u9664\u3055\u308c\u307e\u3059\uff09"))return;
-  setTodayVotes(getTodayVotes().filter(s=>s!==title));
-  setMySet(getMySet().filter(s=>s!==title));
-  showToast("\ud83d\uddd1 \u300c"+title+"\u300d\u3092\u53d6\u308a\u6d88\u3057\u307e\u3057\u305f");renderAll();
+/* === SETLIST === */
+async function unvoteToday(title){
+  if(!confirm("\u300c"+title+"\u300d\u306e\u6295\u7968\u3092\u53d6\u308a\u6d88\u3057\u307e\u3059\u304b\uff1f"))return;
+  try{
+    const r=await apiPost({action:"unvote",nick:currentNick,song:title});
+    if(!r.ok){showToast("\u26a0 "+r.error);return}
+    todayVotes=todayVotes.filter(s=>s!==title);
+    mySetlist=mySetlist.filter(s=>s!==title);
+    showToast("\ud83d\uddd1 \u300c"+title+"\u300d\u3092\u53d6\u308a\u6d88\u3057\u307e\u3057\u305f");
+  }catch(e){showToast("\u26a0 \u901a\u4fe1\u30a8\u30e9\u30fc")}
+  renderAll();
 }
-function moveInSet(from,to){const l=getMySet();if(to<0||to>=l.length)return;const[item]=l.splice(from,1);l.splice(to,0,item);setMySet(l);renderSetlist()}
-function rmFromSet(i){const l=getMySet();const t=l[i];l.splice(i,1);setMySet(l);showToast("\u2715 \u300c"+t+"\u300d\u3092\u524a\u9664\u3057\u307e\u3057\u305f");renderSetlist()}
-function clearMySet(){if(confirm("\u30de\u30a4\u30bb\u30c8\u30ea\u3092\u7a7a\u306b\u3057\u307e\u3059\u304b\uff1f")){setMySet([]);renderSetlist()}}
-function shareMySetlist(){const l=getMySet();if(!l.length){showToast("\u26a0 \u30de\u30a4\u30bb\u30c8\u30ea\u304c\u7a7a\u3067\u3059");return}const url=getShareURL(l);const text="\ud83d\udc1d \u79c1\u306e\u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3\u306f\u3053\u3061\u3089\uff01\n"+url+"\n#toybee #toybee\u30ea\u30ad\u30c3\u30c9";window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank","noopener,noreferrer")}
+async function moveInSet(from,to){if(to<0||to>=mySetlist.length)return;const[item]=mySetlist.splice(from,1);mySetlist.splice(to,0,item);renderSetlist();try{await apiPost({action:"saveSetlist",nick:currentNick,setlist:mySetlist})}catch(e){}}
+async function rmFromSet(i){const t=mySetlist[i];mySetlist.splice(i,1);showToast("\u2715 \u300c"+t+"\u300d\u3092\u524a\u9664\u3057\u307e\u3057\u305f");renderSetlist();try{await apiPost({action:"saveSetlist",nick:currentNick,setlist:mySetlist})}catch(e){}}
+async function clearMySet(){if(!confirm("\u30de\u30a4\u30bb\u30c8\u30ea\u3092\u7a7a\u306b\u3057\u307e\u3059\u304b\uff1f"))return;mySetlist=[];renderSetlist();try{await apiPost({action:"saveSetlist",nick:currentNick,setlist:[]})}catch(e){}}
+function shareMySetlist(){const l=mySetlist;if(!l.length){showToast("\u26a0 \u30de\u30a4\u30bb\u30c8\u30ea\u304c\u7a7a\u3067\u3059");return}const url=getShareURL(l);const text="\ud83d\udc1d \u79c1\u306e\u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3\u306f\u3053\u3061\u3089\uff01\n"+url+"\n#toybee #toybee\u30ea\u30ad\u30c3\u30c9";window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank","noopener,noreferrer")}
 
 function renderSetlist(){
   const el=document.getElementById("tabSetlist");
   if(isGuest()){el.innerHTML='<div class="sec-title" style="margin-bottom:12px">\ud83c\udfa4 \u30de\u30a4\u30bb\u30c8\u30ea</div><div class="empty">\u30de\u30a4\u30bb\u30c8\u30ea\u6a5f\u80fd\u3092\u4f7f\u3046\u306b\u306f\u3001\u30cb\u30c3\u30af\u30cd\u30fc\u30e0\u3092\u767b\u9332\u3057\u3066\u304f\u3060\u3055\u3044\u3002<br><br><button class="btn-sm" style="background:rgba(255,215,0,.15);color:#FFD700;border:1px solid rgba(255,215,0,.3)" onclick="changeNick()">\u30cb\u30c3\u30af\u30cd\u30fc\u30e0\u3092\u767b\u9332\u3059\u308b</button></div>';return}
-  const today=getTodayVotes();const list=getMySet();
   let h='<button class="btn-share" onclick="shareMySetlist()">\ud835\udd4f \u30de\u30a4\u30bb\u30c8\u30ea\u3092\u30b7\u30a7\u30a2\u3059\u308b</button>';
-  h+='<div style="margin:20px 0"><span class="sec-title">\ud83d\uddf3 \u4eca\u65e5\u306e\u6295\u7968\uff08'+today.length+'/5\u7968\uff09</span><div style="margin-top:10px">';
-  if(!today.length)h+='<div style="color:#94a3b8;font-size:14px;padding:8px 0">\u307e\u3060\u6295\u7968\u3057\u3066\u3044\u307e\u305b\u3093</div>';
-  else{today.forEach(t=>{const s=ALL_SONGS.find(x=>x.title===t);h+='<div class="today-item"><span style="color:'+(s?s.color:"#FFD700")+';font-size:14px">\u25cf</span><span class="today-name">'+esc(t)+'</span><button class="today-rm" onclick="unvoteToday(\''+esc(t)+'\')">\u53d6\u308a\u6d88\u3059</button></div>'});h+='<div style="margin-top:8px"><button class="btn-sm btn-x" onclick="postTodayToX()">\ud835\udd4f \u4eca\u65e5\u306e\u6295\u7968\u3092\u30dd\u30b9\u30c8</button></div>'}
+  h+='<div style="margin:20px 0"><span class="sec-title">\ud83d\uddf3 \u4eca\u65e5\u306e\u6295\u7968\uff08'+todayVotes.length+'/5\u7968\uff09</span><div style="margin-top:10px">';
+  if(!todayVotes.length)h+='<div style="color:#94a3b8;font-size:14px;padding:8px 0">\u307e\u3060\u6295\u7968\u3057\u3066\u3044\u307e\u305b\u3093</div>';
+  else{todayVotes.forEach(t=>{const s=ALL_SONGS.find(x=>x.title===t);h+='<div class="today-item"><span style="color:'+(s?s.color:"#FFD700")+';font-size:14px">\u25cf</span><span class="today-name">'+esc(t)+'</span><button class="today-rm" onclick="unvoteToday(\''+esc(t)+'\')">\u53d6\u308a\u6d88\u3059</button></div>'});h+='<div style="margin-top:8px"><button class="btn-sm btn-x" onclick="postTodayToX()">\ud835\udd4f \u4eca\u65e5\u306e\u6295\u7968\u3092\u30dd\u30b9\u30c8</button></div>'}
   h+='</div></div>';
-  h+='<div class="sec-header"><span class="sec-title">\ud83c\udfa4 \u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3 ('+list.length+'/'+MAX_MYSET+')</span><button class="btn-sm btn-clear" onclick="clearMySet()">\u7a7a\u306b\u3059\u308b</button></div>';
-  if(!list.length)h+='<div class="empty">\u6295\u7968\u3059\u308b\u3068\u81ea\u52d5\u3067\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u3055\u308c\u307e\u3059</div>';
-  else{list.forEach((t,i)=>{const enc=i>=list.length-2&&list.length>5;h+='<div class="my-row '+(enc?"encore":"")+'"><div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+')">\u25b2</button><button class="my-arrow" '+(i===list.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+')">\u25bc</button></div><span class="my-num">'+(enc?"En.":(i+1)+".")+'</span><span class="my-title">'+esc(t)+'</span><button class="my-rm" onclick="rmFromSet('+i+')">\u2715</button></div>'})}
+  h+='<div class="sec-header"><span class="sec-title">\ud83c\udfa4 \u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3 ('+mySetlist.length+'/'+MAX_MYSET+')</span><button class="btn-sm btn-clear" onclick="clearMySet()">\u7a7a\u306b\u3059\u308b</button></div>';
+  if(!mySetlist.length)h+='<div class="empty">\u6295\u7968\u3059\u308b\u3068\u81ea\u52d5\u3067\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u3055\u308c\u307e\u3059</div>';
+  else{mySetlist.forEach((t,i)=>{const enc=i>=mySetlist.length-2&&mySetlist.length>5;h+='<div class="my-row '+(enc?"encore":"")+'"><div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+')">\u25b2</button><button class="my-arrow" '+(i===mySetlist.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+')">\u25bc</button></div><span class="my-num">'+(enc?"En.":(i+1)+".")+'</span><span class="my-title">'+esc(t)+'</span><button class="my-rm" onclick="rmFromSet('+i+')">\u2715</button></div>'})}
   h+='<div style="font-size:12px;color:#94a3b8;margin-top:10px">\ud83d\udca1 \u25b2\u25bc\u30dc\u30bf\u30f3\u3067\u66f2\u9806\u3092\u5909\u66f4\u3067\u304d\u307e\u3059</div>';
   el.innerHTML=h;
 }
 
-/* ===== X ===== */
-function postTodayToX(){const t=getTodayVotes();if(!t.length){showToast("\u26a0 \u307e\u305a\u6295\u7968\u3057\u3066\u304f\u3060\u3055\u3044");return}const lines=["\u79c1\u304c\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u5165\u308c\u305f\u3044\u66f2\u306f\u3053\u3061\u3089\uff01",...t,"#toybee #toybee\u30ea\u30ad\u30c3\u30c9",X_SHORT_URL];window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(lines.join("\n")),"_blank","noopener,noreferrer")}
-function resetAll(){if(confirm("\u30c6\u30b9\u30c8\u30c7\u30fc\u30bf\u3092\u5168\u524a\u9664\u3057\u307e\u3059\u304b\uff1f")){localStorage.removeItem("testVotes");localStorage.removeItem("daily_"+todayJST());pendingSelections.clear();showToast("\ud83d\uddd1 \u30c7\u30fc\u30bf\u3092\u524a\u9664\u3057\u307e\u3057\u305f");renderAll()}}
+/* === X === */
+function postTodayToX(){if(!todayVotes.length){showToast("\u26a0 \u307e\u305a\u6295\u7968\u3057\u3066\u304f\u3060\u3055\u3044");return}const lines=["\u79c1\u304c\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u5165\u308c\u305f\u3044\u66f2\u306f\u3053\u3061\u3089\uff01",...todayVotes,"#toybee #toybee\u30ea\u30ad\u30c3\u30c9",X_SHORT_URL];window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(lines.join("\n")),"_blank","noopener,noreferrer")}
 
 function renderAll(){renderVote();renderRanking();renderSetlist()}
 renderAll();
 </script>
 </body>
 </html>
-

@@ -1,577 +1,518 @@
+%%writefile index.html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ROAD TO TOYROCK INVASION</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
-:root{
-  --bg:#0f172a;
-  --card:#1e1b2e;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --accent:#facc15;
-}
-*{box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-  margin:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  background:linear-gradient(180deg,#020617,#0f172a);
-  color:var(--text);
+  min-height:100vh;
+  background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#1a0a2e 100%);
+  color:#e2e8f0;
+  font-family:'Helvetica Neue','Segoe UI',sans-serif;
+  overflow-x:hidden;
 }
-header{
-  text-align:center;
-  padding:40px 16px;
-}
-h1{margin:0;font-size:36px}
-#countdown{font-size:26px;margin-top:12px}
-.desc{max-width:900px;margin:20px auto;color:var(--muted);font-size:14px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
 
-main{
-  display:flex;
-  gap:16px;
-  padding:24px;
-}
-section{
-  background:var(--card);
-  border-radius:16px;
-  padding:20px;
-  flex:1;
-}
-h2{margin-top:0}
+/* Floating bees */
+.bee{position:fixed;font-size:20px;opacity:.25;pointer-events:none;animation:fd 8s linear infinite}
+@keyframes fd{0%{transform:translateY(-30px) rotate(0);opacity:0}10%{opacity:.25}90%{opacity:.25}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
+@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-input[type=text]{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  margin-bottom:12px;
-}
+/* Header */
+.header{text-align:center;padding:24px 16px 0}
+.road{font-size:13px;color:#64748b;letter-spacing:4px;text-transform:uppercase}
+.title{font-size:26px;font-weight:900;background:linear-gradient(135deg,#FFD700,#F59E0B,#EF4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:4px 0;letter-spacing:2px}
+.subtitle{font-size:12px;color:#94a3b8}
+.user-info{font-size:10px;color:#475569;margin-top:4px}
+.user-info button{background:none;border:none;color:#64748b;cursor:pointer;font-size:10px;text-decoration:underline;margin-left:4px}
 
-.album{margin-bottom:10px}
-.album summary{
-  cursor:pointer;
-  font-weight:700;
-  margin-bottom:6px;
-}
+/* Countdown */
+.cd-wrap{display:flex;justify-content:center;gap:8px;padding:20px 16px 16px}
+.cd-box{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #FFD700;border-radius:12px;padding:10px 12px;min-width:60px;text-align:center;box-shadow:0 0 20px rgba(255,215,0,.2),inset 0 0 20px rgba(255,215,0,.05)}
+.cd-num{font-size:28px;font-weight:800;color:#FFD700;font-family:monospace;letter-spacing:2px;text-shadow:0 0 10px rgba(255,215,0,.5)}
+.cd-label{font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:2px;display:block;margin-top:4px}
+.cd-colon{color:#FFD700;font-size:24px;font-weight:700;padding-top:10px;transition:opacity .3s}
 
-/* ★ 安定レイアウト */
-.song{
-  display:grid;
-  grid-template-columns: 24px 1fr;
-  gap:10px;
-  padding:6px 4px;
-  align-items:start;
-}
-.song span{
-  line-height:1.5;
-  word-break:break-word;
-}
+/* Description */
+.desc{max-width:500px;margin:0 auto 12px;text-align:center;font-size:11px;color:#475569;line-height:1.7;padding:0 16px}
 
-button{
-  margin-top:12px;
-  background:var(--accent);
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  font-weight:700;
-  cursor:pointer;
-}
-button.secondary{
-  background:#334155;
-  color:#fff;
-}
-button.small{
-  margin-top:0;
-  padding:6px 10px;
-  border-radius:10px;
-  font-weight:700;
-}
-button.ghost{
-  background:#334155;
-  color:#fff;
-}
+/* Tabs */
+.tabs{display:flex;justify-content:center;gap:6px;padding:0 16px 16px}
+.tab{padding:8px 20px;border-radius:99px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.05);color:#94a3b8;transition:all .2s}
+.tab.active{background:linear-gradient(135deg,#FFD700,#F59E0B);color:#000;box-shadow:0 4px 15px rgba(255,215,0,.3)}
 
-small{color:var(--muted)}
-ul{padding-left:18px}
-ol{padding-left:20px;margin:0}
+/* Content area */
+.content{padding:0 16px 24px;max-width:560px;margin:0 auto}
+.card{background:rgba(255,255,255,.02);border-radius:16px;padding:16px;border:1px solid rgba(255,255,255,.05);margin-bottom:16px;animation:si .3s ease}
 
-.myrow{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:6px 0;
-}
-.mytitle{
-  flex:1;
-  line-height:1.5;
-  word-break:break-word;
-}
-.note{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:8px;
-}
+/* Nickname screen */
+.nick-screen{min-height:100vh;display:flex;align-items:center;justify-content:center}
+.nick-box{text-align:center;padding:32px;max-width:360px}
+.nick-input{width:100%;padding:12px 16px;border-radius:10px;border:2px solid rgba(255,215,0,.25);background:rgba(255,255,255,.05);color:#e2e8f0;font-size:15px;outline:none;text-align:center;margin-bottom:12px}
+.nick-input:focus{border-color:rgba(255,215,0,.6)}
+.nick-btn{width:100%;padding:12px 0;border-radius:10px;border:none;background:linear-gradient(135deg,#FFD700,#F59E0B);color:#000;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(255,215,0,.3)}
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  overflow:hidden;
-  border-radius:12px;
-}
-th,td{
-  padding:10px 12px;
-  border-bottom:1px solid rgba(148,163,184,0.25);
-  text-align:left;
-  vertical-align:top;
-}
-th{
-  color:var(--muted);
-  font-size:12px;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-}
-tr:last-child td{border-bottom:none}
-.rankcol{width:72px;white-space:nowrap}
+/* Section header */
+.sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sec-title{font-size:16px;font-weight:700;color:#e2e8f0}
+.badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px}
+.badge-gold{color:#FFD700;background:rgba(255,215,0,.1)}
+.badge-red{color:#EF4444;background:rgba(239,68,68,.1)}
 
-/* DnD */
-.dragging{opacity:.5}
-.drop-target{outline:2px dashed rgba(250,204,21,.8); outline-offset:6px; border-radius:12px;}
-.handle{cursor:grab; user-select:none; padding:4px 8px; border-radius:10px; background:#334155; color:#fff; font-weight:700;}
-.handle:active{cursor:grabbing;}
+/* Album filter */
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.filter-btn{padding:4px 12px;border-radius:99px;border:none;font-size:11px;cursor:pointer;font-weight:600;transition:all .2s}
 
-@media(max-width:900px){
-  main{flex-direction:column}
+/* Song item in vote */
+.song-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);margin-bottom:6px;transition:all .2s}
+.song-item.voted{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.3)}
+.song-info{flex:1;min-width:0}
+.song-name{font-size:13px;color:#e2e8f0;font-weight:500;word-break:break-word}
+.song-album{font-size:10px;padding:2px 8px;border-radius:99px;margin-left:6px;white-space:nowrap}
+.vote-btn{border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;min-width:70px;text-align:center;transition:all .2s}
+.vote-btn.on{background:linear-gradient(135deg,#FFD700,#F59E0B);color:#000}
+.vote-btn.off{background:rgba(255,255,255,.06);color:#e2e8f0}
+.vote-btn.disabled{background:rgba(255,255,255,.03);color:#475569;cursor:default}
+
+/* Ranking */
+.rank-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;margin-bottom:6px}
+.rank-row.top3{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.15)}
+.rank-row.normal{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
+.rank-num{font-size:16px;font-weight:800;min-width:28px}
+.rank-bar-bg{height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:4px}
+.rank-bar{height:100%;border-radius:99px;transition:width .5s}
+.rank-voters{font-size:10px;color:#475569;margin-top:2px}
+
+/* My setlist */
+.my-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;margin-bottom:4px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);transition:all .15s}
+.my-row.encore{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15)}
+.my-num{color:#64748b;font-size:12px;min-width:28px;font-weight:700}
+.my-row.encore .my-num{color:#FFD700}
+.my-title{flex:1;font-size:13px;color:#e2e8f0;word-break:break-word}
+.my-handle{cursor:grab;user-select:none;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.06);color:#64748b;font-weight:700;font-size:12px}
+.my-handle:active{cursor:grabbing}
+.my-rm{background:none;border:none;cursor:pointer;color:#EF4444;font-size:13px;padding:2px}
+.dragging{opacity:.4}
+.drop-target{outline:2px dashed rgba(250,204,21,.7);outline-offset:2px;border-radius:8px}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#FFD700;color:#000;padding:10px 24px;border-radius:99px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(255,215,0,.4);animation:si .3s ease;pointer-events:none}
+
+/* Footer buttons */
+.foot-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.btn-sm{padding:6px 14px;border-radius:8px;border:none;font-size:11px;font-weight:600;cursor:pointer}
+.btn-x{background:rgba(29,161,242,.15);color:#1DA1F2;border:1px solid rgba(29,161,242,.3)}
+.btn-clear{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.25)}
+.btn-reset{background:rgba(255,255,255,.05);color:#64748b;border:1px solid rgba(255,255,255,.08)}
+
+/* Accordion */
+details{background:rgba(255,255,255,.02);border-radius:16px;padding:16px;border:1px solid rgba(255,255,255,.05)}
+summary{color:#FFD700;font-size:14px;font-weight:700;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+
+/* Timeline */
+.tl{position:relative;padding-left:20px;margin-top:12px}
+.tl-line{position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,#FFD700,#EF4444)}
+.tl-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;position:relative}
+.tl-dot{position:absolute;left:-16px;top:6px;border-radius:50%;border:2px solid #0f172a}
+.tl-date{font-size:11px;color:#64748b;font-family:monospace}
+.tl-cap{font-size:10px;padding:1px 6px;border-radius:4px;margin-left:6px}
+.tl-label{font-size:13px;margin-left:6px}
+
+.empty{text-align:center;padding:30px;color:#475569;font-size:13px;border:2px dashed rgba(255,255,255,.08);border-radius:12px}
+
+@media(max-width:400px){
+  .cd-box{min-width:50px;padding:8px 10px}
+  .cd-num{font-size:22px}
+  .tab{padding:7px 14px;font-size:12px}
 }
 </style>
 </head>
-
 <body>
 
-<header>
-  <h1>ROAD TO TOYROCK INVASION</h1>
-  <div id="countdown"></div>
-  <div class="desc">
-    このページはロックバンドtoybeeの2026/3/22(日)＠恵比寿リキッドルーム ワンマンライブの成功を祈念して、toybeeファンが作成したものです。<br>
-    ※toybee公式とは関係ありませんのでご留意ください。
-    <br><br>
-    ・1日1人5票まで<br>
-    ・マイセトリ最大20曲<br>
-    ・ランキングは全員の累積
-    <br><br>
-    <small>※ 現在はテストモード（local保存）</small>
+<!-- Nickname Screen -->
+<div id="nickScreen" class="nick-screen">
+  <div class="nick-box">
+    <div style="font-size:48px;margin-bottom:16px">🐝</div>
+    <div class="title" style="font-size:24px;margin-bottom:8px">TOYROCK INVASION</div>
+    <p style="color:#94a3b8;font-size:13px;margin-bottom:24px">2026.3.22 恵比寿LIQUIDROOM<br>セトリ投票に参加しよう！</p>
+    <input id="nickInput" class="nick-input" placeholder="ニックネームを入力" maxlength="20">
+    <button class="nick-btn" onclick="enterApp()">🐝 参加する</button>
+    <p style="color:#475569;font-size:11px;margin-top:8px">※空欄なら「名無しクルー」で参加</p>
   </div>
-</header>
-
-<main>
-
-<!-- 投票 -->
-<section>
-  <h2>① 投票（最大5曲）</h2>
-  <input id="nickname" type="text" placeholder="ニックネーム" oninput="render()">
-
-  <div id="songList"></div>
-
-<button onclick="vote()">テスト投票</button>
-<button class="small ghost" style="margin-left:8px;" onclick="postTodayVotesToX()">本日の投票をXに投稿</button>
-<button class="secondary" style="margin-left:8px;" onclick="resetTest()">テストデータ全消去</button>
-
-
-  <div id="voteMsg" class="note"></div>
-</section>
-
-<!-- マイセトリ（2番目） -->
-<section>
-  <h2>② マイセトリ（最大20曲）</h2>
-
-<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
-  <button class="small ghost" onclick="clearMySet()">マイセトリを空にする</button>
 </div>
 
+<!-- Main App -->
+<div id="mainApp" style="display:none">
+  <!-- Floating bees -->
+  <div class="bee" style="left:5%;animation-delay:0s">🐝</div>
+  <div class="bee" style="left:17%;animation-delay:2s">🐝</div>
+  <div class="bee" style="left:29%;animation-delay:4s">🐝</div>
+  <div class="bee" style="left:41%;animation-delay:6s">🐝</div>
+  <div class="bee" style="left:53%;animation-delay:1s">🐝</div>
+  <div class="bee" style="left:65%;animation-delay:3s">🐝</div>
+  <div class="bee" style="left:77%;animation-delay:5s">🐝</div>
+  <div class="bee" style="left:89%;animation-delay:7s">🐝</div>
 
-  <ol id="myset"></ol>
-  <div id="mysetMsg" class="note"></div>
-</section>
+  <!-- Header -->
+  <div class="header">
+    <div class="road">ROAD TO</div>
+    <div class="title">TOYROCK INVASION</div>
+    <div class="subtitle">2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
+    <div class="user-info">🐝 <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
+  </div>
 
-<!-- ランキング（表・同率同順位・票数非公開） -->
-<section>
-  <h2>③ ランキング（テスト）</h2>
-  <table>
-    <thead>
-      <tr>
-        <th class="rankcol">順位</th>
-        <th>曲名</th>
-      </tr>
-    </thead>
-    <tbody id="rank"></tbody>
-  </table>
-</section>
+  <!-- Countdown -->
+  <div class="cd-wrap">
+    <div><div class="cd-box"><span class="cd-num" id="cdD">00</span></div><span class="cd-label">DAYS</span></div>
+    <div class="cd-colon" id="col1">:</div>
+    <div><div class="cd-box"><span class="cd-num" id="cdH">00</span></div><span class="cd-label">HRS</span></div>
+    <div class="cd-colon" id="col2">:</div>
+    <div><div class="cd-box"><span class="cd-num" id="cdM">00</span></div><span class="cd-label">MIN</span></div>
+    <div class="cd-colon" id="col3">:</div>
+    <div><div class="cd-box"><span class="cd-num" id="cdS">00</span></div><span class="cd-label">SEC</span></div>
+  </div>
 
-</main>
+  <!-- Description -->
+  <div class="desc">
+    toybeeファンが作成した非公式応援ページです（toybee公式とは無関係です）<br>
+    1日5票まで ／ マイセトリ最大20曲 ／ ランキングは全員の累積
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="vote" onclick="switchTab('vote')">🎸 投票</button>
+    <button class="tab" data-tab="ranking" onclick="switchTab('ranking')">🏆 ランキング</button>
+    <button class="tab" data-tab="setlist" onclick="switchTab('setlist')">📋 マイセトリ</button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Vote Tab -->
+    <div id="tabVote" class="card"></div>
+
+    <!-- Ranking Tab -->
+    <div id="tabRanking" class="card" style="display:none"></div>
+
+    <!-- Setlist Tab -->
+    <div id="tabSetlist" class="card" style="display:none"></div>
+
+    <!-- Timeline -->
+    <details>
+      <summary>🚀 toybeeの軌跡 ── LIQUIDROOMへの道 ▾</summary>
+      <div class="tl">
+        <div class="tl-line"></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(0,70%,55%)"></div><div><div><span class="tl-date">2021.09</span><span class="tl-cap" style="color:#94a3b8;background:rgba(255,255,255,.04)">~50人</span></div><span class="tl-label" style="color:#e2e8f0">初ライブ</span><span style="font-size:11px;color:#64748b;margin-left:6px">Sound Stream sakura</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(40,70%,55%)"></div><div><div><span class="tl-date">2022.07</span><span class="tl-cap" style="color:#94a3b8;background:rgba(255,255,255,.04)">~200人</span></div><span class="tl-label" style="color:#e2e8f0">初ワンマン</span><span style="font-size:11px;color:#64748b;margin-left:6px">下北沢SHELTER</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(80,70%,55%)"></div><div><div><span class="tl-date">2023.04</span></div><span class="tl-label" style="color:#e2e8f0">1st Album</span><span style="font-size:11px;color:#64748b;margin-left:6px">THE EARLY TOYBEE</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(120,70%,55%)"></div><div><div><span class="tl-date">2023.10</span><span class="tl-cap" style="color:#94a3b8;background:rgba(255,255,255,.04)">~300人</span></div><span class="tl-label" style="color:#e2e8f0">ワンマン</span><span style="font-size:11px;color:#64748b;margin-left:6px">下北沢CLUB Que</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(160,70%,55%)"></div><div><div><span class="tl-date">2024.02</span><span class="tl-cap" style="color:#94a3b8;background:rgba(255,255,255,.04)">~500人</span></div><span class="tl-label" style="color:#e2e8f0">ワンマン</span><span style="font-size:11px;color:#64748b;margin-left:6px">新宿LOFT</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(200,70%,55%)"></div><div><div><span class="tl-date">2025.01</span><span class="tl-cap" style="color:#94a3b8;background:rgba(255,255,255,.04)">~600人</span></div><span class="tl-label" style="color:#e2e8f0">SOLD OUT!</span><span style="font-size:11px;color:#64748b;margin-left:6px">渋谷CLUB QUATTRO</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:10px;height:10px;background:hsl(240,70%,55%)"></div><div><div><span class="tl-date">2026.01</span></div><span class="tl-label" style="color:#e2e8f0">EP Release</span><span style="font-size:11px;color:#64748b;margin-left:6px">TOYROCK INVASION</span></div></div>
+        <div class="tl-item"><div class="tl-dot" style="width:14px;height:14px;background:#FFD700;box-shadow:0 0 12px rgba(255,215,0,.6)"></div><div><div><span class="tl-date">2026.03</span><span class="tl-cap" style="color:#FFD700;background:rgba(255,215,0,.1)">~1000人</span></div><span class="tl-label" style="color:#FFD700;font-weight:700">🐝 NEXT!</span><span style="font-size:11px;color:#64748b;margin-left:6px">恵比寿LIQUIDROOM</span></div></div>
+      </div>
+    </details>
+  </div>
+
+  <div style="text-align:center;padding:8px 16px 20px;font-size:10px;color:#334155">Made with 🐝 for TOYROCK INVASION @ LIQUIDROOM 2026.3.22</div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast" style="display:none"></div>
 
 <script>
-/* ===== 設定 ===== */
-const DEADLINE = new Date("2026-03-22T18:00:00+09:00");
-const MAX_VOTE = 5;      // 1回のチェック上限
-const MAX_DAILY = 5;     // 1日合計の上限（←今回ここを厳密化）
-const MAX_MYSET = 20;
+/* ===== Config ===== */
+const DEADLINE=new Date("2026-03-22T18:00:00+09:00");
+const MAX_VOTE=5;
+const MAX_DAILY=5;
+const MAX_MYSET=20;
+const X_SHORT_URL="https://x.gd/qATK1";
 
-/* X投稿 末尾URL（指定） */
-const X_SHORT_URL = "https://x.gd/qATK1";
-
-/* ===== 曲データ ===== */
 const ALBUMS=[
-  {name:"THE EARLY TOYBEE",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
-  {name:"REVIVAL",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
-  {name:"LOOKBACK TO THE FUTURE",songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
-  {name:"TOYROCK INVASION",songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
-  {name:"Singles",songs:["ひとつだけ","ハナマル"]}
+  {name:"THE EARLY TOYBEE",color:"#FFD700",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
+  {name:"REVIVAL",color:"#8B5CF6",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
+  {name:"LOOKBACK TO THE FUTURE",color:"#06B6D4",songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
+  {name:"TOYROCK INVASION",color:"#EF4444",songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
+  {name:"Singles",color:"#F59E0B",songs:["ひとつだけ","ハナマル"]}
 ];
+const ALL_SONGS=ALBUMS.flatMap(a=>a.songs.map(s=>({title:s,album:a.name,color:a.color})));
 
-/* ===== カウントダウン ===== */
+/* ===== Utils ===== */
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function todayJST(){const n=new Date(),j=new Date(n.getTime()+9*36e5);return j.toISOString().split("T")[0]}
+function loadVotes(){return JSON.parse(localStorage.getItem("testVotes")||"{}")}
+function saveVotes(d){localStorage.setItem("testVotes",JSON.stringify(d))}
+function loadDaily(){return JSON.parse(localStorage.getItem("daily_"+todayJST())||"{}")}
+function saveDaily(d){localStorage.setItem("daily_"+todayJST(),JSON.stringify(d))}
+
+let currentNick="";
+let currentTab="vote";
+let currentFilter="all";
+let toastTimer=null;
+
+/* ===== Toast ===== */
+function showToast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg;el.style.display="block";
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{el.style.display="none"},2500);
+}
+
+/* ===== Nickname ===== */
+function enterApp(){
+  const v=document.getElementById("nickInput").value.trim()||"名無しクルー";
+  localStorage.setItem("toybee_nick",v);
+  currentNick=v;
+  document.getElementById("nickScreen").style.display="none";
+  document.getElementById("mainApp").style.display="block";
+  document.getElementById("dispNick").textContent=v;
+  renderAll();
+}
+function changeNick(){
+  localStorage.removeItem("toybee_nick");
+  currentNick="";
+  document.getElementById("nickScreen").style.display="flex";
+  document.getElementById("mainApp").style.display="none";
+  document.getElementById("nickInput").value="";
+}
+// Auto-login
+(function(){
+  const saved=localStorage.getItem("toybee_nick");
+  if(saved){
+    currentNick=saved;
+    document.getElementById("nickScreen").style.display="none";
+    document.getElementById("mainApp").style.display="block";
+    document.getElementById("dispNick").textContent=saved;
+  }
+  document.getElementById("nickInput").addEventListener("keydown",e=>{if(e.key==="Enter")enterApp()});
+})();
+
+/* ===== Countdown ===== */
 function tick(){
-  const d = DEADLINE - new Date();
-  if(d<=0){ countdown.textContent="開演しました"; return; }
+  const d=DEADLINE-new Date();
+  if(d<=0){document.getElementById("cdD").textContent="00";return}
   const s=Math.floor(d/1000);
-  countdown.textContent =
-    "ライブ開演まであと "+
-    String(Math.floor(s/86400)).padStart(2,"0")+":"+
-    String(Math.floor(s%86400/3600)).padStart(2,"0")+":"+
-    String(Math.floor(s%3600/60)).padStart(2,"0")+":"+
-    String(s%60).padStart(2,"0");
+  const sec=s%60;
+  document.getElementById("cdD").textContent=String(Math.floor(s/86400)).padStart(2,"0");
+  document.getElementById("cdH").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
+  document.getElementById("cdM").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
+  document.getElementById("cdS").textContent=String(sec).padStart(2,"0");
+  const op=sec%2===0?1:.3;
+  document.getElementById("col1").style.opacity=op;
+  document.getElementById("col2").style.opacity=op;
+  document.getElementById("col3").style.opacity=op;
 }
-setInterval(tick,1000); tick();
+setInterval(tick,1000);tick();
 
-/* ===== 曲描画 ===== */
-const songList = document.getElementById("songList");
-ALBUMS.forEach(a=>{
-  const d=document.createElement("details");
-  d.className="album";
-  d.innerHTML=`<summary>${a.name}</summary>`;
-  a.songs.forEach(s=>{
-    d.innerHTML += `
-      <label class="song">
-        <input type="checkbox" value="${escapeHtml(s)}" onchange="limitCheck()">
-        <span>${escapeHtml(s)}</span>
-      </label>`;
+/* ===== Tabs ===== */
+function switchTab(id){
+  currentTab=id;
+  document.querySelectorAll(".tab").forEach(t=>{t.classList.toggle("active",t.dataset.tab===id)});
+  document.getElementById("tabVote").style.display=id==="vote"?"block":"none";
+  document.getElementById("tabRanking").style.display=id==="ranking"?"block":"none";
+  document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";
+  renderAll();
+}
+
+/* ===== Data helpers ===== */
+function getMySet(){
+  const d=loadVotes(),a=d[currentNick]||[];
+  const seen=new Set(),u=[];
+  for(const s of a){if(!seen.has(s)){seen.add(s);u.push(s)}}
+  return u.slice(0,MAX_MYSET);
+}
+function setMySet(list){const d=loadVotes();d[currentNick]=list.slice(0,MAX_MYSET);saveVotes(d)}
+function getTodayVotes(){const d=loadDaily();return d[currentNick]||[]}
+function addTodayVotes(songs){const d=loadDaily();const c=d[currentNick]||[];d[currentNick]=c.concat(songs).slice(0,MAX_DAILY);saveDaily(d)}
+
+/* ===== Vote rendering ===== */
+function renderVote(){
+  const el=document.getElementById("tabVote");
+  const today=getTodayVotes();
+  const remain=MAX_DAILY-today.length;
+
+  // Header
+  let html=`<div class="sec-header">
+    <span class="sec-title">🎸 聴きたい曲に投票</span>
+    <span class="badge ${remain>0?"badge-gold":"badge-red"}">残り ${remain}/5票</span>
+  </div>`;
+
+  // Filters
+  html+=`<div class="filters">
+    <button class="filter-btn" style="background:${currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)"};color:${currentFilter==="all"?"#000":"#94a3b8"}" onclick="currentFilter='all';renderVote()">ALL</button>`;
+  ALBUMS.forEach(a=>{
+    const active=currentFilter===a.name;
+    html+=`<button class="filter-btn" style="background:${active?a.color:"rgba(255,255,255,.06)"};color:${active?"#000":"#94a3b8"}" onclick="currentFilter='${esc(a.name)}';renderVote()">${a.name==="Singles"?"Singles":a.name.split(" ")[0]}</button>`;
   });
-  songList.appendChild(d);
-});
+  html+=`</div>`;
 
-/* ===== HTMLエスケープ（安全対策） ===== */
-function escapeHtml(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-/* ===== 制限（1回のチェック数） ===== */
-function limitCheck(){
-  const c=[...document.querySelectorAll("input[type=checkbox]:checked")];
-  if(c.length>MAX_VOTE){
-    c[c.length-1].checked=false;
-    alert("最大5曲までです");
-  }
-}
-
-/* ===== localStorage ヘルパ ===== */
-function loadVotes(){
-  return JSON.parse(localStorage.getItem("testVotes")||"{}");
-}
-function saveVotes(data){
-  localStorage.setItem("testVotes", JSON.stringify(data));
-}
-
-/* ===== 日付キー（JST固定） ===== */
-function todayKeyJST(){
-  const now = new Date();
-  const jst = new Date(now.getTime() + 9*60*60*1000);
-  const y = jst.getUTCFullYear();
-  const m = String(jst.getUTCMonth()+1).padStart(2,"0");
-  const d = String(jst.getUTCDate()).padStart(2,"0");
-  return `${y}-${m}-${d}`;
-}
-function dailyStorageKey(){
-  return `dailyVotes_${todayKeyJST()}`;
-}
-function loadDailyVotes(){
-  return JSON.parse(localStorage.getItem(dailyStorageKey())||"{}");
-}
-function saveDailyVotes(data){
-  localStorage.setItem(dailyStorageKey(), JSON.stringify(data));
-}
-
-/* ===== マイセトリ（ニックネーム単位） ===== */
-function getNick(){
-  return nickname.value.trim();
-}
-function getMySet(nick){
-  const data = loadVotes();
-  const arr = Array.isArray(data[nick]) ? data[nick] : [];
-  // 重複除去しつつ順序維持
-  const seen = new Set();
-  const uniq = [];
-  for(const s of arr){
-    if(!seen.has(s)){
-      seen.add(s);
-      uniq.push(s);
-    }
-  }
-  return uniq.slice(0, MAX_MYSET);
-}
-function setMySet(nick, list){
-  const data = loadVotes();
-  data[nick] = list.slice(0, MAX_MYSET);
-  saveVotes(data);
-}
-
-/* ===== 本日の投票ログ（ニックネーム単位） ===== */
-function getTodayVotesRaw(nick){
-  const d = loadDailyVotes();
-  return Array.isArray(d[nick]) ? d[nick] : [];
-}
-function addDailyVotes(nick, selected){
-  const d = loadDailyVotes();
-  const cur = Array.isArray(d[nick]) ? d[nick] : [];
-
-  // 1日合計MAX_DAILYまでに切る（念のため）
-  const merged = cur.concat(selected).slice(0, MAX_DAILY);
-
-  d[nick] = merged;
-  saveDailyVotes(d);
-}
-function getTodayVotesForTweet(nick){
-  // “その日に投票した内容”をそのまま、最大5曲
-  return getTodayVotesRaw(nick).slice(0, MAX_DAILY);
-}
-
-/* ===== テスト投票 ===== */
-function vote(){
-  const nick = getNick();
-  if(!nick){ alert("ニックネーム必須"); return; }
-
-  const selected = [...document.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value);
-  if(!selected.length){ alert("曲を選んでください"); return; }
-
-  // --- 1日合計5票の厳密チェック ---
-  const todayAlready = getTodayVotesRaw(nick).length;
-  const remain = MAX_DAILY - todayAlready;
-  if(remain <= 0){
-    alert("本日の投票はすでに5票に達しています。");
-    return;
-  }
-  if(selected.length > remain){
-    alert(`本日の残り投票枠は ${remain} 曲です。選び直してください。`);
-    return;
-  }
-
-  // 1) 本日の投票ログへ追加（順序保持）
-  addDailyVotes(nick, selected);
-
-  // 2) マイセトリへも反映（従来どおり）
-  const current = getMySet(nick);
-  const merged = current.concat(selected);
-
-  const seen = new Set();
-  const uniq = [];
-  for(const s of merged){
-    if(!seen.has(s)){
-      seen.add(s);
-      uniq.push(s);
-    }
-  }
-  setMySet(nick, uniq);
-
-  voteMsg.textContent = `テスト投票しました（本日の投票：${todayKeyJST()} / ${getTodayVotesRaw(nick).length}票）`;
-
-  // 投票後にチェック解除
-  document.querySelectorAll("input[type=checkbox]:checked").forEach(el=>el.checked=false);
-
-  render();
-}
-
-/* ===== マイセトリ：クリア ===== */
-function clearMySet(){
-  const nick = getNick();
-  if(!nick){ alert("先にニックネームを入力してください"); return; }
-  if(confirm("このニックネームのマイセトリを空にしますか？")){
-    setMySet(nick, []);
-    render();
-  }
-}
-
-/* ===== X投稿（本日の投票内容：最大5曲） ===== */
-function buildTodayVotesXText(){
-  const nick = getNick();
-  const voted = nick ? getTodayVotesForTweet(nick) : [];
-
-  const lines = [
-    "私がマイセトリに入れたい曲はこちら！",
-    ...voted,
-    "#toybee #toybeeリキッド",
-    X_SHORT_URL
-  ];
-  return lines.join("\n");
-}
-
-function postTodayVotesToX(){
-  const nick = getNick();
-  if(!nick){ alert("先にニックネームを入力してください"); return; }
-
-  const voted = getTodayVotesForTweet(nick);
-  if(voted.length === 0){
-    alert("本日の投票内容がありません。まず投票してください。");
-    return;
-  }
-
-  const text = buildTodayVotesXText();
-  const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-
-/* ===== ランキング生成（全員累積・同率同順位・票数非公開） ===== */
-function computeRanking(){
-  const data = loadVotes();
-  const counts = {};
-
-  Object.values(data).forEach(arr=>{
-    (arr||[]).forEach(s=>{
-      counts[s] = (counts[s]||0) + 1;
-    });
-  });
-
-  const entries = Object.entries(counts).sort((a,b)=>{
-    if(b[1] !== a[1]) return b[1] - a[1];
-    return String(a[0]).localeCompare(String(b[0]), "ja");
-  });
-
-  // 同率同順位（1,1,3...）
-  const ranked = [];
-  let prevCount = null;
-  let rank = 0;
-  let index = 0;
-
-  for(const [song, c] of entries){
-    index += 1;
-    if(prevCount === null || c !== prevCount){
-      rank = index;
-      prevCount = c;
-    }
-    ranked.push({ rank, song, count:c });
-  }
-  return ranked;
-}
-
-/* ===== DnD（マイセトリ曲順入れ替え） ===== */
-let dragFromIdx = null;
-
-function onDragStart(e){
-  const li = e.currentTarget;
-  dragFromIdx = Number(li.dataset.idx);
-  li.classList.add("dragging");
-  e.dataTransfer.effectAllowed = "move";
-}
-
-function onDragOver(e){
-  e.preventDefault();
-  e.currentTarget.classList.add("drop-target");
-  e.dataTransfer.dropEffect = "move";
-}
-
-function onDragLeave(e){
-  e.currentTarget.classList.remove("drop-target");
-}
-
-function onDrop(e){
-  e.preventDefault();
-  const toIdx = Number(e.currentTarget.dataset.idx);
-  e.currentTarget.classList.remove("drop-target");
-
-  const nick = getNick();
-  if(!nick) return;
-  const list = getMySet(nick);
-
-  if(dragFromIdx === null || toIdx === dragFromIdx) return;
-  if(dragFromIdx < 0 || dragFromIdx >= list.length) return;
-  if(toIdx < 0 || toIdx >= list.length) return;
-
-  const [item] = list.splice(dragFromIdx, 1);
-  list.splice(toIdx, 0, item);
-
-  setMySet(nick, list);
-  dragFromIdx = null;
-  render();
-}
-
-function onDragEnd(e){
-  e.currentTarget.classList.remove("dragging");
-  document.querySelectorAll(".drop-target").forEach(el=>el.classList.remove("drop-target"));
-}
-
-/* ===== 表示 ===== */
-function render(){
-  // --- ランキング ---
-  const ranked = computeRanking();
-  rank.innerHTML = ranked.map(r=>`
-    <tr>
-      <td class="rankcol">${r.rank}位</td>
-      <td>${escapeHtml(r.song)}</td>
-    </tr>
-  `).join("");
-
-  // --- マイセトリ ---
-  const nick = getNick();
-  const mysetEl = document.getElementById("myset");
-  const mymsg = document.getElementById("mysetMsg");
-
-  if(!nick){
-    mysetEl.innerHTML = "";
-    mymsg.textContent = "ニックネームを入力すると、あなたのマイセトリを表示・並べ替えできます。";
-    return;
-  }
-
-  const list = getMySet(nick);
-  if(list.length === 0){
-    mysetEl.innerHTML = "";
-    mymsg.textContent = "マイセトリは空です。投票で追加できます。";
-    return;
-  }
-
-  const todayCount = getTodayVotesRaw(nick).length;
-  mymsg.textContent =
-    `≡ をドラッグ&ドロップで曲順を変更できます（保存されます）。`+
-    `X投稿は「本日の投票内容（${todayKeyJST()} / ${todayCount}票）」をそのまま最大5曲載せます。`;
-
-  mysetEl.innerHTML = list.map((s, i)=>`
-    <li draggable="true" data-idx="${i}"
-        ondragstart="onDragStart(event)"
-        ondragover="onDragOver(event)"
-        ondragleave="onDragLeave(event)"
-        ondrop="onDrop(event)"
-        ondragend="onDragEnd(event)">
-      <div class="myrow">
-        <span class="handle" title="ドラッグして並べ替え">≡</span>
-        <div class="mytitle">${escapeHtml(s)}</div>
+  // Songs
+  const filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(s=>s.album===currentFilter);
+  filtered.forEach(s=>{
+    const voted=today.includes(s.title);
+    const cls=voted?"voted":"";
+    const btnCls=voted?"on":remain<=0?"disabled":"off";
+    const btnTxt=voted?"✓ 推し":"🐝 投票";
+    const dis=(!voted&&remain<=0)?'disabled':'';
+    html+=`<div class="song-item ${cls}">
+      <div class="song-info">
+        <span class="song-name">${esc(s.title)}</span>
+        <span class="song-album" style="color:${s.color};background:${s.color}15">${esc(s.album)}</span>
       </div>
-    </li>
-  `).join("");
-}
-render();
+      <button class="vote-btn ${btnCls}" ${dis} onclick="toggleVote('${esc(s.title)}')">${btnTxt}</button>
+    </div>`;
+  });
 
-/* ===== リセット ===== */
-function resetTest(){
+  // Footer buttons
+  html+=`<div class="foot-btns">
+    <button class="btn-sm btn-x" onclick="postToX()">𝕏 本日の投票をポスト</button>
+    <button class="btn-sm btn-reset" onclick="resetAll()">🗑 テストデータ全消去</button>
+  </div>`;
+
+  el.innerHTML=html;
+}
+
+/* ===== Toggle vote ===== */
+function toggleVote(title){
+  const today=getTodayVotes();
+  if(today.includes(title)){
+    // Unvote
+    const d=loadDaily();
+    d[currentNick]=(d[currentNick]||[]).filter(s=>s!==title);
+    saveDaily(d);
+    // Remove from myset too
+    const ms=getMySet().filter(s=>s!==title);
+    setMySet(ms);
+    showToast("🗑 取り消しました");
+  }else{
+    if(today.length>=MAX_DAILY){showToast("⚠ 今日の投票上限（5票）に達しました");return}
+    addTodayVotes([title]);
+    // Add to myset
+    const ms=getMySet();
+    if(!ms.includes(title))ms.push(title);
+    setMySet(ms);
+    showToast("🐝 投票しました！");
+  }
+  renderAll();
+}
+
+/* ===== Ranking ===== */
+function renderRanking(){
+  const el=document.getElementById("tabRanking");
+  const data=loadVotes();
+  const counts={};
+  Object.values(data).forEach(arr=>{(arr||[]).forEach(s=>{counts[s]=(counts[s]||0)+1})});
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"ja"));
+
+  const ranked=[];
+  let prev=null,rank=0,idx=0;
+  for(const[song,c]of entries){idx++;if(prev===null||c!==prev){rank=idx;prev=c}ranked.push({rank,song,count:c})}
+  const mx=ranked.length>0?ranked[0].count:1;
+
+  let html=`<div class="sec-header">
+    <span class="sec-title">🏆 ランキング</span>
+    <button class="btn-sm btn-reset" style="margin:0" onclick="renderRanking()">↻ 更新</button>
+  </div>`;
+
+  if(ranked.length===0){
+    html+=`<div class="empty">まだ投票がありません。最初の一票を！</div>`;
+  }else{
+    ranked.forEach((r,i)=>{
+      const song=ALL_SONGS.find(s=>s.title===r.song)||{color:"#94a3b8"};
+      const pct=mx>0?(r.count/mx)*100:0;
+      const cls=i<3?"top3":"normal";
+      const numColor=i===0?"#FFD700":i===1?"#C0C0C0":i===2?"#CD7F32":"#64748b";
+      html+=`<div class="rank-row ${cls}">
+        <span class="rank-num" style="color:${numColor}">${r.rank}</span>
+        <div style="flex:1">
+          <span class="song-name">${esc(r.song)}</span>
+          <div class="rank-bar-bg"><div class="rank-bar" style="width:${pct}%;background:linear-gradient(90deg,${song.color},${song.color}88)"></div></div>
+        </div>
+      </div>`;
+    });
+  }
+  el.innerHTML=html;
+}
+
+/* ===== My Setlist ===== */
+function renderSetlist(){
+  const el=document.getElementById("tabSetlist");
+  const today=getTodayVotes();
+  const list=getMySet();
+
+  let html=`<div style="margin-bottom:20px">
+    <span class="sec-title">🗳 今日の投票（${today.length}票）</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">`;
+  if(today.length===0)html+=`<span style="color:#475569;font-size:13px">まだ投票していません</span>`;
+  else today.forEach(t=>{const s=ALL_SONGS.find(x=>x.title===t);html+=`<span style="padding:4px 12px;border-radius:99px;font-size:12px;color:${s?s.color:"#e2e8f0"};background:${(s?s.color:"#FFD700")}15;border:1px solid ${(s?s.color:"#FFD700")}33">${esc(t)}</span>`});
+  html+=`</div></div>`;
+
+  html+=`<div class="sec-header">
+    <span class="sec-title">🎤 マイセトリ予想 (${list.length}/${MAX_MYSET})</span>
+    <button class="btn-sm btn-clear" onclick="clearMySet()">空にする</button>
+  </div>`;
+
+  if(list.length===0){
+    html+=`<div class="empty">投票すると自動でマイセトリに追加されます</div>`;
+  }else{
+    list.forEach((title,i)=>{
+      const enc=i>=list.length-2&&list.length>5;
+      html+=`<div class="my-row ${enc?"encore":""}" draggable="true" data-idx="${i}"
+        ondragstart="dStart(event)" ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event)" ondragend="dEnd(event)">
+        <span class="my-handle" title="ドラッグで並べ替え">≡</span>
+        <span class="my-num">${enc?"En.":(i+1)+"."}</span>
+        <span class="my-title">${esc(title)}</span>
+        <button class="my-rm" onclick="rmFromSet(${i})">✕</button>
+      </div>`;
+    });
+  }
+
+  html+=`<div class="foot-btns" style="margin-top:16px">
+    <button class="btn-sm btn-x" onclick="postToX()">𝕏 本日の投票をポスト</button>
+  </div>`;
+  html+=`<div style="font-size:10px;color:#475569;margin-top:8px">≡ をドラッグ＆ドロップで曲順を変更できます</div>`;
+
+  el.innerHTML=html;
+}
+
+/* ===== DnD ===== */
+let dragIdx=null;
+function dStart(e){dragIdx=+e.currentTarget.dataset.idx;e.currentTarget.classList.add("dragging");e.dataTransfer.effectAllowed="move"}
+function dOver(e){e.preventDefault();e.currentTarget.classList.add("drop-target")}
+function dLeave(e){e.currentTarget.classList.remove("drop-target")}
+function dDrop(e){e.preventDefault();e.currentTarget.classList.remove("drop-target");const to=+e.currentTarget.dataset.idx;if(dragIdx===null||dragIdx===to)return;const l=getMySet();const[item]=l.splice(dragIdx,1);l.splice(to,0,item);setMySet(l);dragIdx=null;renderSetlist()}
+function dEnd(e){e.currentTarget.classList.remove("dragging");document.querySelectorAll(".drop-target").forEach(el=>el.classList.remove("drop-target"))}
+
+function rmFromSet(i){const l=getMySet();l.splice(i,1);setMySet(l);renderSetlist()}
+function clearMySet(){if(confirm("マイセトリを空にしますか？")){setMySet([]);renderSetlist()}}
+
+/* ===== X Post ===== */
+function postToX(){
+  const today=getTodayVotes();
+  if(!today.length){showToast("⚠ まず投票してください");return}
+  const lines=["私がマイセトリに入れたい曲はこちら！",...today,"#toybee #toybeeリキッド",X_SHORT_URL];
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(lines.join("\n")),"_blank","noopener,noreferrer");
+}
+
+/* ===== Reset ===== */
+function resetAll(){
   if(confirm("テストデータを全削除しますか？")){
     localStorage.removeItem("testVotes");
-    localStorage.removeItem(dailyStorageKey()); // 今日の分も消す
-    voteMsg.textContent = "";
-    render();
+    localStorage.removeItem("daily_"+todayJST());
+    showToast("🗑 データを削除しました");
+    renderAll();
   }
 }
-</script>
 
+/* ===== Render all ===== */
+function renderAll(){renderVote();renderRanking();renderSetlist()}
+renderAll();
+</script>
 </body>
 </html>

@@ -7,13 +7,12 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#1a0a2e 100%);color:#e2e8f0;font-family:'Helvetica Neue','Segoe UI',sans-serif;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
 .bee{position:fixed;font-size:20px;opacity:.25;pointer-events:none;animation:fd 8s linear infinite}
 @keyframes fd{0%{transform:translateY(-30px) rotate(0);opacity:0}10%{opacity:.25}90%{opacity:.25}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
 @keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .header{text-align:center;padding:28px 16px 0}
+.road{font-size:28px;font-weight:900;color:#94a3b8;letter-spacing:4px;text-transform:uppercase}
 .title{font-size:28px;font-weight:900;background:linear-gradient(135deg,#FFD700,#F59E0B,#EF4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:4px 0;letter-spacing:2px}
 .subtitle{font-size:14px;color:#cbd5e1}
 .unofficial{font-size:11px;color:#94a3b8;margin-top:2px}
@@ -26,9 +25,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .cd-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:2px;display:block;margin-top:4px}
 .cd-colon{color:#FFD700;font-size:28px;font-weight:700;padding-top:12px;transition:opacity .3s}
 .desc-wrap{max-width:520px;margin:0 auto 16px}
-.desc-wrap summary{color:#FFD700;font-size:16px;font-weight:700;cursor:pointer;list-style:none;text-align:center;padding:14px 20px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.03));border-radius:12px;border:2px solid rgba(255,215,0,.4);box-shadow:0 0 20px rgba(255,215,0,.1);animation:pulseGlow 2s ease-in-out infinite}
-@keyframes pulseGlow{0%,100%{box-shadow:0 0 10px rgba(255,215,0,.1);border-color:rgba(255,215,0,.4)}50%{box-shadow:0 0 25px rgba(255,215,0,.25);border-color:rgba(255,215,0,.7)}}
-.desc-wrap[open] summary{animation:none;border-color:rgba(255,215,0,.2);box-shadow:none}
+.desc-wrap summary{color:#FFD700;font-size:15px;font-weight:700;cursor:pointer;list-style:none;text-align:center;padding:12px 20px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.08)}
 .desc-wrap summary::-webkit-details-marker{display:none}
 .desc-body{font-size:14px;color:#cbd5e1;line-height:2;padding:16px 20px 12px;text-align:left}
 .desc-tip{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);border-radius:8px;padding:10px 14px;margin:8px 0 12px}
@@ -75,7 +72,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .my-rm{background:none;border:none;cursor:pointer;color:#EF4444;font-size:15px;padding:4px}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#FFD700;color:#000;padding:12px 28px;border-radius:99px;font-size:15px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(255,215,0,.4);animation:si .3s ease;pointer-events:none}
 .btn-sm{padding:8px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer}
-.btn-x{background:rgba(29,161,242,.15);color:#1DA1F2;border:1px solid rgba(29,161,242,.3)}
 .btn-clear{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.25)}
 .btn-share{background:linear-gradient(135deg,rgba(29,161,242,.2),rgba(29,161,242,.1));color:#1DA1F2;border:1px solid rgba(29,161,242,.3);padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;width:100%;text-align:center}
 .empty{text-align:center;padding:30px;color:#94a3b8;font-size:15px;border:2px dashed rgba(255,255,255,.08);border-radius:12px}
@@ -83,40 +79,39 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .shared-song{padding:6px 10px;border-radius:8px;margin-bottom:3px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);display:flex;align-items:center;gap:8px}
 .shared-song.enc{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15)}
 .disclaimer{max-width:520px;margin:16px auto;padding:14px 18px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:10px;text-align:center;font-size:13px;color:#f87171;line-height:1.8}
-@media(max-width:420px){.cd-box{min-width:54px;padding:10px}.cd-num{font-size:26px}.tab{padding:8px 16px;font-size:13px}.title{font-size:22px}}
+@media(max-width:420px){.cd-box{min-width:54px;padding:10px}.cd-num{font-size:26px}.tab{padding:8px 16px;font-size:13px}.title{font-size:22px}.road{font-size:22px}}
 </style>
 </head>
 <body>
 
 <div id="nickScreen" class="nick-screen">
   <div class="nick-box">
-    <div style="font-size:48px;margin-bottom:16px">&#x1f41d;</div>
-    <div style="font-size:14px;color:#94a3b8;letter-spacing:4px;text-transform:uppercase">ROAD TO LIQUIDROOM</div>
-    <div class="title" style="font-size:26px;margin-bottom:4px">マイセトリメーカー</div>
+    <div style="font-size:48px;margin-bottom:16px">🐝</div>
+    <div class="road">ROAD TO LIQUIDROOM</div>
+    <div class="title" style="margin-bottom:4px">マイセトリメーカー</div>
     <div class="unofficial">非公式ファン企画（toybee公式とは無関係です）</div>
     <p style="color:#cbd5e1;font-size:15px;margin:16px 0 24px">2026.3.22 恵比寿LIQUIDROOM<br>自分だけのセトリ予想を作ろう！</p>
     <input id="nickInput" class="nick-input" placeholder="ニックネーム（任意）" maxlength="20">
-    <button id="nickBtn" class="nick-btn" onclick="enterApp()">&#x1f41d; はじめる</button>
+    <button id="nickBtn" class="nick-btn" onclick="enterApp()">🐝 はじめる</button>
     <p style="color:#94a3b8;font-size:13px;margin-top:6px">※空欄の場合は「名無しクルー」になります</p>
     <div class="disclaimer" style="margin-top:16px">
-      &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。<br>
+      ⚠️ 本サイトはファンによる<strong>非公式</strong>の企画です。<br>
       toybee公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
-      ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b1d7818181808786d0f1c8d0d9dede9fd2de9fdbc1">[email&#160;protected]</a> まで
+      ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / f000167a@yahoo.co.jp まで
     </div>
   </div>
 </div>
 
 <div id="mainApp" style="display:none">
-  <div class="bee" style="left:5%;animation-delay:0s">&#x1f41d;</div><div class="bee" style="left:17%;animation-delay:2s">&#x1f41d;</div><div class="bee" style="left:29%;animation-delay:4s">&#x1f41d;</div><div class="bee" style="left:41%;animation-delay:6s">&#x1f41d;</div><div class="bee" style="left:53%;animation-delay:1s">&#x1f41d;</div><div class="bee" style="left:65%;animation-delay:3s">&#x1f41d;</div><div class="bee" style="left:77%;animation-delay:5s">&#x1f41d;</div><div class="bee" style="left:89%;animation-delay:7s">&#x1f41d;</div>
-
+  <div class="bee" style="left:5%;animation-delay:0s">🐝</div><div class="bee" style="left:17%;animation-delay:2s">🐝</div><div class="bee" style="left:29%;animation-delay:4s">🐝</div><div class="bee" style="left:41%;animation-delay:6s">🐝</div><div class="bee" style="left:53%;animation-delay:1s">🐝</div><div class="bee" style="left:65%;animation-delay:3s">🐝</div><div class="bee" style="left:77%;animation-delay:5s">🐝</div><div class="bee" style="left:89%;animation-delay:7s">🐝</div>
   <div class="header">
-    <div style="font-size:14px;color:#94a3b8;letter-spacing:4px;text-transform:uppercase">ROAD TO LIQUIDROOM</div>
+    <div class="road">ROAD TO LIQUIDROOM</div>
     <div class="title">マイセトリメーカー</div>
     <div class="subtitle">2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
     <div class="unofficial">非公式ファン企画（toybee公式とは無関係です）</div>
-    <div class="user-info">&#x1f41d; <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
+    <div class="user-info">🐝 <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
   </div>
-  <div class="cd-heading">&#x1f41d; 開演まであと</div>
+  <div class="cd-heading">🐝 開演まであと</div>
   <div class="cd-wrap">
     <div><div class="cd-box"><span class="cd-num" id="cdD">00</span></div><span class="cd-label">DAYS</span></div>
     <div class="cd-colon" id="col1">:</div>
@@ -126,7 +121,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div class="cd-colon" id="col3">:</div>
     <div><div class="cd-box"><span class="cd-num" id="cdS">00</span></div><span class="cd-label">SEC</span></div>
   </div>
-
   <div class="content">
     <div style="max-width:520px;margin:0 auto 12px;padding:0 20px;text-align:center;font-size:14px;color:#cbd5e1;line-height:2">
       ロックバンド toybee の<br>
@@ -135,42 +129,42 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
       <span style="font-size:13px;color:#94a3b8">※toybee公式とは一切関係ありません。</span>
     </div>
     <div style="max-width:520px;margin:0 auto 16px;padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:14px;color:#cbd5e1;line-height:2;text-align:left">
-      &#x1f3b8; 聴きたい曲を選んでセトリ予想を作ろう（最大20曲）<br>
-      &#x1f4cb; 並べ替えて自分だけのマイセトリに<br>
-      &#x1f41d; 6曲以上でアンコール枠が自動表示<br>
-      &#x1d54f; 完成したらXでシェア！
+      🎸 聴きたい曲を選んでセトリ予想を作ろう（最大20曲）<br>
+      📋 並べ替えて自分だけのマイセトリに<br>
+      🐝 6曲以上でアンコール枠が自動表示<br>
+      𝕏 完成したらXでシェア！
     </div>
     <details class="desc-wrap">
-      <summary>&#x2699;&#xfe0f; くわしい使い方 &#x25be;</summary>
+      <summary>⚙️ くわしい使い方 ▾</summary>
       <div class="desc-body">
-        <strong style="color:#f1f5f9">&#x1f3b8; 選曲のルール</strong><br>
+        <strong style="color:#f1f5f9">🎸 選曲のルール</strong><br>
         ・聴きたい曲を選んで、最大 <strong style="color:#FFD700">20曲</strong> までセトリ予想に追加できます<br>
         ・選んだ曲は自動的にマイセトリへ追加されます<br>
-        <div class="desc-tip">&#x1f4a1; セトリはこのブラウザに保存されます。シェアしたい場合はマイセトリタブからXにシェアするか、URLをコピーしてください。</div>
-        <strong style="color:#f1f5f9">&#x1f4cb; マイセトリの使い方</strong><br>
-        ・「&#x25b2;」「&#x25bc;」ボタンで自由に並び替え可能<br>
+        <div class="desc-tip">💡 セトリはこのブラウザに保存されます。シェアしたい場合はマイセトリタブからXにシェアするか、URLをコピーしてください。</div>
+        <strong style="color:#f1f5f9">📋 マイセトリの使い方</strong><br>
+        ・「▲」「▼」ボタンで自由に並び替え可能<br>
         ・6曲以上登録すると、最後の2曲は自動的にアンコール枠「<strong style="color:#FFD700">En.</strong>」として表示されます<br>
-        ・「&#x2715;」ボタンで個別に削除できます
+        ・「✕」ボタンで個別に削除できます
       </div>
     </details>
     <div id="sharedView" style="display:none"></div>
     <div class="tabs">
-      <button class="tab active" data-tab="vote" onclick="switchTab('vote')">&#x1f3b8; 選曲</button>
-      <button class="tab" data-tab="setlist" onclick="switchTab('setlist')">&#x1f4cb; マイセトリ</button>
+      <button class="tab active" data-tab="vote" onclick="switchTab('vote')">🎸 選曲</button>
+      <button class="tab" data-tab="setlist" onclick="switchTab('setlist')">📋 マイセトリ</button>
     </div>
     <div id="tabVote" class="card"></div>
     <div id="tabSetlist" class="card" style="display:none"></div>
   </div>
   <div class="disclaimer">
-    &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式・関係者とは一切関係ありません。<br>
+    ⚠️ 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式・関係者とは一切関係ありません。<br>
     公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
-    ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="452375757574737224053c242d2a2a6b262a6b2f35">[email&#160;protected]</a> まで
+    ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / f000167a@yahoo.co.jp まで
   </div>
-  <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with &#x1f41d; for toybee @ LIQUIDROOM 2026.3.22</div>
+  <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with 🐝 for toybee @ LIQUIDROOM 2026.3.22</div>
 </div>
 <div id="toast" class="toast" style="display:none"></div>
+<script>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const DEADLINE=new Date("2026-03-22T18:00:00+09:00");
 const MAX_MYSET=20;
 const X_SHORT_URL="https://x.gd/qATK1";
@@ -186,39 +180,24 @@ const ALBUMS=[
   {name:"TOYROCK INVASION",color:"#EF4444",songs:["TOY ROCK -TOYBEE\u306e\u30c6\u30fc\u30de-","\u30b7\u30e2\u30ad\u30bf\u30fb\u30e2\u30fc\u30cb\u30f3\u30b0\u30fb\u30d6\u30eb\u30fc\u30b9","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
   {name:"Singles",color:"#F59E0B",songs:["\u3072\u3068\u3064\u3060\u3051","\u30cf\u30ca\u30de\u30eb"]}
 ];
-const ALL_SONGS=ALBUMS.flatMap(a=>a.songs.map(s=>({title:s,album:a.name,color:a.color})));
+const ALL_SONGS=ALBUMS.flatMap(function(a){return a.songs.map(function(s){return{title:s,album:a.name,color:a.color}})});
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-let currentNick="",currentTab="vote",currentFilter="all",toastTimer=null;
-let pendingSelections=new Set();
-let mySetlist=[];
+var currentNick="",currentTab="vote",currentFilter="all",toastTimer=null;
+var pendingSelections=new Set();
+var mySetlist=[];
 
-function showToast(msg){const el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.style.display="none"},2500)}
-
-/* === API (fire and forget for analytics) === */
-async function apiPost(body){try{await fetch(GAS_URL,{method:"POST",body:JSON.stringify(body)})}catch(e){console.warn("GAS:",e)}}
-
-/* === Setlist URL encoding === */
-function encodeSetlist(l){return l.map(t=>String(ALL_SONGS.findIndex(s=>s.title===t)).padStart(2,"0")).filter(v=>v!=="-1").join("-")}
-function decodeSetlist(h){if(!h||!h.startsWith("s="))return null;return h.substring(2).split("-").map(p=>{const i=parseInt(p,10);return(!isNaN(i)&&i>=0&&i<ALL_SONGS.length)?ALL_SONGS[i].title:null}).filter(Boolean)||null}
+function showToast(msg){var el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.style.display="none"},2500)}
+function apiPost(body){try{fetch(GAS_URL,{method:"POST",body:JSON.stringify(body)})}catch(e){}}
+function encodeSetlist(l){return l.map(function(t){return String(ALL_SONGS.findIndex(function(s){return s.title===t})).padStart(2,"0")}).filter(function(v){return v!=="-1"}).join("-")}
+function decodeSetlist(h){if(!h||!h.startsWith("s="))return null;var arr=h.substring(2).split("-").map(function(p){var i=parseInt(p,10);return(!isNaN(i)&&i>=0&&i<ALL_SONGS.length)?ALL_SONGS[i].title:null}).filter(Boolean);return arr.length?arr:null}
 function getShareURL(l){return BASE_URL+"#s="+encodeSetlist(l)}
+function saveLocal(){localStorage.setItem("toybee_setlist",JSON.stringify(mySetlist));localStorage.setItem("toybee_nick",currentNick)}
+function loadLocal(){var s=localStorage.getItem("toybee_setlist");if(s){try{mySetlist=JSON.parse(s)}catch(e){mySetlist=[]}}}
 
-/* === Local storage helpers === */
-function saveLocal(){
-  localStorage.setItem("toybee_setlist",JSON.stringify(mySetlist));
-  localStorage.setItem("toybee_nick",currentNick);
-}
-function loadLocal(){
-  const s=localStorage.getItem("toybee_setlist");
-  if(s){try{mySetlist=JSON.parse(s)}catch(e){mySetlist=[]}}
-}
-
-/* === Nickname === */
 function enterApp(){
-  const v=document.getElementById("nickInput").value.trim()||DEFAULT_NICK;
-  currentNick=v;
-  loadLocal();
-  localStorage.setItem("toybee_nick",v);
+  var v=document.getElementById("nickInput").value.trim()||DEFAULT_NICK;
+  currentNick=v;loadLocal();localStorage.setItem("toybee_nick",v);
   document.getElementById("nickScreen").style.display="none";
   document.getElementById("mainApp").style.display="block";
   document.getElementById("dispNick").textContent=v;
@@ -230,94 +209,93 @@ function changeNick(){
   document.getElementById("mainApp").style.display="none";
   document.getElementById("nickInput").value="";
 }
-
-/* Auto-login */
 (function(){
-  const saved=localStorage.getItem("toybee_nick");
-  if(saved){
-    currentNick=saved;
-    loadLocal();
-    document.getElementById("nickScreen").style.display="none";
-    document.getElementById("mainApp").style.display="block";
-    document.getElementById("dispNick").textContent=saved;
-    renderAll();
-  }
-  document.getElementById("nickInput").addEventListener("keydown",e=>{if(e.key==="Enter")enterApp()});
+  var saved=localStorage.getItem("toybee_nick");
+  if(saved){currentNick=saved;loadLocal();document.getElementById("nickScreen").style.display="none";document.getElementById("mainApp").style.display="block";document.getElementById("dispNick").textContent=saved;renderAll()}
+  document.getElementById("nickInput").addEventListener("keydown",function(e){if(e.key==="Enter")enterApp()});
 })();
+(function(){var s=decodeSetlist(location.hash.substring(1));if(s){setTimeout(function(){var el=document.getElementById("sharedView");var h='<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">\ud83d\udc1d \u5171\u6709\u3055\u308c\u305f\u30de\u30a4\u30bb\u30c8\u30ea</span></div>';s.forEach(function(t,i){var enc=i>=s.length-2&&s.length>5;h+='<div class="shared-song '+(enc?"enc":"")+'"><span style="color:'+(enc?"#FFD700":"#94a3b8")+';font-size:13px;min-width:30px;font-weight:700">'+(enc?"En.":(i+1)+".")+'</span><span style="font-size:14px;color:#f1f5f9">'+esc(t)+'</span></div>'});h+='<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">\u9589\u3058\u308b</button></div></div>';el.innerHTML=h;el.style.display="block"},300)}})();
 
-/* === Shared setlist from URL === */
-(function(){const s=decodeSetlist(location.hash.substring(1));if(s){setTimeout(()=>{const el=document.getElementById("sharedView");let h='<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">\ud83d\udc1d \u5171\u6709\u3055\u308c\u305f\u30de\u30a4\u30bb\u30c8\u30ea</span></div>';s.forEach((t,i)=>{const enc=i>=s.length-2&&s.length>5;h+='<div class="shared-song '+(enc?"enc":"")+'">'+'<span style="color:'+(enc?"#FFD700":"#94a3b8")+';font-size:13px;min-width:30px;font-weight:700">'+(enc?"En.":(i+1)+".")+"</span>"+'<span style="font-size:14px;color:#f1f5f9">'+esc(t)+"</span></div>"});h+='<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">\u9589\u3058\u308b</button></div></div>';el.innerHTML=h;el.style.display="block"},300)}})();
-
-/* === Countdown === */
-function tick(){const d=DEADLINE-new Date();if(d<=0){document.querySelector(".cd-heading").textContent="\ud83d\udc1d \u958b\u6f14\u3057\u307e\u3057\u305f\uff01";return}const s=Math.floor(d/1000),sec=s%60;document.getElementById("cdD").textContent=String(Math.floor(s/86400)).padStart(2,"0");document.getElementById("cdH").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");document.getElementById("cdM").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");document.getElementById("cdS").textContent=String(sec).padStart(2,"0");const op=sec%2===0?1:.3;document.getElementById("col1").style.opacity=op;document.getElementById("col2").style.opacity=op;document.getElementById("col3").style.opacity=op}
+function tick(){var d=DEADLINE-new Date();if(d<=0){document.querySelector(".cd-heading").textContent="\ud83d\udc1d \u958b\u6f14\u3057\u307e\u3057\u305f\uff01";return}var s=Math.floor(d/1000),sec=s%60;document.getElementById("cdD").textContent=String(Math.floor(s/86400)).padStart(2,"0");document.getElementById("cdH").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");document.getElementById("cdM").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");document.getElementById("cdS").textContent=String(sec).padStart(2,"0");var op=sec%2===0?1:.3;document.getElementById("col1").style.opacity=op;document.getElementById("col2").style.opacity=op;document.getElementById("col3").style.opacity=op}
 setInterval(tick,1000);tick();
 
-function switchTab(id){currentTab=id;pendingSelections.clear();document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===id));document.getElementById("tabVote").style.display=id==="vote"?"block":"none";document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";renderAll()}
+function switchTab(id){currentTab=id;pendingSelections.clear();document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("active",t.dataset.tab===id)});document.getElementById("tabVote").style.display=id==="vote"?"block":"none";document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";renderAll()}
 
-/* === VOTE (song selection) === */
 function togglePending(title){
   if(pendingSelections.has(title)){pendingSelections.delete(title)}
   else{
-    const room=MAX_MYSET-mySetlist.filter(s=>!pendingSelections.has(s)).length;
+    var room=MAX_MYSET-mySetlist.filter(function(s){return!pendingSelections.has(s)}).length;
     if(pendingSelections.size>=room){showToast("\u26a0 \u30de\u30a4\u30bb\u30c8\u30ea\u306f\u6700\u5927"+MAX_MYSET+"\u66f2\u307e\u3067\u3067\u3059");return}
     pendingSelections.add(title);
   }
   renderVote();
 }
-
-async function submitVotes(){
+function submitVotes(){
   if(!pendingSelections.size)return;
-  const selected=[...pendingSelections];
-  const btn=document.querySelector(".submit-btn");
+  var selected=Array.from(pendingSelections);
+  var btn=document.querySelector(".submit-btn");
   btn.disabled=true;btn.textContent="\u9001\u4fe1\u4e2d...";
-  /* Add to local setlist */
-  selected.forEach(s=>{if(!mySetlist.includes(s)&&mySetlist.length<MAX_MYSET)mySetlist.push(s)});
-  saveLocal();
-  pendingSelections.clear();
+  selected.forEach(function(s){if(mySetlist.indexOf(s)===-1&&mySetlist.length<MAX_MYSET)mySetlist.push(s)});
+  saveLocal();pendingSelections.clear();
   showToast("\ud83d\udc1d "+selected.length+"\u66f2\u9078\u3073\u307e\u3057\u305f\uff01");
   renderAll();
-  /* POST to GAS in background (analytics only) */
   apiPost({action:"vote",nick:currentNick,songs:selected});
 }
 
 function renderVote(){
-  const el=document.getElementById("tabVote");
-  const inSet=new Set(mySetlist);
-  const remain=MAX_MYSET-mySetlist.length;
-  let h='<div class="sec-header"><span class="sec-title">\ud83c\udfb8 \u8074\u304d\u305f\u3044\u66f2\u3092\u9078\u307c\u3046</span>';
-  h+='<span class="badge '+(remain>0?"badge-gold":"badge-red")+'">\u30bb\u30c8\u30ea '+mySetlist.length+'/'+MAX_MYSET+'\u66f2</span>';
-  h+='</div>';
+  var el=document.getElementById("tabVote");
+  var inSet=new Set(mySetlist);
+  var remain=MAX_MYSET-mySetlist.length;
+  var h='<div class="sec-header"><span class="sec-title">\ud83c\udfb8 \u8074\u304d\u305f\u3044\u66f2\u3092\u9078\u307c\u3046</span>';
+  h+='<span class="badge '+(remain>0?"badge-gold":"badge-red")+'">\u30bb\u30c8\u30ea '+mySetlist.length+'/'+MAX_MYSET+'\u66f2</span></div>';
   if(remain<=0)h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">\u30de\u30a4\u30bb\u30c8\u30ea\u304c\u4e0a\u9650\uff0820\u66f2\uff09\u306b\u9054\u3057\u307e\u3057\u305f\u3002<br><span style="font-size:12px;color:#64748b">\u203b\u30de\u30a4\u30bb\u30c8\u30ea\u30bf\u30d6\u304b\u3089\u66f2\u3092\u524a\u9664\u3059\u308b\u3068\u3001\u65b0\u3057\u3044\u66f2\u3092\u9078\u3079\u307e\u3059\u3002</span></div>';
   h+='<div class="filters"><button class="filter-btn" style="background:'+(currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)")+';color:'+(currentFilter==="all"?"#000":"#cbd5e1")+'" onclick="currentFilter=\'all\';renderVote()">ALL</button>';
-  ALBUMS.forEach(a=>{const ac=currentFilter===a.name;h+='<button class="filter-btn" style="background:'+(ac?a.color:"rgba(255,255,255,.06)")+';color:'+(ac?"#000":"#cbd5e1")+'" onclick="currentFilter=\''+esc(a.name)+'\';renderVote()">'+esc(a.name)+'</button>'});
+  ALBUMS.forEach(function(a){var ac=currentFilter===a.name;h+='<button class="filter-btn" style="background:'+(ac?a.color:"rgba(255,255,255,.06)")+';color:'+(ac?"#000":"#cbd5e1")+'" onclick="currentFilter=\''+esc(a.name)+'\';renderVote()">'+esc(a.name)+'</button>'});
   h+='</div>';
-  const filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(s=>s.album===currentFilter);
-  filtered.forEach(s=>{
-    const already=inSet.has(s.title)&&!pendingSelections.has(s.title);
-    const ip=pendingSelections.has(s.title);
+  var filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(function(s){return s.album===currentFilter});
+  filtered.forEach(function(s){
+    var already=inSet.has(s.title)&&!pendingSelections.has(s.title);
+    var ip=pendingSelections.has(s.title);
     if(already){h+='<div class="song-item inset"><div class="song-check">\u2713</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div><span style="font-size:12px;color:#64748b">\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u6e08</span></div>'}
-    else{const can=remain>0||ip;h+='<div class="song-item '+(ip?"checked":"")+'" onclick="'+(can?"togglePending(\'"+esc(s.title)+"\')":"")+'">'+'<div class="song-check">'+(ip?"\u2713":"")+"</div>"+'<div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div></div>'}
+    else{var can=remain>0||ip;h+='<div class="song-item '+(ip?"checked":"")+'" onclick="'+(can?"togglePending(\'"+esc(s.title).replace(/'/g,"\\'")+"\')":"")+'"><div class="song-check">'+(ip?"\u2713":"")+'</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div></div>'}
   });
-  const sc=pendingSelections.size;
-  h+='<div class="submit-bar"><button class="submit-btn" '+(sc===0?"disabled":"")+" onclick=\"submitVotes()\">\ud83d\udc1d "+(sc>0?sc+"\u66f2\u3092\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0":"\u66f2\u3092\u9078\u3093\u3067\u304f\u3060\u3055\u3044")+'</button><div class="submit-count">'+(sc>0?[...pendingSelections].join("\u3001"):remain>0?"\u30bf\u30c3\u30d7\u3057\u3066\u66f2\u3092\u9078\u3093\u3067\u304b\u3089\u8ffd\u52a0\u30dc\u30bf\u30f3\u3092\u62bc\u3057\u3066\u304f\u3060\u3055\u3044":"")+"</div></div>";
+  var sc=pendingSelections.size;
+  h+='<div class="submit-bar"><button class="submit-btn" '+(sc===0?"disabled":"")+" onclick=\"submitVotes()\">\ud83d\udc1d "+(sc>0?sc+"\u66f2\u3092\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0":"\u66f2\u3092\u9078\u3093\u3067\u304f\u3060\u3055\u3044")+'</button>';
+  h+='<div class="submit-count">'+(sc>0?Array.from(pendingSelections).join("\u3001"):remain>0?"\u30bf\u30c3\u30d7\u3057\u3066\u66f2\u3092\u9078\u3093\u3067\u304b\u3089\u8ffd\u52a0\u30dc\u30bf\u30f3\u3092\u62bc\u3057\u3066\u304f\u3060\u3055\u3044":"")+'</div></div>';
   el.innerHTML=h;
 }
 
-/* === SETLIST === */
-function moveInSet(from,to){if(to<0||to>=mySetlist.length)return;const[item]=mySetlist.splice(from,1);mySetlist.splice(to,0,item);saveLocal();renderSetlist()}
-function rmFromSet(i){const t=mySetlist[i];mySetlist.splice(i,1);saveLocal();showToast("\u2715 \u300c"+t+"\u300d\u3092\u524a\u9664\u3057\u307e\u3057\u305f");renderSetlist()}
+function moveInSet(from,to){if(to<0||to>=mySetlist.length)return;var item=mySetlist.splice(from,1)[0];mySetlist.splice(to,0,item);saveLocal();renderSetlist()}
+function rmFromSet(i){var t=mySetlist[i];mySetlist.splice(i,1);saveLocal();showToast("\u2715 \u300c"+t+"\u300d\u3092\u524a\u9664\u3057\u307e\u3057\u305f");renderSetlist()}
 function clearMySet(){if(!confirm("\u30de\u30a4\u30bb\u30c8\u30ea\u3092\u7a7a\u306b\u3057\u307e\u3059\u304b\uff1f"))return;mySetlist=[];saveLocal();renderSetlist()}
-
 function shareMySetlist(){
-  const l=mySetlist;if(!l.length){showToast("\u26a0 \u30de\u30a4\u30bb\u30c8\u30ea\u304c\u7a7a\u3067\u3059");return}
-  const url=getShareURL(l);
-  const text="\ud83d\udc1d \u79c1\u306e\u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3\u306f\u3053\u3061\u3089\uff01\n"+url+"\n"+HASHTAG;
+  var l=mySetlist;if(!l.length){showToast("\u26a0 \u30de\u30a4\u30bb\u30c8\u30ea\u304c\u7a7a\u3067\u3059");return}
+  var url=getShareURL(l);
+  var text="\ud83d\udc1d \u79c1\u306e\u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3\u306f\u3053\u3061\u3089\uff01\n"+url+"\n"+HASHTAG;
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
 }
 
 function renderSetlist(){
-  const el=document.getElementById("tabSetlist");
-  let h='<button class="btn-share" onclick="shareMySetlist()">\ud835\udd4f \u30de\u30a4\u30bb\u30c8\u30ea\u3092\u30b7\u30a7\u30a2\u3059\u308b</button>';
+  var el=document.getElementById("tabSetlist");
+  var h='<button class="btn-share" onclick="shareMySetlist()">\ud835\udd4f \u30de\u30a4\u30bb\u30c8\u30ea\u3092\u30b7\u30a7\u30a2\u3059\u308b</button>';
   h+='<div class="sec-header" style="margin-top:20px"><span class="sec-title">\ud83c\udfa4 \u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3 ('+mySetlist.length+'/'+MAX_MYSET+')</span><button class="btn-sm btn-clear" onclick="clearMySet()">\u7a7a\u306b\u3059\u308b</button></div>';
-  if(!mySetlist.length)h+='<div class="empty">\u9078\u66f2\u30bf\u30d6\u3067\u66f2\u3092\u9078\u3076\u3068\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u3055\u308c\u307e\u3059</div>';
-  else{mySetlist.forEach((t,i)=>{const enc=i>=mySetlist.length-2&&mySetlist.length>5;const song=ALL_SONGS.find(s=>s.title===t);h+='<div class="my-row '+(enc?"encore":"")+'"><div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+')">\u25b2</button><button class="my-arrow" '+(i===mySetlist.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+')">\u25bc</button></div><span class="my-num">'+(enc?"En.":(i+1)+".")+'</span><span class="my-title">'+esc(t)+'</span><button
+  if(!mySetlist.length){h+='<div class="empty">\u9078\u66f2\u30bf\u30d6\u3067\u66f2\u3092\u9078\u3076\u3068\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u3055\u308c\u307e\u3059</div>'}
+  else{mySetlist.forEach(function(t,i){
+    var enc=i>=mySetlist.length-2&&mySetlist.length>5;
+    h+='<div class="my-row '+(enc?"encore":"")+'">';
+    h+='<div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+")\">&#x25b2;</button>";
+    h+='<button class="my-arrow" '+(i===mySetlist.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+")\">&#x25bc;</button></div>";
+    h+='<span class="my-num">'+(enc?"En.":(i+1)+".")+'</span>';
+    h+='<span class="my-title">'+esc(t)+'</span>';
+    h+='<button class="my-rm" onclick="rmFromSet('+i+')">&#x2715;</button></div>';
+  })}
+  h+='<div style="font-size:12px;color:#94a3b8;margin-top:10px">\ud83d\udca1 \u25b2\u25bc\u30dc\u30bf\u30f3\u3067\u66f2\u9806\u3092\u5909\u66f4\u3067\u304d\u307e\u3059</div>';
+  el.innerHTML=h;
+}
+
+function renderAll(){renderVote();renderSetlist()}
+renderAll();
+
+</script>
+</body>
+</html>

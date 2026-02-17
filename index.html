@@ -221,7 +221,8 @@ setInterval(tick,1000);tick();
 
 function switchTab(id){currentTab=id;pendingSelections.clear();document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("active",t.dataset.tab===id)});document.getElementById("tabVote").style.display=id==="vote"?"block":"none";document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";renderAll()}
 
-function togglePending(title){
+function togglePending(idx){
+  var title=ALL_SONGS[idx].title;
   if(pendingSelections.has(title)){pendingSelections.delete(title)}
   else{
     var room=MAX_MYSET-mySetlist.filter(function(s){return!pendingSelections.has(s)}).length;
@@ -256,14 +257,9 @@ function renderVote(){
   filtered.forEach(function(s){
     var already=inSet.has(s.title)&&!pendingSelections.has(s.title);
     var ip=pendingSelections.has(s.title);
-    if(already){h+='<div class="song-item inset"><div class="song-check">\u2713</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div><span style="font-size:12px;color:#64748b">\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u6e08</span></div>'}
-    else{var can=remain>0||ip;h+='<div class="song-item '+(ip?"checked":"")+'" onclick="'+(can?"togglePending(\'"+esc(s.title).replace(/'/g,"\\'")+"\')":"")+'"><div class="song-check">'+(ip?"\u2713":"")+'</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div></div>'}
-  });
-  var sc=pendingSelections.size;
-  h+='<div class="submit-bar"><button class="submit-btn" '+(sc===0?"disabled":"")+" onclick=\"submitVotes()\">\ud83d\udc1d "+(sc>0?sc+"\u66f2\u3092\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0":"\u66f2\u3092\u9078\u3093\u3067\u304f\u3060\u3055\u3044")+'</button>';
-  h+='<div class="submit-count">'+(sc>0?Array.from(pendingSelections).join("\u3001"):remain>0?"\u30bf\u30c3\u30d7\u3057\u3066\u66f2\u3092\u9078\u3093\u3067\u304b\u3089\u8ffd\u52a0\u30dc\u30bf\u30f3\u3092\u62bc\u3057\u3066\u304f\u3060\u3055\u3044":"")+'</div></div>';
-  el.innerHTML=h;
-}
+    var idx=ALL_SONGS.findIndex(function(x){return x.title===s.title});
+    if(already){h+='<div class="song-item inset"><div class="song-check">\u2713</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div><span style="font-
+
 
 function moveInSet(from,to){if(to<0||to>=mySetlist.length)return;var item=mySetlist.splice(from,1)[0];mySetlist.splice(to,0,item);saveLocal();renderSetlist()}
 function rmFromSet(i){var t=mySetlist[i];mySetlist.splice(i,1);saveLocal();showToast("\u2715 \u300c"+t+"\u300d\u3092\u524a\u9664\u3057\u307e\u3057\u305f");renderSetlist()}

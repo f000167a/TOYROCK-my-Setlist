@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>toybeeマイセトリメーカー（非公式）</title>
+<title>マイセトリメーカー（非公式）</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#1a0a2e 100%);color:#e2e8f0;font-family:'Helvetica Neue','Segoe UI',sans-serif;overflow-x:hidden}
@@ -102,7 +102,8 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
 <div id="nickScreen" class="nick-screen">
   <div class="nick-box">
     <div style="font-size:48px;margin-bottom:16px">&#x1f41d;</div>
-    <div class="title" style="font-size:26px;margin-bottom:4px">toybeeマイセトリメーカー</div>
+    <div style="font-size:14px;color:#94a3b8;letter-spacing:4px;text-transform:uppercase">ROAD TO LIQUIDROOM</div>
+    <div class="title" style="font-size:26px;margin-bottom:4px">マイセトリメーカー</div>
     <div class="unofficial">非公式ファン企画（toybee公式とは無関係です）</div>
     <p style="color:#cbd5e1;font-size:15px;margin:16px 0 24px">2026.3.22 恵比寿LIQUIDROOM<br>自分だけのセトリ予想を作ろう！</p>
     <input id="nickInput" class="nick-input" placeholder="ニックネーム（任意）" maxlength="20">
@@ -111,7 +112,7 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
     <div class="disclaimer" style="margin-top:16px">
       &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。<br>
       toybee公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
-      ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / f000167a@yahoo.co.jp まで
+      ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b1d7818181808786d0f1c8d0d9dede9fd2de9fdbc1">[email&#160;protected]</a> まで
     </div>
   </div>
 </div>
@@ -120,7 +121,8 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
   <div class="bee" style="left:5%;animation-delay:0s">&#x1f41d;</div><div class="bee" style="left:17%;animation-delay:2s">&#x1f41d;</div><div class="bee" style="left:29%;animation-delay:4s">&#x1f41d;</div><div class="bee" style="left:41%;animation-delay:6s">&#x1f41d;</div><div class="bee" style="left:53%;animation-delay:1s">&#x1f41d;</div><div class="bee" style="left:65%;animation-delay:3s">&#x1f41d;</div><div class="bee" style="left:77%;animation-delay:5s">&#x1f41d;</div><div class="bee" style="left:89%;animation-delay:7s">&#x1f41d;</div>
 
   <div class="header">
-    <div class="title">toybeeマイセトリメーカー</div>
+    <div style="font-size:14px;color:#94a3b8;letter-spacing:4px;text-transform:uppercase">ROAD TO LIQUIDROOM</div>
+    <div class="title">マイセトリメーカー</div>
     <div class="subtitle">2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
     <div class="unofficial">非公式ファン企画（toybee公式とは無関係です）</div>
     <div class="user-info">&#x1f41d; <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
@@ -137,14 +139,21 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
   </div>
 
   <div class="content">
+    <div style="max-width:520px;margin:0 auto 12px;padding:0 20px;text-align:center;font-size:14px;color:#cbd5e1;line-height:2">
+      ロックバンド toybee の<br>
+      <strong style="color:#FFD700">2026年3月22日（日）恵比寿LIQUIDROOM ワンマンライブ</strong><br>
+      の成功を願って、toybeeファンが制作した<strong style="color:#f1f5f9">非公式の応援企画ページ</strong>です。<br>
+      <span style="font-size:13px;color:#94a3b8">※toybee公式とは一切関係ありません。</span>
+    </div>
+    <div style="max-width:520px;margin:0 auto 16px;padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:14px;color:#cbd5e1;line-height:2;text-align:left">
+      &#x1f3b8; 聴きたい曲を選んでセトリ予想を作ろう（最大20曲）<br>
+      &#x1f4cb; 並べ替えて自分だけのマイセトリに<br>
+      &#x1f41d; 6曲以上でアンコール枠が自動表示<br>
+      &#x1d54f; 完成したらXでシェア！
+    </div>
     <details class="desc-wrap">
-      <summary>&#x26a0;&#xfe0f; はじめに ── 使い方（初めての方はお読みください）&#x25be;</summary>
+      <summary>&#x2699;&#xfe0f; くわしい使い方 &#x25be;</summary>
       <div class="desc-body">
-        このページは、ロックバンド toybee の<br>
-        <strong style="color:#FFD700">2026年3月22日（日）恵比寿LIQUIDROOM ワンマンライブ</strong><br>
-        の成功を願って、toybeeファンが制作した<strong style="color:#f1f5f9">非公式の応援企画ページ</strong>です。<br>
-        <span style="font-size:14px;color:#cbd5e1">※toybee公式とは一切関係ありません。</span><br><br>
-
         <strong style="color:#f1f5f9">&#x1f3b8; 選曲のルール</strong><br>
         ・聴きたい曲を選んで、最大 <strong style="color:#FFD700">20曲</strong> までセトリ予想に追加できます<br>
         ・選んだ曲は自動的にマイセトリへ追加されます<br>
@@ -179,13 +188,13 @@ details.tl-wrap summary::-webkit-details-marker{display:none}
   <div class="disclaimer">
     &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式・関係者とは一切関係ありません。<br>
     公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
-    ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / f000167a@yahoo.co.jp まで
+    ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="452375757574737224053c242d2a2a6b262a6b2f35">[email&#160;protected]</a> まで
   </div>
   <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with &#x1f41d; for toybee @ LIQUIDROOM 2026.3.22</div>
 </div>
 <div id="toast" class="toast" style="display:none"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const DEADLINE=new Date("2026-03-22T18:00:00+09:00");
 const MAX_MYSET=20;
 const X_SHORT_URL="https://x.gd/qATK1";
@@ -335,13 +344,4 @@ function renderSetlist(){
   let h='<button class="btn-share" onclick="shareMySetlist()">\ud835\udd4f \u30de\u30a4\u30bb\u30c8\u30ea\u3092\u30b7\u30a7\u30a2\u3059\u308b</button>';
   h+='<div class="sec-header" style="margin-top:20px"><span class="sec-title">\ud83c\udfa4 \u30de\u30a4\u30bb\u30c8\u30ea\u4e88\u60f3 ('+mySetlist.length+'/'+MAX_MYSET+')</span><button class="btn-sm btn-clear" onclick="clearMySet()">\u7a7a\u306b\u3059\u308b</button></div>';
   if(!mySetlist.length)h+='<div class="empty">\u9078\u66f2\u30bf\u30d6\u3067\u66f2\u3092\u9078\u3076\u3068\u30de\u30a4\u30bb\u30c8\u30ea\u306b\u8ffd\u52a0\u3055\u308c\u307e\u3059</div>';
-  else{mySetlist.forEach((t,i)=>{const enc=i>=mySetlist.length-2&&mySetlist.length>5;const song=ALL_SONGS.find(s=>s.title===t);h+='<div class="my-row '+(enc?"encore":"")+'"><div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+')">\u25b2</button><button class="my-arrow" '+(i===mySetlist.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+')">\u25bc</button></div><span class="my-num">'+(enc?"En.":(i+1)+".")+'</span><span class="my-title">'+esc(t)+'</span><button class="my-rm" onclick="rmFromSet('+i+')">\u2715</button></div>'})}
-  h+='<div style="font-size:12px;color:#94a3b8;margin-top:10px">\ud83d\udca1 \u25b2\u25bc\u30dc\u30bf\u30f3\u3067\u66f2\u9806\u3092\u5909\u66f4\u3067\u304d\u307e\u3059</div>';
-  el.innerHTML=h;
-}
-
-function renderAll(){renderVote();renderSetlist()}
-renderAll();
-</script>
-</body>
-</html>
+  else{mySetlist.forEach((t,i)=>{const enc=i>=mySetlist.length-2&&mySetlist.length>5;const song=ALL_SONGS.find(s=>s.title===t);h+='<div class="my-row '+(enc?"encore":"")+'"><div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveInSet("+i+","+(i-1)+')">\u25b2</button><button class="my-arrow" '+(i===mySetlist.length-1?"disabled":"")+" onclick=\"moveInSet("+i+","+(i+1)+')">\u25bc</button></div><span class="my-num">'+(enc?"En.":(i+1)+".")+'</span><span class="my-title">'+esc(t)+'</span><button

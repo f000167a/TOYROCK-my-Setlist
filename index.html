@@ -170,6 +170,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 </div>
 <div id="toast" class="toast" style="display:none"></div>
 <script>
+window.onerror=function(m,u,l,c,e){console.error('ERR line '+l+': '+m);return false};
 var DEADLINE=new Date("2026-03-22T18:00:00+09:00");
 var MAX_MYSET=20;
 var MAX_ENCORE=3;

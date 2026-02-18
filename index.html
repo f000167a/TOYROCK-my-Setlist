@@ -46,6 +46,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .badge-red{color:#EF4444;background:rgba(239,68,68,.1)}
 .filters{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
 .filter-btn{padding:10px 8px;border-radius:10px;border:none;font-size:13px;cursor:pointer;font-weight:600;transition:all .2s;text-align:center}
+.song-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);margin-bottom:6px;transition:all .2s;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .song-item.checked{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.2)}
 .song-item.inset{background:rgba(255,255,255,.01);border-color:rgba(255,255,255,.03);opacity:.45;cursor:default}
 .song-check{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:14px}
@@ -88,7 +89,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div style="font-size:48px;margin-bottom:16px">🐝</div>
     <div class="road">ROAD TO LIQUIDROOM</div>
     <div class="title" style="margin-bottom:4px">マイセトリメーカー</div>
-    <div class="unofficial">非公式ファン企画（toybee公式とは無関係です）</div>
+    <div class="unofficial">非公式ファン企画</div>
     <p style="color:#cbd5e1;font-size:15px;margin:16px 0 24px">2026.3.22 恵比寿LIQUIDROOM<br>自分だけのセトリ予想を作ろう！</p>
     <input id="nickInput" class="nick-input" placeholder="ニックネーム（任意）" maxlength="20">
     <button id="nickBtn" class="nick-btn" onclick="enterApp()">🐝 はじめる</button>
@@ -123,12 +124,12 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div style="max-width:520px;margin:0 auto 12px;padding:0 20px;text-align:center;font-size:14px;color:#cbd5e1;line-height:2">
       ロックバンド toybee の<br>
       <strong style="color:#FFD700">2026年3月22日（日）恵比寿LIQUIDROOM ワンマンライブ</strong><br>
-      の成功を願って、toybeeファンが制作した<strong style="color:#f1f5f9">非公式の応援企画ページ</strong>です。
+      の成功を願って、toybeeファンが制作した<strong style="color:#f1f5f9">応援企画ページ</strong>です。
     </div>
     <div style="max-width:520px;margin:0 auto 16px;padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:14px;color:#cbd5e1;line-height:2;text-align:left">
       🎸 聴きたい曲を選んでセトリ予想を作ろう（最大20曲）<br>
       📋 並べ替えて自分だけのマイセトリに<br>
-      🐝 11曲以上でアンコール枠が自動表示<br>
+      🐝 11曲以上でアンコールが自動表示<br>
       𝕏 完成したらXでシェア！
     </div>
     <details class="desc-wrap">
@@ -140,7 +141,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
         <div class="desc-tip">💡 セトリはこのブラウザに保存されます。シェアしたい場合はマイセトリタブからXにシェアするか、URLをコピーしてください。</div>
         <strong style="color:#f1f5f9">📋 マイセトリの使い方</strong><br>
         ・「▲」「▼」ボタンで自由に並び替え可能<br>
-        ・11曲以上登録すると、最後の2曲は自動的にアンコール枠「<strong style="color:#FFD700">En.</strong>」として表示されます<br>
+        ・11曲以上登録すると、最後の2曲は自動的にアンコール「<strong style="color:#FFD700">En.</strong>」として表示されます<br>
         ・「✕」ボタンで個別に削除できます
       </div>
     </details>
@@ -153,14 +154,14 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div id="tabSetlist" class="card" style="display:none"></div>
   </div>
   <div class="disclaimer">
-    ⚠️ 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式・関係者とは一切関係ありません。<br>
+    ⚠️ 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式とは一切関係ありません。<br>
     公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
     ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="mailto:f000167a@yahoo.co.jp" style="color:#f87171">メール</a> まで
   </div>
   <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with 🐝 for toybee @ LIQUIDROOM 2026.3.22</div>
 </div>
 <div id="toast" class="toast" style="display:none"></div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const DEADLINE=new Date("2026-03-22T18:00:00+09:00");
 const MAX_MYSET=20;
 const X_SHORT_URL="https://x.gd/qATK1";
@@ -247,7 +248,7 @@ function renderVote(){
   h+='<span class="badge '+(remain>0?"badge-gold":"badge-red")+'">\u30bb\u30c8\u30ea '+mySetlist.length+'/'+MAX_MYSET+'\u66f2</span></div>';
   if(remain<=0)h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">\u30de\u30a4\u30bb\u30c8\u30ea\u304c\u4e0a\u9650\uff0820\u66f2\uff09\u306b\u9054\u3057\u307e\u3057\u305f\u3002<br><span style="font-size:12px;color:#64748b">\u203b\u30de\u30a4\u30bb\u30c8\u30ea\u30bf\u30d6\u304b\u3089\u66f2\u3092\u524a\u9664\u3059\u308b\u3068\u3001\u65b0\u3057\u3044\u66f2\u3092\u9078\u3079\u307e\u3059\u3002</span></div>';
   h+='<div class="filters">';
-  ALBUMS.forEach(function(a){...});
+  ALBUMS.forEach(function(a){var ac=currentFilter===a.name;h+='<button class="filter-btn" style="background:'+(ac?a.color:"rgba(255,255,255,.06)")+';color:'+(ac?"#000":"#cbd5e1")+'" onclick="currentFilter=\''+esc(a.name)+'\';renderVote()">'+esc(a.name)+'</button>'});
   h+='<button class="filter-btn" style="background:'+(currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)")+';color:'+(currentFilter==="all"?"#000":"#cbd5e1")+'" onclick="currentFilter=\'all\';renderVote()">ALL</button>';
   h+='</div>';
   var filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(function(s){return s.album===currentFilter});

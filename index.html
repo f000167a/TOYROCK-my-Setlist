@@ -60,7 +60,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .submit-btn{padding:14px 40px;border-radius:99px;border:none;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#FFD700,#F59E0B);color:#000;box-shadow:0 4px 20px rgba(255,215,0,.3);transition:all .2s}
 .submit-btn:disabled{background:#334155;color:#64748b;box-shadow:none;cursor:default}
 .submit-btn:not(:disabled):active{transform:scale(.97)}
-.submit-count{font-size:13px;color:#94a3b8;margin-top:6px}
 .my-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;margin-bottom:4px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02)}
 .my-row.encore{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15)}
 .my-num{color:#94a3b8;font-size:14px;min-width:30px;font-weight:700}
@@ -94,31 +93,31 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 
 <div id="nickScreen" class="nick-screen">
   <div class="nick-box">
-    <div style="font-size:48px;margin-bottom:16px">🐝</div>
+    <div style="font-size:48px;margin-bottom:16px">&#x1f41d;</div>
     <div class="road">ROAD TO LIQUIDROOM</div>
     <div class="title" style="margin-bottom:4px">マイセトリメーカー</div>
     <div class="unofficial">非公式ファン企画</div>
     <p style="color:#cbd5e1;font-size:15px;margin:16px 0 24px">2026.3.22 恵比寿LIQUIDROOM<br>自分だけのセトリを作ろう！</p>
     <input id="nickInput" class="nick-input" placeholder="ニックネーム（任意）" maxlength="20">
-    <button id="nickBtn" class="nick-btn" onclick="enterApp()">🐝 はじめる</button>
+    <button id="nickBtn" class="nick-btn" onclick="enterApp()">&#x1f41d; はじめる</button>
     <p style="color:#94a3b8;font-size:13px;margin-top:6px">※空欄の場合は「名無しクルー」になります</p>
     <div class="disclaimer" style="margin-top:16px">
-      ⚠️ 本サイトはファンによる<strong>非公式</strong>の企画です。<br>
+      &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。<br>
       toybee公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
-      ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="mailto:f000167a@yahoo.co.jp" style="color:#f87171">メール</a> まで
+      ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <span id="emailLink1" style="color:#f87171;cursor:pointer;text-decoration:underline">メール</span> まで
     </div>
   </div>
 </div>
 
 <div id="mainApp" style="display:none">
-  <div class="bee" style="left:5%;animation-delay:0s">🐝</div><div class="bee" style="left:17%;animation-delay:2s">🐝</div><div class="bee" style="left:29%;animation-delay:4s">🐝</div><div class="bee" style="left:41%;animation-delay:6s">🐝</div><div class="bee" style="left:53%;animation-delay:1s">🐝</div><div class="bee" style="left:65%;animation-delay:3s">🐝</div><div class="bee" style="left:77%;animation-delay:5s">🐝</div><div class="bee" style="left:89%;animation-delay:7s">🐝</div>
+  <div class="bee" style="left:5%;animation-delay:0s">&#x1f41d;</div><div class="bee" style="left:17%;animation-delay:2s">&#x1f41d;</div><div class="bee" style="left:29%;animation-delay:4s">&#x1f41d;</div><div class="bee" style="left:41%;animation-delay:6s">&#x1f41d;</div><div class="bee" style="left:53%;animation-delay:1s">&#x1f41d;</div><div class="bee" style="left:65%;animation-delay:3s">&#x1f41d;</div><div class="bee" style="left:77%;animation-delay:5s">&#x1f41d;</div><div class="bee" style="left:89%;animation-delay:7s">&#x1f41d;</div>
   <div class="header">
     <div class="road">ROAD TO LIQUIDROOM</div>
     <div class="title">マイセトリメーカー</div>
     <div class="subtitle">2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
-    <div class="user-info">🐝 <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
+    <div class="user-info">&#x1f41d; <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
   </div>
-  <div class="cd-heading">🐝 開演まであと</div>
+  <div class="cd-heading">&#x1f41d; 開演まであと</div>
   <div class="cd-wrap">
     <div><div class="cd-box"><span class="cd-num" id="cdD">00</span></div><span class="cd-label">DAYS</span></div>
     <div class="cd-colon" id="col1">:</div>
@@ -135,39 +134,39 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
       の成功を願って、toybeeファンが制作した<strong style="color:#f1f5f9">応援企画ページ</strong>です。
     </div>
     <div style="max-width:520px;margin:0 auto 16px;padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:14px;color:#cbd5e1;line-height:2;text-align:left">
-      🎸 聴きたい曲を選んでマイセトリを作ろう（最大20曲）<br>
-      📋 並べ替えて自分だけのマイセトリに<br>
-      🐝 「En.」ボタンでアンコール設定（最大3曲）<br>
-      𝕏 完成したらXでシェア！
+      &#x1f3b8; 聴きたい曲を選んでマイセトリを作ろう（最大20曲）<br>
+      &#x1f4cb; 並べ替えて自分だけのマイセトリに<br>
+      &#x1f41d; 「En.」ボタンでアンコール設定（最大3曲）<br>
+      &#x1d54f; 完成したらXでシェア！
     </div>
     <details class="desc-wrap">
-      <summary>⚙️ くわしい使い方 ▾</summary>
+      <summary>&#x2699;&#xfe0f; くわしい使い方 &#x25be;</summary>
       <div class="desc-body">
-        <strong style="color:#f1f5f9">🎸 選曲のルール</strong><br>
+        <strong style="color:#f1f5f9">&#x1f3b8; 選曲のルール</strong><br>
         ・聴きたい曲を選んで、最大 <strong style="color:#FFD700">20曲</strong> までマイセトリに追加できます<br>
         ・選んだ曲は自動的にマイセトリへ追加されます<br>
-        <div class="desc-tip">💡 セトリはこの端末・このブラウザに保存されます（ニックネームとは連動しません）。シェアしたい場合はマイセトリタブからXにシェアするか、URLをコピーしてください。</div>
-        <strong style="color:#f1f5f9">📋 マイセトリの使い方</strong><br>
-        ・「▲」「▼」ボタンで自由に並び替え可能<br>
+        <div class="desc-tip">&#x1f4a1; セトリはこの端末・このブラウザに保存されます（ニックネームとは連動しません）。シェアしたい場合はマイセトリタブからXにシェアするか、URLをコピーしてください。</div>
+        <strong style="color:#f1f5f9">&#x1f4cb; マイセトリの使い方</strong><br>
+        ・「&#x25b2;」「&#x25bc;」ボタンで自由に並び替え可能<br>
         ・曲の右にある「<strong style="color:#FFD700">En.</strong>」ボタンでアンコールに設定できます（最大3曲）<br>
         ・アンコール曲は本編の下に区切り線付きで表示されます<br>
-        ・「✕」ボタンで個別に削除できます
+        ・「&#x2715;」ボタンで個別に削除できます
       </div>
     </details>
     <div id="sharedView" style="display:none"></div>
     <div class="tabs">
-      <button class="tab active" data-tab="vote" onclick="switchTab('vote')">🎸 選曲</button>
-      <button class="tab" data-tab="setlist" onclick="switchTab('setlist')">📋 マイセトリ</button>
+      <button class="tab active" data-tab="vote" onclick="switchTab('vote')">&#x1f3b8; 選曲</button>
+      <button class="tab" data-tab="setlist" onclick="switchTab('setlist')">&#x1f4cb; マイセトリ</button>
     </div>
     <div id="tabVote" class="card"></div>
     <div id="tabSetlist" class="card" style="display:none"></div>
   </div>
   <div class="disclaimer">
-    ⚠️ 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式とは一切関係ありません。<br>
+    &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。toybee公式とは一切関係ありません。<br>
     公式・関係者への本サイトに関するお問い合わせはご遠慮ください。<br>
-    ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <a href="mailto:f000167a@yahoo.co.jp" style="color:#f87171">メール</a> まで
+    ご意見・ご質問は <a href="https://x.com/inaken816" style="color:#f87171">@inaken816</a> (X) / <span id="emailLink2" style="color:#f87171;cursor:pointer;text-decoration:underline">メール</span> まで
   </div>
-  <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with 🐝 for toybee @ LIQUIDROOM 2026.3.22</div>
+  <div style="text-align:center;padding:8px 16px 20px;font-size:11px;color:#475569">Made with &#x1f41d; for toybee @ LIQUIDROOM 2026.3.22</div>
 </div>
 <div id="toast" class="toast" style="display:none"></div>
 <script>
@@ -239,6 +238,7 @@ try{var saved=localStorage.getItem(“toybee_nick”);
 if(saved){currentNick=saved;loadLocal();document.getElementById(“nickScreen”).style.display=“none”;document.getElementById(“mainApp”).style.display=“block”;document.getElementById(“dispNick”).textContent=saved;renderAll()}}catch(e){}
 document.getElementById(“nickInput”).addEventListener(“keydown”,function(e){if(e.key===“Enter”)enterApp()});
 })();
+(function(){var a=atob(“bWFpbHRvOmYwMDAxNjdhQHlhaG9vLmNvLmpw”);var e1=document.getElementById(“emailLink1”);var e2=document.getElementById(“emailLink2”);if(e1)e1.onclick=function(){location.href=a};if(e2)e2.onclick=function(){location.href=a}})();
 (function(){var d=decodeSetlist(location.hash.substring(1));if(d){setTimeout(function(){var el=document.getElementById(“sharedView”);var h=’<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">🐝 共有されたマイセトリ</span></div>’;var mainS=d.songs.filter(function(t){return!d.encore.has(t)});var encS=d.songs.filter(function(t){return d.encore.has(t)});mainS.forEach(function(t,i){h+=’<div class="shared-song"><span style="color:#94a3b8;font-size:13px;min-width:30px;font-weight:700">’+(i+1)+’.</span><span style="font-size:14px;color:#f1f5f9">’+esc(t)+’</span></div>’});if(encS.length){h+=’<div class="encore-divider"><div class="encore-divider-line"></div><div class="encore-divider-text">ENCORE</div><div class="encore-divider-line"></div></div>’;encS.forEach(function(t){h+=’<div class="shared-song enc"><span style="color:#FFD700;font-size:13px;min-width:30px;font-weight:700">En.</span><span style="font-size:14px;color:#f1f5f9">’+esc(t)+’</span></div>’})}h+=’<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">閉じる</button></div></div>’;el.innerHTML=h;el.style.display=“block”},300)}})();
 
 function tick(){var d=DEADLINE-new Date();if(d<=0){document.querySelector(”.cd-heading”).textContent=“🐝 開演しました！”;return}var s=Math.floor(d/1000),sec=s%60;document.getElementById(“cdD”).textContent=String(Math.floor(s/86400)).padStart(2,“0”);document.getElementById(“cdH”).textContent=String(Math.floor(s%86400/3600)).padStart(2,“0”);document.getElementById(“cdM”).textContent=String(Math.floor(s%3600/60)).padStart(2,“0”);document.getElementById(“cdS”).textContent=String(sec).padStart(2,“0”);var op=sec%2===0?1:.3;document.getElementById(“col1”).style.opacity=op;document.getElementById(“col2”).style.opacity=op;document.getElementById(“col3”).style.opacity=op}

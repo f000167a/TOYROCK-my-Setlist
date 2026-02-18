@@ -214,15 +214,15 @@ var all=main.concat(enc);
 return all.length?{songs:all,encore:new Set(enc)}:null;
 }
 function getShareURL(l,enc){return BASE_URL+”#s=”+encodeSetlist(l,enc)}
-function saveLocal(){localStorage.setItem(“toybee_setlist”,JSON.stringify(mySetlist));localStorage.setItem(“toybee_nick”,currentNick);localStorage.setItem(“toybee_encore”,JSON.stringify(Array.from(encoreSet)))}
+function saveLocal(){try{localStorage.setItem(“toybee_setlist”,JSON.stringify(mySetlist));localStorage.setItem(“toybee_nick”,currentNick);localStorage.setItem(“toybee_encore”,JSON.stringify(Array.from(encoreSet)))}catch(e){}}
 function loadLocal(){
-var s=localStorage.getItem(“toybee_setlist”);if(s){try{mySetlist=JSON.parse(s)}catch(e){mySetlist=[]}}
-var e=localStorage.getItem(“toybee_encore”);if(e){try{encoreSet=new Set(JSON.parse(e))}catch(ex){encoreSet=new Set()}}
+try{var s=localStorage.getItem(“toybee_setlist”);if(s){try{mySetlist=JSON.parse(s)}catch(e){mySetlist=[]}}
+var e=localStorage.getItem(“toybee_encore”);if(e){try{encoreSet=new Set(JSON.parse(e))}catch(ex){encoreSet=new Set()}}}catch(err){}
 }
 
 function enterApp(){
 var v=document.getElementById(“nickInput”).value.trim()||DEFAULT_NICK;
-currentNick=v;loadLocal();localStorage.setItem(“toybee_nick”,v);
+currentNick=v;loadLocal();try{localStorage.setItem(“toybee_nick”,v)}catch(e){}
 document.getElementById(“nickScreen”).style.display=“none”;
 document.getElementById(“mainApp”).style.display=“block”;
 document.getElementById(“dispNick”).textContent=v;
@@ -235,8 +235,8 @@ document.getElementById(“mainApp”).style.display=“none”;
 document.getElementById(“nickInput”).value=””;
 }
 (function(){
-var saved=localStorage.getItem(“toybee_nick”);
-if(saved){currentNick=saved;loadLocal();document.getElementById(“nickScreen”).style.display=“none”;document.getElementById(“mainApp”).style.display=“block”;document.getElementById(“dispNick”).textContent=saved;renderAll()}
+try{var saved=localStorage.getItem(“toybee_nick”);
+if(saved){currentNick=saved;loadLocal();document.getElementById(“nickScreen”).style.display=“none”;document.getElementById(“mainApp”).style.display=“block”;document.getElementById(“dispNick”).textContent=saved;renderAll()}}catch(e){}
 document.getElementById(“nickInput”).addEventListener(“keydown”,function(e){if(e.key===“Enter”)enterApp()});
 })();
 (function(){var d=decodeSetlist(location.hash.substring(1));if(d){setTimeout(function(){var el=document.getElementById(“sharedView”);var h=’<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">🐝 共有されたマイセトリ</span></div>’;var mainS=d.songs.filter(function(t){return!d.encore.has(t)});var encS=d.songs.filter(function(t){return d.encore.has(t)});mainS.forEach(function(t,i){h+=’<div class="shared-song"><span style="color:#94a3b8;font-size:13px;min-width:30px;font-weight:700">’+(i+1)+’.</span><span style="font-size:14px;color:#f1f5f9">’+esc(t)+’</span></div>’});if(encS.length){h+=’<div class="encore-divider"><div class="encore-divider-line"></div><div class="encore-divider-text">ENCORE</div><div class="encore-divider-line"></div></div>’;encS.forEach(function(t){h+=’<div class="shared-song enc"><span style="color:#FFD700;font-size:13px;min-width:30px;font-weight:700">En.</span><span style="font-size:14px;color:#f1f5f9">’+esc(t)+’</span></div>’})}h+=’<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">閉じる</button></div></div>’;el.innerHTML=h;el.style.display=“block”},300)}})();
@@ -362,7 +362,7 @@ el.innerHTML=h;
 
 function renderAll(){renderVote();renderSetlist()}
 renderAll();
-</script>
 
+</script>
 </body>
 </html>

@@ -44,9 +44,8 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .badge{font-size:14px;font-weight:700;padding:5px 14px;border-radius:99px}
 .badge-gold{color:#d4a017;background:rgba(212,160,23,.1)}
 .badge-red{color:#EF4444;background:rgba(239,68,68,.1)}
-.filters{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.filter-btn{padding:6px 14px;border-radius:99px;border:none;font-size:13px;cursor:pointer;font-weight:600;transition:all .2s}
-.song-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);margin-bottom:6px;transition:all .2s;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.filter-btn{padding:10px 8px;border-radius:10px;border:none;font-size:13px;cursor:pointer;font-weight:600;transition:all .2s;text-align:center}
 .song-item.checked{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.2)}
 .song-item.inset{background:rgba(255,255,255,.01);border-color:rgba(255,255,255,.03);opacity:.45;cursor:default}
 .song-check{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:14px}
@@ -108,7 +107,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div class="road">ROAD TO LIQUIDROOM</div>
     <div class="title">マイセトリメーカー</div>
     <div class="subtitle">2026.3.22 (SUN) 恵比寿LIQUIDROOM</div>
-    <div class="unofficial">非公式ファン企画（toybee公式とは無関係です）</div>
     <div class="user-info">🐝 <span id="dispNick"></span>さん、ようこそ！<button onclick="changeNick()">変更</button></div>
   </div>
   <div class="cd-heading">🐝 開演まであと</div>
@@ -248,8 +246,9 @@ function renderVote(){
   var h='<div class="sec-header"><span class="sec-title">\ud83c\udfb8 \u8074\u304d\u305f\u3044\u66f2\u3092\u9078\u307c\u3046</span>';
   h+='<span class="badge '+(remain>0?"badge-gold":"badge-red")+'">\u30bb\u30c8\u30ea '+mySetlist.length+'/'+MAX_MYSET+'\u66f2</span></div>';
   if(remain<=0)h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">\u30de\u30a4\u30bb\u30c8\u30ea\u304c\u4e0a\u9650\uff0820\u66f2\uff09\u306b\u9054\u3057\u307e\u3057\u305f\u3002<br><span style="font-size:12px;color:#64748b">\u203b\u30de\u30a4\u30bb\u30c8\u30ea\u30bf\u30d6\u304b\u3089\u66f2\u3092\u524a\u9664\u3059\u308b\u3068\u3001\u65b0\u3057\u3044\u66f2\u3092\u9078\u3079\u307e\u3059\u3002</span></div>';
-  h+='<div class="filters"><button class="filter-btn" style="background:'+(currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)")+';color:'+(currentFilter==="all"?"#000":"#cbd5e1")+'" onclick="currentFilter=\'all\';renderVote()">ALL</button>';
-  ALBUMS.forEach(function(a){var ac=currentFilter===a.name;h+='<button class="filter-btn" style="background:'+(ac?a.color:"rgba(255,255,255,.06)")+';color:'+(ac?"#000":"#cbd5e1")+'" onclick="currentFilter=\''+esc(a.name)+'\';renderVote()">'+esc(a.name)+'</button>'});
+  h+='<div class="filters">';
+  ALBUMS.forEach(function(a){...});
+  h+='<button class="filter-btn" style="background:'+(currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)")+';color:'+(currentFilter==="all"?"#000":"#cbd5e1")+'" onclick="currentFilter=\'all\';renderVote()">ALL</button>';
   h+='</div>';
   var filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(function(s){return s.album===currentFilter});
   filtered.forEach(function(s){

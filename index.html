@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +6,7 @@
 <title>マイセトリメーカー（非公式）</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#1a0a2e 100%);color:#e2e8f0;font-family:'Helvetica Neue','Segoe UI',sans-serif;overflow-x:hidden}
+button,input{touch-action:manipulation}body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#1a0a2e 100%);color:#e2e8f0;font-family:'Helvetica Neue','Segoe UI',sans-serif;overflow-x:hidden}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
 .bee{position:fixed;font-size:20px;opacity:.25;pointer-events:none;animation:fd 8s linear infinite}
 @keyframes fd{0%{transform:translateY(-30px) rotate(0);opacity:0}10%{opacity:.25}90%{opacity:.25}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
@@ -39,7 +38,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
 .nick-box{text-align:center;padding:32px;max-width:360px}
 .nick-input{width:100%;padding:14px 16px;border-radius:10px;border:2px solid rgba(255,215,0,.25);background:rgba(255,255,255,.05);color:#e2e8f0;font-size:16px;outline:none;text-align:center;margin-bottom:12px}
 .nick-input:focus{border-color:rgba(255,215,0,.6)}
-.nick-btn{width:100%;padding:14px 0;border-radius:10px;border:none;background:linear-gradient(135deg,#FFD700,#F59E0B);color:#000;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(255,215,0,.3)}
+.nick-btn{touch-action:manipulation;-webkit-tap-highlight-color:rgba(255,215,0,.3);width:100%;padding:14px 0;border-radius:10px;border:none;background:linear-gradient(135deg,#FFD700,#F59E0B);color:#000;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(255,215,0,.3)}
 .sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .sec-title{font-size:18px;font-weight:700;color:#e2e8f0}
 .badge{font-size:14px;font-weight:700;padding:5px 14px;border-radius:99px}
@@ -99,7 +98,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#0a0a1a 0%,#0f172a 40%,#
     <div class="unofficial">非公式ファン企画</div>
     <p style="color:#cbd5e1;font-size:15px;margin:16px 0 24px">2026.3.22 恵比寿LIQUIDROOM<br>自分だけのセトリを作ろう！</p>
     <input id="nickInput" class="nick-input" placeholder="ニックネーム（任意）" maxlength="20">
-    <button id="nickBtn" class="nick-btn" onclick="enterApp()">&#x1f41d; はじめる</button>
+    <button id="nickBtn" class="nick-btn">&#x1f41d; はじめる</button>
     <p style="color:#94a3b8;font-size:13px;margin-top:6px">※空欄の場合は「名無しクルー」になります</p>
     <div class="disclaimer" style="margin-top:16px">
       &#x26a0;&#xfe0f; 本サイトはファンによる<strong>非公式</strong>の企画です。<br>
@@ -181,184 +180,187 @@ var BASE_URL=location.href.split("#")[0].split("?")[0];
 var GAS_URL="https://script.google.com/macros/s/AKfycbxRzLTTPdkB7yOc8XeNrQzNEBQ6NyM0P8SkA8rUR6RNJqgdS_4YGrfMhsuv1RkBVMXHnA/exec";
 
 var ALBUMS=[
-{name:“THE EARLY TOYBEE”,color:”#FFD700”,songs:[“全米は泣かない”,“それゆけ!夢みるゾンビーズ!!”,“Flight Music”,“電脳ヴィジランテ”,“黎明グッドルーザー”,“あらしのよるに”,“いなせ”,“あほんだらいふ”]},
-{name:“REVIVAL”,color:”#8B5CF6”,songs:[“惑星ダブリス”,“Super Imagination”,“ワンタイムラヴァー”,“風知らぬひと”,“フロムアンダーランド”,“Teenage Black”,“シーラカンスと文学”]},
-{name:“LOOKBACK TO THE FUTURE”,color:”#06B6D4”,songs:[“LOOKBACK”,“Golden Age”,“ステルオンナ”,“道化師のラブソング”,“ライド・アンド・ライブ”,“S.Y.S -Save Your Souls-”,“TO THE FUTURE”]},
-{name:“TOYROCK INVASION”,color:”#EF4444”,songs:[“TOY ROCK -TOYBEEのテーマ-”,“シモキタ・モーニング・ブルース”,“CAT GIRL”,“Jonnie’s Rock’n’Roll Lamp”,“Playlist in your Heart”]},
-{name:“Singles”,color:”#F59E0B”,songs:[“ひとつだけ”,“ハナマル”]}
+  {name:"THE EARLY TOYBEE",color:"#FFD700",songs:["全米は泣かない","それゆけ!夢みるゾンビーズ!!","Flight Music","電脳ヴィジランテ","黎明グッドルーザー","あらしのよるに","いなせ","あほんだらいふ"]},
+  {name:"REVIVAL",color:"#8B5CF6",songs:["惑星ダブリス","Super Imagination","ワンタイムラヴァー","風知らぬひと","フロムアンダーランド","Teenage Black","シーラカンスと文学"]},
+  {name:"LOOKBACK TO THE FUTURE",color:"#06B6D4",songs:["LOOKBACK","Golden Age","ステルオンナ","道化師のラブソング","ライド・アンド・ライブ","S.Y.S -Save Your Souls-","TO THE FUTURE"]},
+  {name:"TOYROCK INVASION",color:"#EF4444",songs:["TOY ROCK -TOYBEEのテーマ-","シモキタ・モーニング・ブルース","CAT GIRL","Jonnie's Rock'n'Roll Lamp","Playlist in your Heart"]},
+  {name:"Singles",color:"#F59E0B",songs:["ひとつだけ","ハナマル"]}
 ];
 var ALL_SONGS=ALBUMS.flatMap(function(a){return a.songs.map(function(s){return{title:s,album:a.name,color:a.color}})});
 
-function esc(s){return String(s).replace(/&/g,”&”).replace(/</g,”<”).replace(/>/g,”>”).replace(/”/g,”"”).replace(/’/g,”'”)}
-var currentNick=””,currentTab=“vote”,currentFilter=“all”,toastTimer=null;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+var currentNick="",currentTab="vote",currentFilter="all",toastTimer=null;
 var pendingSelections=new Set();
 var mySetlist=[];
 var encoreSet=new Set();
 
-function showToast(msg){var el=document.getElementById(“toast”);el.textContent=msg;el.style.display=“block”;clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.style.display=“none”},2500)}
-function apiPost(body){try{fetch(GAS_URL,{method:“POST”,body:JSON.stringify(body)})}catch(e){}}
+function showToast(msg){var el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.style.display="none"},2500)}
+function apiPost(body){try{fetch(GAS_URL,{method:"POST",body:JSON.stringify(body)})}catch(e){}}
 function songIdx(t){return ALL_SONGS.findIndex(function(s){return s.title===t})}
 function encodeSetlist(l,enc){
-var codes=l.filter(function(t){return!enc.has(t)}).map(function(t){return String(songIdx(t)).padStart(2,“0”)}).filter(function(v){return v!==”-1”});
-var eCodes=l.filter(function(t){return enc.has(t)}).map(function(t){return String(songIdx(t)).padStart(2,“0”)}).filter(function(v){return v!==”-1”});
-var out=codes.join(”-”);
-if(eCodes.length)out+=”*”+eCodes.join(”-”);
-return out;
+  var codes=l.filter(function(t){return!enc.has(t)}).map(function(t){return String(songIdx(t)).padStart(2,"0")}).filter(function(v){return v!=="-1"});
+  var eCodes=l.filter(function(t){return enc.has(t)}).map(function(t){return String(songIdx(t)).padStart(2,"0")}).filter(function(v){return v!=="-1"});
+  var out=codes.join("-");
+  if(eCodes.length)out+="_"+eCodes.join("-");
+  return out;
 }
 function decodeSetlist(h){
-if(!h||!h.startsWith(“s=”))return null;
-var raw=h.substring(2);var parts=raw.split(”*”);
-function parse(str){if(!str)return[];return str.split(”-”).map(function(p){var i=parseInt(p,10);return(!isNaN(i)&&i>=0&&i<ALL_SONGS.length)?ALL_SONGS[i].title:null}).filter(Boolean)}
-var main=parse(parts[0]);var enc=parse(parts[1]||””);
-var all=main.concat(enc);
-return all.length?{songs:all,encore:new Set(enc)}:null;
+  if(!h||!h.startsWith("s="))return null;
+  var raw=h.substring(2);var parts=raw.split("_");
+  function parse(str){if(!str)return[];return str.split("-").map(function(p){var i=parseInt(p,10);return(!isNaN(i)&&i>=0&&i<ALL_SONGS.length)?ALL_SONGS[i].title:null}).filter(Boolean)}
+  var main=parse(parts[0]);var enc=parse(parts[1]||"");
+  var all=main.concat(enc);
+  return all.length?{songs:all,encore:new Set(enc)}:null;
 }
-function getShareURL(l,enc){return BASE_URL+”#s=”+encodeSetlist(l,enc)}
-function saveLocal(){try{localStorage.setItem(“toybee_setlist”,JSON.stringify(mySetlist));localStorage.setItem(“toybee_nick”,currentNick);localStorage.setItem(“toybee_encore”,JSON.stringify(Array.from(encoreSet)))}catch(e){}}
+function getShareURL(l,enc){return BASE_URL+"#s="+encodeSetlist(l,enc)}
+function saveLocal(){try{localStorage.setItem("toybee_setlist",JSON.stringify(mySetlist));localStorage.setItem("toybee_nick",currentNick);localStorage.setItem("toybee_encore",JSON.stringify(Array.from(encoreSet)))}catch(e){}}
 function loadLocal(){
-try{var s=localStorage.getItem(“toybee_setlist”);if(s){try{mySetlist=JSON.parse(s)}catch(e){mySetlist=[]}}
-var e=localStorage.getItem(“toybee_encore”);if(e){try{encoreSet=new Set(JSON.parse(e))}catch(ex){encoreSet=new Set()}}}catch(err){}
+  try{var s=localStorage.getItem("toybee_setlist");if(s){try{mySetlist=JSON.parse(s)}catch(e){mySetlist=[]}}
+  var e=localStorage.getItem("toybee_encore");if(e){try{encoreSet=new Set(JSON.parse(e))}catch(ex){encoreSet=new Set()}}}catch(err){}
 }
 
 function enterApp(){
-var v=document.getElementById(“nickInput”).value.trim()||DEFAULT_NICK;
-currentNick=v;loadLocal();try{localStorage.setItem(“toybee_nick”,v)}catch(e){}
-document.getElementById(“nickScreen”).style.display=“none”;
-document.getElementById(“mainApp”).style.display=“block”;
-document.getElementById(“dispNick”).textContent=v;
-renderAll();
+  var v=document.getElementById("nickInput").value.trim()||DEFAULT_NICK;
+  currentNick=v;loadLocal();try{localStorage.setItem("toybee_nick",v)}catch(e){}
+  document.getElementById("nickScreen").style.display="none";
+  document.getElementById("mainApp").style.display="block";
+  document.getElementById("dispNick").textContent=v;
+  renderAll();
 }
 function changeNick(){
-currentNick=””;mySetlist=[];encoreSet=new Set();
-document.getElementById(“nickScreen”).style.display=“flex”;
-document.getElementById(“mainApp”).style.display=“none”;
-document.getElementById(“nickInput”).value=””;
+  currentNick="";mySetlist=[];encoreSet=new Set();
+  document.getElementById("nickScreen").style.display="flex";
+  document.getElementById("mainApp").style.display="none";
+  document.getElementById("nickInput").value="";
 }
 (function(){
-try{var saved=localStorage.getItem(“toybee_nick”);
-if(saved){currentNick=saved;loadLocal();document.getElementById(“nickScreen”).style.display=“none”;document.getElementById(“mainApp”).style.display=“block”;document.getElementById(“dispNick”).textContent=saved;renderAll()}}catch(e){}
-document.getElementById(“nickInput”).addEventListener(“keydown”,function(e){if(e.key===“Enter”)enterApp()});
+  try{var saved=localStorage.getItem("toybee_nick");
+  if(saved){currentNick=saved;loadLocal();document.getElementById("nickScreen").style.display="none";document.getElementById("mainApp").style.display="block";document.getElementById("dispNick").textContent=saved;renderAll()}}catch(e){}
+  document.getElementById("nickInput").addEventListener("keydown",function(e){if(e.key==="Enter")enterApp()});
+  var nb=document.getElementById("nickBtn");
+  nb.addEventListener("click",function(e){e.preventDefault();enterApp()});
+  nb.addEventListener("touchend",function(e){e.preventDefault();enterApp()});
 })();
-(function(){var a=atob(“bWFpbHRvOmYwMDAxNjdhQHlhaG9vLmNvLmpw”);var e1=document.getElementById(“emailLink1”);var e2=document.getElementById(“emailLink2”);if(e1)e1.onclick=function(){location.href=a};if(e2)e2.onclick=function(){location.href=a}})();
-(function(){var d=decodeSetlist(location.hash.substring(1));if(d){setTimeout(function(){var el=document.getElementById(“sharedView”);var h=’<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">🐝 共有されたマイセトリ</span></div>’;var mainS=d.songs.filter(function(t){return!d.encore.has(t)});var encS=d.songs.filter(function(t){return d.encore.has(t)});mainS.forEach(function(t,i){h+=’<div class="shared-song"><span style="color:#94a3b8;font-size:13px;min-width:30px;font-weight:700">’+(i+1)+’.</span><span style="font-size:14px;color:#f1f5f9">’+esc(t)+’</span></div>’});if(encS.length){h+=’<div class="encore-divider"><div class="encore-divider-line"></div><div class="encore-divider-text">ENCORE</div><div class="encore-divider-line"></div></div>’;encS.forEach(function(t){h+=’<div class="shared-song enc"><span style="color:#FFD700;font-size:13px;min-width:30px;font-weight:700">En.</span><span style="font-size:14px;color:#f1f5f9">’+esc(t)+’</span></div>’})}h+=’<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">閉じる</button></div></div>’;el.innerHTML=h;el.style.display=“block”},300)}})();
+(function(){var a=atob("bWFpbHRvOmYwMDAxNjdhQHlhaG9vLmNvLmpw");var e1=document.getElementById("emailLink1");var e2=document.getElementById("emailLink2");if(e1)e1.onclick=function(){location.href=a};if(e2)e2.onclick=function(){location.href=a}})();
+(function(){var d=decodeSetlist(location.hash.substring(1));if(d){setTimeout(function(){var el=document.getElementById("sharedView");var h='<div class="shared-overlay"><div style="text-align:center;margin-bottom:12px"><span style="font-size:16px;font-weight:700;color:#FFD700">🐝 共有されたマイセトリ</span></div>';var mainS=d.songs.filter(function(t){return!d.encore.has(t)});var encS=d.songs.filter(function(t){return d.encore.has(t)});mainS.forEach(function(t,i){h+='<div class="shared-song"><span style="color:#94a3b8;font-size:13px;min-width:30px;font-weight:700">'+(i+1)+'.</span><span style="font-size:14px;color:#f1f5f9">'+esc(t)+'</span></div>'});if(encS.length){h+='<div class="encore-divider"><div class="encore-divider-line"></div><div class="encore-divider-text">ENCORE</div><div class="encore-divider-line"></div></div>';encS.forEach(function(t){h+='<div class="shared-song enc"><span style="color:#FFD700;font-size:13px;min-width:30px;font-weight:700">En.</span><span style="font-size:14px;color:#f1f5f9">'+esc(t)+'</span></div>'})}h+='<div style="text-align:center;margin-top:12px"><button class="btn-sm" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)" onclick="document.getElementById(\'sharedView\').style.display=\'none\';history.replaceState(null,\'\',BASE_URL)">閉じる</button></div></div>';el.innerHTML=h;el.style.display="block"},300)}})();
 
-function tick(){var d=DEADLINE-new Date();if(d<=0){document.querySelector(”.cd-heading”).textContent=“🐝 開演しました！”;return}var s=Math.floor(d/1000),sec=s%60;document.getElementById(“cdD”).textContent=String(Math.floor(s/86400)).padStart(2,“0”);document.getElementById(“cdH”).textContent=String(Math.floor(s%86400/3600)).padStart(2,“0”);document.getElementById(“cdM”).textContent=String(Math.floor(s%3600/60)).padStart(2,“0”);document.getElementById(“cdS”).textContent=String(sec).padStart(2,“0”);var op=sec%2===0?1:.3;document.getElementById(“col1”).style.opacity=op;document.getElementById(“col2”).style.opacity=op;document.getElementById(“col3”).style.opacity=op}
+function tick(){var d=DEADLINE-new Date();if(d<=0){document.querySelector(".cd-heading").textContent="🐝 開演しました！";return}var s=Math.floor(d/1000),sec=s%60;document.getElementById("cdD").textContent=String(Math.floor(s/86400)).padStart(2,"0");document.getElementById("cdH").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");document.getElementById("cdM").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");document.getElementById("cdS").textContent=String(sec).padStart(2,"0");var op=sec%2===0?1:.3;document.getElementById("col1").style.opacity=op;document.getElementById("col2").style.opacity=op;document.getElementById("col3").style.opacity=op}
 setInterval(tick,1000);tick();
 
-function switchTab(id){currentTab=id;pendingSelections.clear();document.querySelectorAll(”.tab”).forEach(function(t){t.classList.toggle(“active”,t.dataset.tab===id)});document.getElementById(“tabVote”).style.display=id===“vote”?“block”:“none”;document.getElementById(“tabSetlist”).style.display=id===“setlist”?“block”:“none”;renderAll()}
+function switchTab(id){currentTab=id;pendingSelections.clear();document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("active",t.dataset.tab===id)});document.getElementById("tabVote").style.display=id==="vote"?"block":"none";document.getElementById("tabSetlist").style.display=id==="setlist"?"block":"none";renderAll()}
 
 function togglePending(idx){
-var title=ALL_SONGS[idx].title;
-if(pendingSelections.has(title)){pendingSelections.delete(title)}
-else{
-var room=MAX_MYSET-mySetlist.filter(function(s){return!pendingSelections.has(s)}).length;
-if(pendingSelections.size>=room){showToast(“⚠ マイセトリは最大”+MAX_MYSET+“曲までです”);return}
-pendingSelections.add(title);
-}
-renderVote();
+  var title=ALL_SONGS[idx].title;
+  if(pendingSelections.has(title)){pendingSelections.delete(title)}
+  else{
+    var room=MAX_MYSET-mySetlist.filter(function(s){return!pendingSelections.has(s)}).length;
+    if(pendingSelections.size>=room){showToast("⚠ マイセトリは最大"+MAX_MYSET+"曲までです");return}
+    pendingSelections.add(title);
+  }
+  renderVote();
 }
 function submitVotes(){
-if(!pendingSelections.size)return;
-var selected=Array.from(pendingSelections);
-var btn=document.querySelector(”.submit-btn”);
-btn.disabled=true;btn.textContent=“送信中…”;
-selected.forEach(function(s){if(mySetlist.indexOf(s)===-1&&mySetlist.length<MAX_MYSET)mySetlist.push(s)});
-saveLocal();pendingSelections.clear();
-showToast(“🐝 “+selected.length+“曲選びました！”);
-renderAll();
-apiPost({action:“vote”,nick:currentNick,songs:selected});
+  if(!pendingSelections.size)return;
+  var selected=Array.from(pendingSelections);
+  var btn=document.querySelector(".submit-btn");
+  btn.disabled=true;btn.textContent="送信中...";
+  selected.forEach(function(s){if(mySetlist.indexOf(s)===-1&&mySetlist.length<MAX_MYSET)mySetlist.push(s)});
+  saveLocal();pendingSelections.clear();
+  showToast("🐝 "+selected.length+"曲選びました！");
+  renderAll();
+  apiPost({action:"vote",nick:currentNick,songs:selected});
 }
 
 function renderVote(){
-var el=document.getElementById(“tabVote”);
-var inSet=new Set(mySetlist);
-var remain=MAX_MYSET-mySetlist.length;
-var h=’<div class="sec-header"><span class="sec-title">🎸 聴きたい曲を選ぼう</span>’;
-h+=’<span class=“badge ‘+(remain>0?“badge-gold”:“badge-red”)+’”>セトリ ‘+mySetlist.length+’/’+MAX_MYSET+‘曲</span></div>’;
-if(remain<=0)h+=’<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">マイセトリが上限（20曲）に達しました。<br><span style="font-size:12px;color:#64748b">※マイセトリタブから曲を削除すると、新しい曲を選べます。</span></div>’;
-h+=’<div class="filters">’;
-ALBUMS.forEach(function(a){var ac=currentFilter===a.name;h+=’<button class=“filter-btn” style=“background:’+(ac?a.color:“rgba(255,255,255,.06)”)+’;color:’+(ac?”#000”:”#cbd5e1”)+’” onclick=“currentFilter='’+esc(a.name)+’';renderVote()”>’+esc(a.name)+’</button>’});
-h+=’<button class=“filter-btn” style=“background:’+(currentFilter===“all”?”#FFD700”:“rgba(255,255,255,.06)”)+’;color:’+(currentFilter===“all”?”#000”:”#cbd5e1”)+’” onclick=“currentFilter='all';renderVote()”>ALL</button>’;
-h+=’</div>’;
-var filtered=currentFilter===“all”?ALL_SONGS:ALL_SONGS.filter(function(s){return s.album===currentFilter});
-filtered.forEach(function(s){
-var already=inSet.has(s.title)&&!pendingSelections.has(s.title);
-var ip=pendingSelections.has(s.title);
-var idx=songIdx(s.title);
-if(already){h+=’<div class="song-item inset"><div class="song-check">✓</div><div class="song-info"><span class="song-name">’+esc(s.title)+’</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">’+esc(s.album)+’</span></div><span style="font-size:12px;color:#64748b">セトリに追加済</span></div>’}
-else{var can=remain>0||ip;h+=’<div class=“song-item ‘+(ip?“checked”:””)+’” onclick=”’+(can?“togglePending(”+idx+”)”:””)+’”><div class="song-check">’+(ip?“✓”:””)+’</div><div class="song-info"><span class="song-name">’+esc(s.title)+’</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">’+esc(s.album)+’</span></div></div>’}
-});
-var sc=pendingSelections.size;
-h+=’<div class="submit-bar"><button class=“submit-btn” ‘+(sc===0?“disabled”:””)+” onclick="submitVotes()">🐝 “+(sc>0?sc+“曲をセトリに追加”:“曲を選んでください”)+’</button>’;
-h+=’<div class="submit-count">’+(sc>0?Array.from(pendingSelections).join(”、”):remain>0?“タップして曲を選んでから追加ボタンを押してください”:””)+’</div></div>’;
-el.innerHTML=h;
+  var el=document.getElementById("tabVote");
+  var inSet=new Set(mySetlist);
+  var remain=MAX_MYSET-mySetlist.length;
+  var h='<div class="sec-header"><span class="sec-title">🎸 聴きたい曲を選ぼう</span>';
+  h+='<span class="badge '+(remain>0?"badge-gold":"badge-red")+'">セトリ '+mySetlist.length+'/'+MAX_MYSET+'曲</span></div>';
+  if(remain<=0)h+='<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#94a3b8">マイセトリが上限（20曲）に達しました。<br><span style="font-size:12px;color:#64748b">※マイセトリタブから曲を削除すると、新しい曲を選べます。</span></div>';
+  h+='<div class="filters">';
+  ALBUMS.forEach(function(a){var ac=currentFilter===a.name;h+='<button class="filter-btn" style="background:'+(ac?a.color:"rgba(255,255,255,.06)")+';color:'+(ac?"#000":"#cbd5e1")+'" onclick="currentFilter=\''+esc(a.name)+'\';renderVote()">'+esc(a.name)+'</button>'});
+  h+='<button class="filter-btn" style="background:'+(currentFilter==="all"?"#FFD700":"rgba(255,255,255,.06)")+';color:'+(currentFilter==="all"?"#000":"#cbd5e1")+'" onclick="currentFilter=\'all\';renderVote()">ALL</button>';
+  h+='</div>';
+  var filtered=currentFilter==="all"?ALL_SONGS:ALL_SONGS.filter(function(s){return s.album===currentFilter});
+  filtered.forEach(function(s){
+    var already=inSet.has(s.title)&&!pendingSelections.has(s.title);
+    var ip=pendingSelections.has(s.title);
+    var idx=songIdx(s.title);
+    if(already){h+='<div class="song-item inset"><div class="song-check">✓</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div><span style="font-size:12px;color:#64748b">セトリに追加済</span></div>'}
+    else{var can=remain>0||ip;h+='<div class="song-item '+(ip?"checked":"")+'" onclick="'+(can?"togglePending("+idx+")":"")+'"><div class="song-check">'+(ip?"✓":"")+'</div><div class="song-info"><span class="song-name">'+esc(s.title)+'</span><br><span class="song-album" style="color:'+s.color+';background:'+s.color+'15">'+esc(s.album)+'</span></div></div>'}
+  });
+  var sc=pendingSelections.size;
+  h+='<div class="submit-bar"><button class="submit-btn" '+(sc===0?"disabled":"")+" onclick=\"submitVotes()\">🐝 "+(sc>0?sc+"曲をセトリに追加":"曲を選んでください")+'</button>';
+  h+='<div class="submit-count">'+(sc>0?Array.from(pendingSelections).join("、"):remain>0?"タップして曲を選んでから追加ボタンを押してください":"")+'</div></div>';
+  el.innerHTML=h;
 }
 
 function toggleEncore(idx){
-var title=ALL_SONGS[idx].title;
-if(encoreSet.has(title)){encoreSet.delete(title)}
-else{if(encoreSet.size>=MAX_ENCORE)return;encoreSet.add(title)}
-saveLocal();renderSetlist();
+  var title=ALL_SONGS[idx].title;
+  if(encoreSet.has(title)){encoreSet.delete(title)}
+  else{if(encoreSet.size>=MAX_ENCORE)return;encoreSet.add(title)}
+  saveLocal();renderSetlist();
 }
 function moveMain(from,to){
-var mains=mySetlist.filter(function(t){return!encoreSet.has(t)});
-if(to<0||to>=mains.length)return;
-var fi=mySetlist.indexOf(mains[from]);var ti=mySetlist.indexOf(mains[to]);
-mySetlist[fi]=mains[to];mySetlist[ti]=mains[from];
-saveLocal();renderSetlist();
+  var mains=mySetlist.filter(function(t){return!encoreSet.has(t)});
+  if(to<0||to>=mains.length)return;
+  var fi=mySetlist.indexOf(mains[from]);var ti=mySetlist.indexOf(mains[to]);
+  mySetlist[fi]=mains[to];mySetlist[ti]=mains[from];
+  saveLocal();renderSetlist();
 }
 function moveEnc(from,to){
-var encs=mySetlist.filter(function(t){return encoreSet.has(t)});
-if(to<0||to>=encs.length)return;
-var fi=mySetlist.indexOf(encs[from]);var ti=mySetlist.indexOf(encs[to]);
-mySetlist[fi]=encs[to];mySetlist[ti]=encs[from];
-saveLocal();renderSetlist();
+  var encs=mySetlist.filter(function(t){return encoreSet.has(t)});
+  if(to<0||to>=encs.length)return;
+  var fi=mySetlist.indexOf(encs[from]);var ti=mySetlist.indexOf(encs[to]);
+  mySetlist[fi]=encs[to];mySetlist[ti]=encs[from];
+  saveLocal();renderSetlist();
 }
-function rmFromSet(i){var t=mySetlist[i];encoreSet.delete(t);mySetlist.splice(i,1);saveLocal();showToast(“✕ 「”+t+”」を削除しました”);renderSetlist()}
-function clearMySet(){if(!confirm(“マイセトリを空にしますか？”))return;mySetlist=[];encoreSet=new Set();saveLocal();renderSetlist()}
+function rmFromSet(i){var t=mySetlist[i];encoreSet.delete(t);mySetlist.splice(i,1);saveLocal();showToast("✕ 「"+t+"」を削除しました");renderSetlist()}
+function clearMySet(){if(!confirm("マイセトリを空にしますか？"))return;mySetlist=[];encoreSet=new Set();saveLocal();renderSetlist()}
 function shareMySetlist(){
-var l=mySetlist;if(!l.length){showToast(“⚠ マイセトリが空です”);return}
-var url=getShareURL(l,encoreSet);
-var text=“🐝 マイセトリ作ってみた！\n”+url+”\n”+HASHTAG;
-window.open(“https://twitter.com/intent/tweet?text=”+encodeURIComponent(text),”_blank”,“noopener,noreferrer”);
+  var l=mySetlist;if(!l.length){showToast("⚠ マイセトリが空です");return}
+  var url=getShareURL(l,encoreSet);
+  var text="🐝 マイセトリ作ってみた！\n"+url+"\n"+HASHTAG;
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
 }
 
 function renderSetlist(){
-var el=document.getElementById(“tabSetlist”);
-var h=’<button class="btn-share" onclick="shareMySetlist()">𝕏 マイセトリをシェアする</button>’;
-h+=’<div class="sec-header" style="margin-top:20px"><span class="sec-title">🎤 マイセトリ (’+mySetlist.length+’/’+MAX_MYSET+’)</span>’;
-h+=’<span class="encore-badge">En. ‘+encoreSet.size+’/’+MAX_ENCORE+’</span>’;
-h+=’<button class="btn-sm btn-clear" onclick="clearMySet()">空にする</button></div>’;
-if(!mySetlist.length){h+=’<div class="empty">選曲タブで曲を選ぶとマイセトリに追加されます</div>’}
-else{
-var mainSongs=mySetlist.filter(function(t){return!encoreSet.has(t)});
-var encSongs=mySetlist.filter(function(t){return encoreSet.has(t)});
-mainSongs.forEach(function(t,i){
-var gi=mySetlist.indexOf(t);var si=songIdx(t);
-h+=’<div class="my-row">’;
-h+=’<div class="my-arrows"><button class=“my-arrow” ‘+(i===0?“disabled”:””)+” onclick="moveMain(”+i+”,”+(i-1)+”)">▲</button>”;
-h+=’<button class=“my-arrow” ‘+(i===mainSongs.length-1?“disabled”:””)+” onclick="moveMain(”+i+”,”+(i+1)+”)">▼</button></div>”;
-h+=’<span class="my-num">’+(i+1)+’.</span>’;
-h+=’<span class="my-title">’+esc(t)+’</span>’;
-h+=’<button class=“en-toggle’+(encoreSet.size>=MAX_ENCORE?” disabled”:””)+’” onclick=“toggleEncore(’+si+’)”>En.</button>’;
-h+=’<button class="my-rm" onclick="rmFromSet('+gi+')">✕</button></div>’;
-});
-if(encSongs.length){
-h+=’<div class="encore-divider"><div class="encore-divider-line"></div><div class="encore-divider-text">ENCORE</div><div class="encore-divider-line"></div></div>’;
-encSongs.forEach(function(t,i){
-var gi=mySetlist.indexOf(t);var si=songIdx(t);
-h+=’<div class="my-row encore">’;
-h+=’<div class="my-arrows"><button class=“my-arrow” ‘+(i===0?“disabled”:””)+” onclick="moveEnc(”+i+”,”+(i-1)+”)">▲</button>”;
-h+=’<button class=“my-arrow” ‘+(i===encSongs.length-1?“disabled”:””)+” onclick="moveEnc(”+i+”,”+(i+1)+”)">▼</button></div>”;
-h+=’<span class="my-num">En.</span>’;
-h+=’<span class="my-title">’+esc(t)+’</span>’;
-h+=’<button class="en-toggle active" onclick="toggleEncore('+si+')">En.</button>’;
-h+=’<button class="my-rm" onclick="rmFromSet('+gi+')">✕</button></div>’;
-});
-}
-}
-h+=’<div style="font-size:12px;color:#94a3b8;margin-top:10px">💡 ▲▼で曲順変更 ・「En.」でアンコール設定（最大3曲）</div>’;
-el.innerHTML=h;
+  var el=document.getElementById("tabSetlist");
+  var h='<button class="btn-share" onclick="shareMySetlist()">𝕏 マイセトリをシェアする</button>';
+  h+='<div class="sec-header" style="margin-top:20px"><span class="sec-title">🎤 マイセトリ ('+mySetlist.length+'/'+MAX_MYSET+')</span>';
+  h+='<span class="encore-badge">En. '+encoreSet.size+'/'+MAX_ENCORE+'</span>';
+  h+='<button class="btn-sm btn-clear" onclick="clearMySet()">空にする</button></div>';
+  if(!mySetlist.length){h+='<div class="empty">選曲タブで曲を選ぶとマイセトリに追加されます</div>'}
+  else{
+    var mainSongs=mySetlist.filter(function(t){return!encoreSet.has(t)});
+    var encSongs=mySetlist.filter(function(t){return encoreSet.has(t)});
+    mainSongs.forEach(function(t,i){
+      var gi=mySetlist.indexOf(t);var si=songIdx(t);
+      h+='<div class="my-row">';
+      h+='<div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveMain("+i+","+(i-1)+")\">&#x25b2;</button>";
+      h+='<button class="my-arrow" '+(i===mainSongs.length-1?"disabled":"")+" onclick=\"moveMain("+i+","+(i+1)+")\">&#x25bc;</button></div>";
+      h+='<span class="my-num">'+(i+1)+'.</span>';
+      h+='<span class="my-title">'+esc(t)+'</span>';
+      h+='<button class="en-toggle'+(encoreSet.size>=MAX_ENCORE?" disabled":"")+'" onclick="toggleEncore('+si+')">En.</button>';
+      h+='<button class="my-rm" onclick="rmFromSet('+gi+')">&#x2715;</button></div>';
+    });
+    if(encSongs.length){
+      h+='<div class="encore-divider"><div class="encore-divider-line"></div><div class="encore-divider-text">ENCORE</div><div class="encore-divider-line"></div></div>';
+      encSongs.forEach(function(t,i){
+        var gi=mySetlist.indexOf(t);var si=songIdx(t);
+        h+='<div class="my-row encore">';
+        h+='<div class="my-arrows"><button class="my-arrow" '+(i===0?"disabled":"")+" onclick=\"moveEnc("+i+","+(i-1)+")\">&#x25b2;</button>";
+        h+='<button class="my-arrow" '+(i===encSongs.length-1?"disabled":"")+" onclick=\"moveEnc("+i+","+(i+1)+")\">&#x25bc;</button></div>";
+        h+='<span class="my-num">En.</span>';
+        h+='<span class="my-title">'+esc(t)+'</span>';
+        h+='<button class="en-toggle active" onclick="toggleEncore('+si+')">En.</button>';
+        h+='<button class="my-rm" onclick="rmFromSet('+gi+')">&#x2715;</button></div>';
+      });
+    }
+  }
+  h+='<div style="font-size:12px;color:#94a3b8;margin-top:10px">💡 ▲▼で曲順変更 ・「En.」でアンコール設定（最大3曲）</div>';
+  el.innerHTML=h;
 }
 
 function renderAll(){renderVote();renderSetlist()}
